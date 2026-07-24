@@ -114,7 +114,39 @@
     </footer>
 
     <!-- JavaScript para Troca de Tema -->
-    <script src="script.js"></script>
+    <!-- SCRIPT DE TEMA INTEGRADO -->
+    <script>
+        (function() {
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const themeIcon = document.getElementById('theme-icon');
+
+            // 1. Aplica o tema salvo assim que carrega
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                if (themeIcon) themeIcon.className = 'fas fa-sun';
+            }
+
+            // 2. Alterna o tema ao clicar
+            if (themeToggleBtn) {
+                themeToggleBtn.addEventListener('click', function() {
+                    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                    
+                    if (isDark) {
+                        document.documentElement.removeAttribute('data-theme');
+                        localStorage.setItem('theme', 'light');
+                        if (themeIcon) themeIcon.className = 'far fa-moon';
+                    } else {
+                        document.documentElement.setAttribute('data-theme', 'dark');
+                        localStorage.setItem('theme', 'dark');
+                        if (themeIcon) themeIcon.className = 'fas fa-sun';
+                    }
+                });
+            }
+        })();
+    </script>
+</body>
+</html>
 </body>
 
 </html>
