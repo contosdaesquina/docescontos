@@ -1,17 +1,272 @@
 /* ==========================================================================
-   ESTILOS DA PÁGINA DO CONTO (Centralizado e Espaçado)
+   1. RESET & VARIÁVEIS DE TEMA (Modo Claro / Modo Escuro)
    ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-/* Conteúdo centralizado e limitado para excelente leitura */
+/* TEMA CLARO (PADRÃO) */
+:root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f9fafb;
+    --bg-header: rgba(255, 255, 255, 0.85);
+    --text-primary: #1f2937;
+    --text-muted: #4b5563;
+    --border-color: rgba(0, 0, 0, 0.1);
+    --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    
+    --primary-color: #d97706; /* Dourado / Âmbar */
+    --font-heading: 'Playfair Display', serif;
+    --font-body: 'Inter', sans-serif;
+}
+
+/* TEMA ESCURO */
+[data-theme="dark"] {
+    --bg-primary: #0a0a0a;
+    --bg-secondary: #121212;
+    --bg-header: rgba(10, 10, 10, 0.85);
+    --text-primary: #f3f4f6;
+    --text-muted: #9ca3af;
+    --border-color: rgba(255, 255, 255, 0.12);
+    --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+
+    --primary-color: #f59e0b;
+}
+
+/* ==========================================================================
+   2. ESTILOS GERAIS
+   ========================================================================== */
+body {
+    font-family: var(--font-body);
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.destaque {
+    color: var(--primary-color);
+}
+
+.section-title {
+    font-family: var(--font-heading);
+    font-size: 2.2rem;
+    margin-bottom: 2rem;
+}
+
+/* ==========================================================================
+   3. CABEÇALHO
+   ========================================================================== */
+.cabecalho {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 5%;
+    background: var(--bg-header);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.cabecalho-logo {
+    max-height: 45px;
+    display: block;
+}
+
+.menu {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.menu-item {
+    text-decoration: none;
+    color: var(--text-primary);
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.menu-item:hover {
+    color: var(--primary-color);
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.btn-theme {
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: 0.3rem;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.btn-theme:hover {
+    color: var(--primary-color);
+    transform: scale(1.1);
+}
+
+.btn-social {
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.btn-social:hover {
+    color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   4. HOME - HERO SECTION
+   ========================================================================== */
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4rem 5%;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 2rem;
+}
+
+.hero-title {
+    font-family: var(--font-heading);
+    font-size: 3.2rem;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.hero-subtitle {
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+}
+
+.hero-cta {
+    display: flex;
+    gap: 1rem;
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+.btn-outline {
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+.btn-outline:hover {
+    background-color: var(--primary-color);
+    color: #ffffff;
+}
+
+.hero-image {
+    max-width: 380px;
+    height: auto;
+}
+
+/* ==========================================================================
+   5. HOME - SOBRE & CATEGORIAS
+   ========================================================================== */
+.about-section, .categories-section {
+    padding: 4rem 5%;
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.about-text p {
+    margin-bottom: 1.2rem;
+    font-size: 1.1rem;
+}
+
+.about-text .quote {
+    font-style: italic;
+    color: var(--text-muted);
+}
+
+.categories-grid {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+}
+
+.category-card {
+    position: relative;
+    display: block;
+    width: 340px;
+    height: 240px;
+    border-radius: 16px;
+    overflow: hidden;
+    text-decoration: none;
+    box-shadow: var(--card-shadow);
+    transition: transform 0.3s ease;
+}
+
+.category-card:hover {
+    transform: translateY(-6px);
+}
+
+.category-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.category-card-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
+    padding: 25px 15px 15px 15px;
+}
+
+.category-card-title {
+    color: #ffffff;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   6. PÁGINA DO CONTO (Texto Centralizado na tela e Espaçado)
+   ========================================================================== */
 .story-container {
     padding: 3rem 1.5rem;
-    max-width: 720px;          /* Largura ideal para leitura de livros/contos */
+    max-width: 720px;          /* Largura ideal de leitura */
     margin: 0 auto;             /* Centraliza o bloco na página */
 }
 
-/* Cabeçalho do Conto (Título e Autor) */
 .story-header {
-    text-align: center;         /* Centraliza o título e autor */
+    text-align: center;         /* Centraliza título e autor */
     margin-bottom: 2.5rem;
     border-bottom: 1px solid var(--border-color);
     padding-bottom: 1.5rem;
@@ -39,39 +294,68 @@
     color: var(--text-muted);
 }
 
-/* Corpo do Texto */
 .story-body {
     font-size: 1.15rem;
-    line-height: 1.8;           /* Altura confortável de linha */
+    line-height: 1.8;
     color: var(--text-primary);
-    text-align: left;           /* O texto permanece alinhado à esquerda para não dificultar a leitura */
+    text-align: left;
 }
 
 /* Espaçamento visível entre parágrafos (Quebra de linha) */
 .story-body p {
-    margin-bottom: 1.8rem;      /* Cria o espaço entre cada parágrafo */
+    margin-bottom: 1.8rem;
 }
 
-/* Estilo para falas/diálogos */
 .story-dialogue {
     font-style: italic;
 }
 
-/* Rodapé do conto com botão de voltar */
 .story-footer {
     margin-top: 3.5rem;
     padding-top: 1.5rem;
     border-top: 1px solid var(--border-color);
-    text-align: center;         /* Centraliza o link de voltar */
+    text-align: center;
 }
 
 .btn-back {
     color: var(--primary-color);
     text-decoration: none;
     font-weight: 600;
-    transition: opacity 0.2s ease;
 }
 
-.btn-back:hover {
-    opacity: 0.8;
+/* ==========================================================================
+   7. RODAPÉ
+   ========================================================================== */
+.rodape {
+    text-align: center;
+    padding: 2.5rem 1rem;
+    background-color: var(--bg-secondary);
+    border-top: 1px solid var(--border-color);
+    margin-top: 4rem;
+}
+
+.rodape-image {
+    max-width: 140px;
+    margin-bottom: 1rem;
+}
+
+.direitos {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 768px) {
+    .cabecalho, .hero {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .hero-cta {
+        justify-content: center;
+    }
+
+    .story-container {
+        padding: 2rem 1rem;
+    }
 }
