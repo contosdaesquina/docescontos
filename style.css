@@ -1,246 +1,77 @@
-/* RESET BÁSICO E VARIÁVEIS */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+/* ==========================================================================
+   ESTILOS DA PÁGINA DO CONTO (Centralizado e Espaçado)
+   ========================================================================== */
+
+/* Conteúdo centralizado e limitado para excelente leitura */
+.story-container {
+    padding: 3rem 1.5rem;
+    max-width: 720px;          /* Largura ideal para leitura de livros/contos */
+    margin: 0 auto;             /* Centraliza o bloco na página */
 }
 
-:root {
-    --primary-color: #d97706; /* Cor de destaque (Ajuste para a paleta da marca) */
-    --text-dark: #1f2937;
-    --text-muted: #4b5563;
-    --bg-light: #fef3c7;
-    --font-heading: 'Playfair Display', serif;
-    --font-body: 'Inter', sans-serif;
+/* Cabeçalho do Conto (Título e Autor) */
+.story-header {
+    text-align: center;         /* Centraliza o título e autor */
+    margin-bottom: 2.5rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1.5rem;
 }
 
-body {
-    font-family: var(--font-body);
-    color: var(--text-dark);
-    line-height: 1.6;
-    background-color: #fff;
-}
-
-/* HEADER FIXO COM BLUR */
-.cabecalho {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 5%;
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(8px);
-    border-bottom: 1px solid rgba(0,0,0,0.05);
-}
-
-.cabecalho-logo {
-    max-height: 45px;
-}
-
-.menu {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-}
-
-.menu-item {
-    text-decoration: none;
-    color: var(--text-dark);
-    font-weight: 500;
-    transition: color 0.2s;
-}
-
-.menu-item:hover {
+.story-category {
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 1.5px;
     color: var(--primary-color);
-}
-
-.social-media-buttons {
-    display: flex;
-    gap: 0.75rem;
-}
-
-.btn-social {
-    color: var(--text-dark);
-    font-size: 1.25rem;
-    transition: transform 0.2s, color 0.2s;
-}
-
-.btn-social:hover {
-    transform: translateY(-2px);
-    color: var(--primary-color);
-}
-
-/* HERO SECTION */
-.hero {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 4rem 5%;
-    max-width: 1200px;
-    margin: 0 auto;
-    gap: 2rem;
-}
-
-.hero-title {
-    font-family: var(--font-heading);
-    font-size: 3.2rem;
-    color: var(--primary-color);
+    font-weight: 600;
+    display: block;
     margin-bottom: 0.5rem;
 }
 
-.hero-subtitle {
-    font-size: 1.4rem;
-    font-weight: 400;
-    color: var(--text-muted);
-    margin-bottom: 2rem;
-}
-
-.hero-cta {
-    display: flex;
-    gap: 1rem;
-}
-
-.btn {
-    padding: 0.75rem 1.5rem;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: all 0.2s;
-}
-
-.btn-primary {
-    background-color: var(--primary-color);
-    color: #fff;
-}
-
-.btn-primary:hover {
-    opacity: 0.9;
-    transform: translateY(-2px);
-}
-
-.btn-outline {
-    border: 2px solid var(--primary-color);
-    color: var(--primary-color);
-}
-
-.btn-outline:hover {
-    background-color: var(--primary-color);
-    color: #fff;
-}
-
-.hero-image {
-    max-width: 100%;
-    height: auto;
-}
-
-/* SOBRE & CATEGORIAS */
-.about-section, .categories-section {
-    padding: 4rem 5%;
-    max-width: 1000px;
-    margin: 0 auto;
-    text-align: center;
-}
-
-.section-title {
+.story-title {
     font-family: var(--font-heading);
-    font-size: 2.2rem;
-    margin-bottom: 2rem;
+    font-size: 2.4rem;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
 }
 
-.destaque {
-    color: var(--primary-color);
+.story-author {
+    font-size: 0.95rem;
+    color: var(--text-muted);
 }
 
-.about-text p {
-    margin-bottom: 1.2rem;
-    font-size: 1.1rem;
+/* Corpo do Texto */
+.story-body {
+    font-size: 1.15rem;
+    line-height: 1.8;           /* Altura confortável de linha */
+    color: var(--text-primary);
+    text-align: left;           /* O texto permanece alinhado à esquerda para não dificultar a leitura */
 }
 
-.about-text .quote {
+/* Espaçamento visível entre parágrafos (Quebra de linha) */
+.story-body p {
+    margin-bottom: 1.8rem;      /* Cria o espaço entre cada parágrafo */
+}
+
+/* Estilo para falas/diálogos */
+.story-dialogue {
     font-style: italic;
-    color: var(--text-muted);
 }
 
-/* CARDS DE CATEGORIA */
-.categories-grid {
-    display: flex;
-    justify-content: center;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-    margin-top: 2rem;
+/* Rodapé do conto com botão de voltar */
+.story-footer {
+    margin-top: 3.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+    text-align: center;         /* Centraliza o link de voltar */
 }
 
-.category-card {
-    position: relative;
-    display: block;
-    width: 340px;
-    height: 240px;
-    border-radius: 16px;
-    overflow: hidden;
+.btn-back {
+    color: var(--primary-color);
     text-decoration: none;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.12);
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.category-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
-}
-
-.category-card-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.category-card-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(transparent, rgba(0,0,0,0.85));
-    padding: 30px 15px 15px 15px;
-}
-
-.category-card-title {
-    color: #fff;
-    font-size: 1.25rem;
     font-weight: 600;
+    transition: opacity 0.2s ease;
 }
 
-/* RODAPÉ */
-.rodape {
-    text-align: center;
-    padding: 2rem 1rem;
-    background-color: #f9fafb;
-    margin-top: 4rem;
-}
-
-.rodape-image {
-    max-width: 150px;
-    margin-bottom: 1rem;
-}
-
-.direitos {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-}
-
-/* RESPONSIVIDADE (Telas menores) */
-@media (max-width: 768px) {
-    .hero {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .hero-cta {
-        justify-content: center;
-    }
-
-    .cabecalho {
-        flex-direction: column;
-        gap: 1rem;
-    }
+.btn-back:hover {
+    opacity: 0.8;
 }
