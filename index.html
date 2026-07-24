@@ -5,14 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Doces Contos — Histórias que Conectam</title>
-    
-    <!-- Google Fonts para Tipografia Elegante -->
+
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome para Ícones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- CSS Principal -->
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -28,7 +31,13 @@
             <a class="menu-item" href="#sobre">Sobre</a>
             <a class="menu-item" href="#categorias">Categorias</a>
 
-            <div class="social-media-buttons">
+            <div class="header-actions">
+                <!-- Botão Alternador de Tema -->
+                <button id="theme-toggle" class="btn-theme" aria-label="Alternar tema">
+                    <i class="far fa-moon" id="theme-icon"></i>
+                </button>
+
+                <!-- Ícones de Redes Sociais -->
                 <a class="btn-social btn-instagram" 
                    href="https://ig.me/m/contos.daesquina" 
                    target="_blank" 
@@ -51,7 +60,7 @@
     <!-- CONTEÚDO PRINCIPAL -->
     <main>
 
-        <!-- SEÇÃO HERO (Apresentação Principal) -->
+        <!-- SEÇÃO HERO (Banner Principal) -->
         <section class="hero">
             <div class="hero-content">
                 <h1 class="hero-title">Doces Contos</h1>
@@ -68,7 +77,7 @@
             </div>
         </section>
 
-        <!-- SEÇÃO SOBRE O PROJECTO -->
+        <!-- SEÇÃO SOBRE -->
         <section id="sobre" class="about-section">
             <h3 class="section-title">O que <span class="destaque">cabe em um conto?</span></h3>
             
@@ -104,5 +113,8 @@
         <p class="direitos">&copy; Doces Contos. Todos os direitos reservados.</p>
     </footer>
 
+    <!-- JavaScript para Troca de Tema -->
+    <script src="script.js"></script>
 </body>
+
 </html>
