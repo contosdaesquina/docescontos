@@ -1,0 +1,153 @@
+@import url('https://fonts.googleapis.com/css2?family=Righteous&family=Sarala:wght@400;700&display=swap');
+
+* {
+  margin: 0;  
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+}
+body {
+    font-size: 100%;
+    background: #1d1d1d
+}
+
+.cabecalho {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px;
+}
+.cabecalho-image {
+  height: 60px;
+}
+.menu {
+  display: flex;
+  gap: 32px;
+}
+.menu-item {
+  font-family: 'sarala', sans-serif;
+  color: #fff2e7;
+  font-size: 18px;
+}
+
+.social-media-buttons {
+  display: flex;
+  gap: 18px;
+}
+.social-media-buttons a {
+    /* O QUE FAZ: estilo de cada botão social individual.
+       ONDE APARECE: ícones WhatsApp/Instagram/Facebook.
+       QUANDO ATUA: sempre. */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    background-color: #fff2e7;
+    font-size: 1.35rem;
+    border-radius: 10px;
+    text-decoration: none;
+    color: #1d1d1d;
+    /* O QUE FAZ: adiciona sombra nos ícones sociais.
+       ONDE APARECE: em cada link social.
+       QUANDO ATUA: sempre. */
+    box-shadow: 0px 0px 12px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color .3s ease, color .3s ease;
+}
+
+.social-media-buttons a:hover {
+    /* O QUE FAZ: muda cor de fundo no hover dos ícones.
+       ONDE APARECE: botões sociais.
+       QUANDO ATUA: ao passar mouse sobre ícone social. */
+    background-color: #ecd6c4;
+}
+
+.item {
+  margin-bottom: 32px;
+  border-top: 0.2px solid #fff2e7;
+
+}
+.item-one {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+
+}
+.item-two {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+.item-three {
+  font-family: 'rightous', cursive;
+  font-weight: 400;
+  font-size: 64px;
+  color: #fff2e7;
+}
+.item-foor {
+  font-family: 'sarala', sans-serif;
+  font-weight: 400;
+  font-size: 24px;
+  color: #fff2e7;
+}
+
+
+.image-logo {
+  height: 400px;
+}
+.new {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px; 
+  margin-top: 48px;
+}
+.new-one {
+  border-top: 0.4px solid #fff2e7;
+  padding-top: 48px;
+  font-weight: 400;
+  font-size: 24px;
+  font-family: 'rightous', cursive;
+  color: #fff2e7;
+
+}
+.new-two {
+  font-weight: 400;
+  font-size: 18px;
+  font-family: 'rightous', cursive;
+  color: #fff2e7;
+  text-align: center;
+
+}
+.new-three {
+  font-weight: 400;
+  font-size: 18px;
+  font-family: 'rightous', cursive;
+  color: #fff2e7;
+  text-align: center;
+}
+.new-foor {
+  font-weight: 400;
+  font-size: 18px;
+  font-family: 'rightous', cursive;
+  color: #fff2e7;
+  text-align: center;
+}
+.destaque {
+  color: #f37a08;
+}
+
+.rodape {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px;
+  margin-bottom: 20px;
+  border-top: 0.4px solid #fff2e7;
+}
+.direitos {
+  color: #f37a08;
+}
