@@ -1,153 +1,246 @@
-@import url('https://fonts.googleapis.com/css2?family=Righteous&family=Sarala:wght@400;700&display=swap');
-
+/* RESET BÁSICO E VARIÁVEIS */
 * {
-  margin: 0;  
-  padding: 0;
-  box-sizing: border-box;
-  text-decoration: none;
-}
-body {
-    font-size: 100%;
-    background: #1d1d1d
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
+:root {
+    --primary-color: #d97706; /* Cor de destaque (Ajuste para a paleta da marca) */
+    --text-dark: #1f2937;
+    --text-muted: #4b5563;
+    --bg-light: #fef3c7;
+    --font-heading: 'Playfair Display', serif;
+    --font-body: 'Inter', sans-serif;
+}
+
+body {
+    font-family: var(--font-body);
+    color: var(--text-dark);
+    line-height: 1.6;
+    background-color: #fff;
+}
+
+/* HEADER FIXO COM BLUR */
 .cabecalho {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  padding: 24px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 5%;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
 }
-.cabecalho-image {
-  height: 60px;
+
+.cabecalho-logo {
+    max-height: 45px;
 }
+
 .menu {
-  display: flex;
-  gap: 32px;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
 }
+
 .menu-item {
-  font-family: 'sarala', sans-serif;
-  color: #fff2e7;
-  font-size: 18px;
+    text-decoration: none;
+    color: var(--text-dark);
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.menu-item:hover {
+    color: var(--primary-color);
 }
 
 .social-media-buttons {
-  display: flex;
-  gap: 18px;
+    display: flex;
+    gap: 0.75rem;
 }
-.social-media-buttons a {
-    /* O QUE FAZ: estilo de cada botão social individual.
-       ONDE APARECE: ícones WhatsApp/Instagram/Facebook.
-       QUANDO ATUA: sempre. */
+
+.btn-social {
+    color: var(--text-dark);
+    font-size: 1.25rem;
+    transition: transform 0.2s, color 0.2s;
+}
+
+.btn-social:hover {
+    transform: translateY(-2px);
+    color: var(--primary-color);
+}
+
+/* HERO SECTION */
+.hero {
     display: flex;
     align-items: center;
-    justify-content: center;
-    width: 35px;
-    height: 35px;
-    background-color: #fff2e7;
-    font-size: 1.35rem;
-    border-radius: 10px;
+    justify-content: space-between;
+    padding: 4rem 5%;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 2rem;
+}
+
+.hero-title {
+    font-family: var(--font-heading);
+    font-size: 3.2rem;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.hero-subtitle {
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+}
+
+.hero-cta {
+    display: flex;
+    gap: 1rem;
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
     text-decoration: none;
-    color: #1d1d1d;
-    /* O QUE FAZ: adiciona sombra nos ícones sociais.
-       ONDE APARECE: em cada link social.
-       QUANDO ATUA: sempre. */
-    box-shadow: 0px 0px 12px 4px rgba(0, 0, 0, 0.1);
-    transition: background-color .3s ease, color .3s ease;
+    font-weight: 600;
+    transition: all 0.2s;
 }
 
-.social-media-buttons a:hover {
-    /* O QUE FAZ: muda cor de fundo no hover dos ícones.
-       ONDE APARECE: botões sociais.
-       QUANDO ATUA: ao passar mouse sobre ícone social. */
-    background-color: #ecd6c4;
+.btn-primary {
+    background-color: var(--primary-color);
+    color: #fff;
 }
 
-.item {
-  margin-bottom: 32px;
-  border-top: 0.2px solid #fff2e7;
-
-}
-.item-one {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-around;
-
-}
-.item-two {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-}
-.item-three {
-  font-family: 'rightous', cursive;
-  font-weight: 400;
-  font-size: 64px;
-  color: #fff2e7;
-}
-.item-foor {
-  font-family: 'sarala', sans-serif;
-  font-weight: 400;
-  font-size: 24px;
-  color: #fff2e7;
+.btn-primary:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
 }
 
+.btn-outline {
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+}
 
-.image-logo {
-  height: 400px;
+.btn-outline:hover {
+    background-color: var(--primary-color);
+    color: #fff;
 }
-.new {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24px; 
-  margin-top: 48px;
-}
-.new-one {
-  border-top: 0.4px solid #fff2e7;
-  padding-top: 48px;
-  font-weight: 400;
-  font-size: 24px;
-  font-family: 'rightous', cursive;
-  color: #fff2e7;
 
+.hero-image {
+    max-width: 100%;
+    height: auto;
 }
-.new-two {
-  font-weight: 400;
-  font-size: 18px;
-  font-family: 'rightous', cursive;
-  color: #fff2e7;
-  text-align: center;
 
+/* SOBRE & CATEGORIAS */
+.about-section, .categories-section {
+    padding: 4rem 5%;
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: center;
 }
-.new-three {
-  font-weight: 400;
-  font-size: 18px;
-  font-family: 'rightous', cursive;
-  color: #fff2e7;
-  text-align: center;
+
+.section-title {
+    font-family: var(--font-heading);
+    font-size: 2.2rem;
+    margin-bottom: 2rem;
 }
-.new-foor {
-  font-weight: 400;
-  font-size: 18px;
-  font-family: 'rightous', cursive;
-  color: #fff2e7;
-  text-align: center;
-}
+
 .destaque {
-  color: #f37a08;
+    color: var(--primary-color);
 }
 
-.rodape {
-  display: flex;
-  flex-direction: row-reverse;
-  align-items: center;
-  justify-content: space-between;
-  padding: 5px;
-  margin-bottom: 20px;
-  border-top: 0.4px solid #fff2e7;
+.about-text p {
+    margin-bottom: 1.2rem;
+    font-size: 1.1rem;
 }
+
+.about-text .quote {
+    font-style: italic;
+    color: var(--text-muted);
+}
+
+/* CARDS DE CATEGORIA */
+.categories-grid {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+}
+
+.category-card {
+    position: relative;
+    display: block;
+    width: 340px;
+    height: 240px;
+    border-radius: 16px;
+    overflow: hidden;
+    text-decoration: none;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.category-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+}
+
+.category-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.category-card-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.85));
+    padding: 30px 15px 15px 15px;
+}
+
+.category-card-title {
+    color: #fff;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+/* RODAPÉ */
+.rodape {
+    text-align: center;
+    padding: 2rem 1rem;
+    background-color: #f9fafb;
+    margin-top: 4rem;
+}
+
+.rodape-image {
+    max-width: 150px;
+    margin-bottom: 1rem;
+}
+
 .direitos {
-  color: #f37a08;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+/* RESPONSIVIDADE (Telas menores) */
+@media (max-width: 768px) {
+    .hero {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .hero-cta {
+        justify-content: center;
+    }
+
+    .cabecalho {
+        flex-direction: column;
+        gap: 1rem;
+    }
 }
