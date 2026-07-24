@@ -4,85 +4,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doce Conto</title>
+    <title>Doces Contos — Histórias que Conectam</title>
+    
+    <!-- Google Fonts para Tipografia Elegante -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
 <body>
+
+    <!-- CABEÇALHO DA PÁGINA -->
     <header class="cabecalho">
-        <img class="cabecalho-image" src="dist/logo.png" alt="Logo da page">
+        <a href="#" class="logo-link">
+            <img class="cabecalho-logo" src="dist/logo.png" alt="Logo Doces Contos">
+        </a>
+
         <nav class="menu">
-            <a class="menu-item" href="">Início</a>
+            <a class="menu-item" href="#">Início</a>
+            <a class="menu-item" href="#sobre">Sobre</a>
             <a class="menu-item" href="#categorias">Categorias</a>
-            <a class="menu-item" href="">Depoimentos</a>
 
             <div class="social-media-buttons">
-            <a
-                class="btn-instagram-direct"
-                href="https://ig.me/m/contos.daesquina"
-                target="_blank"
-                rel="noopener noreferrer">
-                <i class="fab fa-instagram"></i>
-            </a>
-            
-            <a 
-                class="btn-telegram"
-                href="http://t.me/lendocontos" 
-                target="_blank"
-                rel="noopener noreferrer">
-                <i class="fab fa-telegram-plane"></i>
-            </a>
+                <a class="btn-social btn-instagram" 
+                   href="https://ig.me/m/contos.daesquina" 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   aria-label="Instagram Direct">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                
+                <a class="btn-social btn-telegram" 
+                   href="http://t.me/lendocontos" 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   aria-label="Canal do Telegram">
+                    <i class="fab fa-telegram-plane"></i>
+                </a>
             </div>
-            
         </nav>
-
     </header>
 
-    <main class="item">
-        <section class="item-one">
-            <div class="item-two">
-                <h1 class="item-three">Doces contos</h1>
-                <h2 class="item-foor">Dê vida a sua história, seu desejo ou memória!</h2>
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main>
 
+        <!-- SEÇÃO HERO (Apresentação Principal) -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1 class="hero-title">Doces Contos</h1>
+                <h2 class="hero-subtitle">Dê vida à sua história, ao seu desejo ou à sua memória!</h2>
+                
+                <div class="hero-cta">
+                    <a href="#categorias" class="btn btn-primary">Explorar Contos</a>
+                    <a href="https://ig.me/m/contos.daesquina" target="_blank" rel="noopener noreferrer" class="btn btn-outline">Enviar História</a>
+                </div>
             </div>
-            <img class="image-logo" src="dist/image.png" alt="Logo">
+
+            <div class="hero-image-container">
+                <img class="hero-image" src="dist/image.png" alt="Ilustração Doces Contos">
+            </div>
         </section>
 
-        <section class="new">
-            <h3 class="new-one">O que <span class="destaque"><strong>cabe em um conto?</strong></span></h3>
-            <p class="new-two">"Vivemos apressados olhando o relógio a tela do celular. No caminho entre o <br>café e o trabalho, ignoramos <strong>as histórias </strong>que acontecem debaixo do nosso nariz."</p>
-            <p class="new-three">O <span><strong class="destaque">Doces Contos</strong></span> nasceu para dar uma pausa. Um lugar para <strong>observar o extraordinário</strong> no comum. <br>Aqui, cada palavra conta uma história e cada contador vira personagem.</p>
-            <p class="new-foor">"Seja bem vindo(a) à nossa página. Qual história <span class="destaque"><strong>gostaria de contar hoje?</span></strong> <br>Conta pra nós!</p>
+        <!-- SEÇÃO SOBRE O PROJECTO -->
+        <section id="sobre" class="about-section">
+            <h3 class="section-title">O que <span class="destaque">cabe em um conto?</span></h3>
+            
+            <div class="about-text">
+                <p class="quote">"Vivemos apressados olhando o relógio e a tela do celular. No caminho entre o café e o trabalho, ignoramos <strong>as histórias</strong> que acontecem debaixo do nosso nariz."</p>
+                
+                <p>O <strong class="destaque">Doces Contos</strong> nasceu para dar uma pausa. Um lugar para <strong>observar o extraordinário</strong> no comum. Aqui, cada palavra conta uma história e cada contador vira personagem.</p>
+                
+                <p class="welcome-msg">Seja bem-vindo(a) à nossa página. Qual história <span class="destaque"><strong>gostaria de contar hoje?</strong></span> Conta pra nós!</p>
+            </div>
         </section>
 
-        <section id="categorias" class="new">
-            <h3 class="new-one">Categorias</h3>
-    
-            <div style="display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap; margin-top: 20px;">
-        
+        <!-- SEÇÃO DE CATEGORIAS -->
+        <section id="categorias" class="categories-section">
+            <h3 class="section-title">Categorias</h3>
+
+            <div class="categories-grid">
                 <!-- Card de Categoria -->
-                <a href="contos/primeiro-conto.html" style="position: relative; display: block; border-radius: 16px; overflow: hidden; width: 360px; height: 260px; text-decoration: none; box-shadow: 0 4px 12px rgba(0,0,0,0.5);">
-            
-                <!-- Imagem de Fundo -->
-                <img src="dist/primeiro-namorado.png" alt="Primeiro Namorado" style="width: 100%; height: 100%; object-fit: cover; display: block;">
-            
-                <!-- Apenas o Título sobreposto no fundo -->
-                <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.9)); padding: 25px 15px 15px 15px; text-align: center;">
-                    <h4 style="color: #fff; margin: 0; font-size: 1.2rem; font-weight: 600; letter-spacing: 0.5px;">Primeiro Namorado</h4>
-            </div>
-
+                <a href="contos/primeiro-conto.html" class="category-card">
+                    <img src="dist/primeiro-namorado.png" alt="Primeiro Namorado" class="category-card-img">
+                    <div class="category-card-overlay">
+                        <h4 class="category-card-title">Primeiro Namorado</h4>
+                    </div>
                 </a>
-
             </div>
         </section>
-        
+
     </main>
-   
+
+    <!-- RODAPÉ DA PÁGINA -->
     <footer class="rodape">
-        <img class="rodape-image" src="dist/rodape.png" alt="rodape da pagina">
-        <p class="direitos">Copyright. Todos os direitos reservados.</p>
+        <img class="rodape-image" src="dist/rodape.png" alt="Ilustração do rodapé">
+        <p class="direitos">&copy; Doces Contos. Todos os direitos reservados.</p>
     </footer>
-    
+
 </body>
 </html>
