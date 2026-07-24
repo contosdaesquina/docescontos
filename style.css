@@ -257,12 +257,12 @@ body {
 }
 
 /* ==========================================================================
-   6. PÁGINA DO CONTO (Texto Centralizado na tela e Espaçado)
+   6. PÁGINA DO CONTO (Texto Centralizado + Espaçamento entre Parágrafos)
    ========================================================================== */
 .story-container {
     padding: 3rem 1.5rem;
-    max-width: 720px;          /* Largura ideal de leitura */
-    margin: 0 auto;             /* Centraliza o bloco na página */
+    max-width: 720px;          /* Largura ideal para leitura de contos */
+    margin: 0 auto;             /* Centraliza a coluna na página */
 }
 
 .story-header {
@@ -301,7 +301,7 @@ body {
     text-align: left;
 }
 
-/* Espaçamento visível entre parágrafos (Quebra de linha) */
+/* Espaçamento perfeito entre parágrafos (Quebras de linha) */
 .story-body p {
     margin-bottom: 1.8rem;
 }
@@ -344,7 +344,9 @@ body {
     color: var(--text-muted);
 }
 
-/* RESPONSIVIDADE */
+/* ==========================================================================
+   8. RESPONSIVIDADE (Telas menores)
+   ========================================================================== */
 @media (max-width: 768px) {
     .cabecalho, .hero {
         flex-direction: column;
@@ -358,4 +360,14 @@ body {
     .story-container {
         padding: 2rem 1rem;
     }
+}
+
+/* ==========================================================================
+   9. ILUSTRAÇÕES PARA O MODO ESCURO (Fora da Media Query)
+   ========================================================================== */
+[data-theme="dark"] .hero-image,
+[data-theme="dark"] .cabecalho-logo,
+[data-theme="dark"] .rodape-image {
+    filter: invert(1) brightness(1.8);
+    transition: filter 0.3s ease;
 }
