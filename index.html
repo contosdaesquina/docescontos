@@ -1,118 +1,124 @@
 <!DOCTYPE html>
-<html lang="pt-br">
-
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doces Contos — Histórias que Conectam</title>
-
-    <!-- Google Fonts -->
+    <title>Doces Contos</title>
+    
+    <!-- Fontes do Google -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
-
-    <!-- FontAwesome para Ícones -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Ícones do FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <!-- CSS Principal -->
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
     <!-- CABEÇALHO DA PÁGINA -->
     <header class="cabecalho">
-        <a href="#" class="logo-link">
-            <img class="cabecalho-logo" src="dist/logo.png" alt="Logo Doces Contos">
+        <a href="index.html">
+            <img class="cabecalho-logo" src="dist/rodape.png" alt="Doces Contos Logo">
         </a>
-
+        
         <nav class="menu">
-            <a class="menu-item" href="#">Início</a>
-            <a class="menu-item" href="#sobre">Sobre</a>
-            <a class="menu-item" href="#categorias">Categorias</a>
-
-            <div class="header-actions">
-                <!-- Botão Alternador de Tema -->
-                <button id="theme-toggle" class="btn-theme" type="button" aria-label="Alternar tema">
-                    <i class="far fa-moon" id="theme-icon"></i>
-                </button>
-
-                <!-- Ícones de Redes Sociais -->
-                <a class="btn-social btn-instagram" 
-                   href="https://ig.me/m/contos.daesquina" 
-                   target="_blank" 
-                   rel="noopener noreferrer" 
-                   aria-label="Instagram Direct">
-                    <i class="fab fa-instagram"></i>
-                </a>
-                
-                <a class="btn-social btn-telegram" 
-                   href="http://t.me/lendocontos" 
-                   target="_blank" 
-                   rel="noopener noreferrer" 
-                   aria-label="Canal do Telegram">
-                    <i class="fab fa-telegram-plane"></i>
-                </a>
-            </div>
+            <a href="index.html" class="menu-item">Início</a>
+            <a href="#sobre" class="menu-item">Sobre</a>
+            <a href="#categorias" class="menu-item">Categorias</a>
         </nav>
+
+        <div class="header-actions">
+            <button id="theme-toggle" class="btn-theme" title="Alternar tema">
+                <i class="fas fa-moon"></i>
+            </button>
+            <a href="#" class="btn-social" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="btn-social" title="Telegram"><i class="fab fa-telegram"></i></a>
+        </div>
     </header>
 
-    <!-- CONTEÚDO PRINCIPAL -->
-    <main>
+    <!-- SEÇÃO PRINCIPAL (HERO) -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Doces Contos</h1>
+            <p class="hero-subtitle">Dê vida à sua história, ao seu desejo ou à sua memória!</p>
+            <div class="hero-cta">
+                <a href="#categorias" class="btn btn-primary">Explorar Contos</a>
+                <a href="#newsletter" class="btn btn-outline">Enviar História</a>
+            </div>
+        </div>
+        <img class="hero-image" src="dist/rodape.png" alt="Ilustração de Destaque">
+    </section>
 
-        <!-- SEÇÃO HERO (Banner Principal) -->
-        <section class="hero">
-            <div class="hero-content">
-                <h1 class="hero-title">Doces Contos</h1>
-                <h2 class="hero-subtitle">Dê vida à sua história, ao seu desejo ou à sua memória!</h2>
-                
-                <div class="hero-cta">
-                    <a href="#categorias" class="btn btn-primary">Explorar Contos</a>
-                    <a href="https://ig.me/m/contos.daesquina" target="_blank" rel="noopener noreferrer" class="btn btn-outline">Enviar História</a>
+    <!-- SEÇÃO SOBRE & ESTATÍSTICAS DO AUTOR -->
+    <section id="sobre" class="about-section">
+        <h3 class="section-title">O que <span class="destaque">cabe em um conto?</span></h3>
+        
+        <div class="about-text">
+            <p class="quote">"Vivemos apressados olhando o relógio e a tela do celular. No caminho entre o café e o trabalho, ignoramos <strong>as histórias</strong> que acontecem debaixo do nosso nariz."</p>
+            <p>O <strong>Doces Contos</strong> nasceu para dar uma pausa. Um lugar para <strong>observar o extraordinário</strong> no comum. Aqui, cada palavra conta uma história e cada contador vira personagem.</p>
+            <p>Seja bem-vindo(a) à nossa página. Qual história <strong>gostaria de contar hoje?</strong> Conta pra nós!</p>
+        </div>
+
+        
+
+    <!-- SEÇÃO DE CATEGORIAS -->
+    <section id="categorias" class="categories-section">
+        <h3 class="section-title">Categorias</h3>
+
+        <div class="categories-grid">
+            <!-- Card 1 -->
+            <a href="contos/primeiro-conto.html" class="category-card">
+                <img src="dist/primeiro-namorado.png" alt="Primeiro Namorado" class="category-card-img">
+                <div class="category-card-overlay">
+                    <h4 class="category-card-title">Primeiro Namorado</h4>
+                </div>
+            </a>
+
+            <!-- Card 2 -->
+            <a href="contos/segundo-conto.html" class="category-card">
+                <img src="dist/primeiro-namorado.png" alt="Título da Nova Categoria" class="category-card-img">
+                <div class="category-card-overlay">
+                    <h4 class="category-card-title">Nova Categoria</h4>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- BLOCO DE ESTATÍSTICAS E CITAÇÃO DO AUTOR -->
+        <div class="stats-card">
+            <div class="stats-list">
+                <div class="stats-item">
+                    <span class="stats-label">Contos publicados</span>
+                    <span class="stats-value" id="stat-contos">0</span>
+                </div>
+                <div class="stats-item">
+                    <span class="stats-label">Leitores e acesso</span>
+                    <span class="stats-value" id="stat-acessos">Carregando...</span>
+                </div>
+                <div class="stats-item">
+                    <span class="stats-label">Última atualização</span>
+                    <span class="stats-value" id="stat-atualizacao">Hoje</span>
                 </div>
             </div>
-
-            <div class="hero-image-container">
-                <img class="hero-image" src="dist/image.png" alt="Ilustração Doces Contos">
-            </div>
-        </section>
-
-        <!-- SEÇÃO SOBRE -->
-        <section id="sobre" class="about-section">
-            <h3 class="section-title">O que <span class="destaque">cabe em um conto?</span></h3>
+        </div>
+    </section>
+    
+    <!-- SEÇÃO DE NEWSLETTER -->
+    <section id="newsletter" class="newsletter-section">
+        <div class="newsletter-card">
+            <i class="far fa-envelope newsletter-icon"></i>
+            <h3 class="newsletter-title">Receba os novos contos em primeira mão</h3>
+            <p class="newsletter-subtitle">Cadastre seu e-mail para ser avisado sempre que uma nova história for publicada.</p>
             
-            <div class="about-text">
-                <p class="quote">"Vivemos apressados olhando o relógio e a tela do celular. No caminho entre o café e o trabalho, ignoramos <strong>as histórias</strong> que acontecem debaixo do nosso nariz."</p>
-                
-                <p>O <strong class="destaque">Doces Contos</strong> nasceu para dar uma pausa. Um lugar para <strong>observar o extraordinário</strong> no comum. Aqui, cada palavra conta uma história e cada contador vira personagem.</p>
-                
-                <p class="welcome-msg">Seja bem-vindo(a) à nossa página. Qual história <span class="destaque"><strong>gostaria de contar hoje?</strong></span> Conta pra nós!</p>
-            </div>
-        </section>
-
-        <!-- SEÇÃO DE CATEGORIAS -->
-        <section id="categorias" class="categories-section">
-            <h3 class="section-title">Categorias</h3>
-
-            <div class="categories-grid">
-                <!-- Card de Categoria -->
-                <a href="contos/primeiro-conto.html" class="category-card">
-                    <img src="dist/primeiro-namorado.png" alt="Primeiro Namorado" class="category-card-img">
-                    <div class="category-card-overlay">
-                        <h4 class="category-card-title">Primeiro Namorado</h4>
-                    </div>
-                </a>
-        <!-- CATEGORIA 2 -->
-                <a href="contos/encontro-casual.html" class="category-card">
-                    <img src="dist/encontro-casual.png" alt="encontro casual" class="category-card-img">
-                    <div class="category-card-overlay">
-                        <h4 class="category-card-title">Encontro Casual</h4>
-                    </div>
-                </a>
-            </div>
-        </section>
-
-    </main>
+            <form class="newsletter-form">
+                <input type="email" placeholder="Digite seu melhor e-mail..." required class="newsletter-input">
+                <button type="submit" class="btn btn-primary btn-newsletter">Inscrever-se</button>
+            </form>
+        </div>
+    </section>
 
     <!-- RODAPÉ DA PÁGINA -->
     <footer class="rodape">
@@ -120,36 +126,110 @@
         <p class="direitos">&copy; Doces Contos. Todos os direitos reservados.</p>
     </footer>
 
-    <!-- SCRIPT DE TEMA INTEGRADO -->
+    <!-- JAVASCRIPT INTEGRADO -->
     <script>
-        (function() {
-            const themeToggleBtn = document.getElementById('theme-toggle');
-            const themeIcon = document.getElementById('theme-icon');
+    document.addEventListener('DOMContentLoaded', () => {
+        // ==========================================
+        // 1. ALTERNÂNCIA DE TEMA (LIGHT / DARK)
+        // ==========================================
+        const themeBtn = document.getElementById('theme-toggle');
+        const storedTheme = localStorage.getItem('theme');
+        
+        if (storedTheme) {
+            document.documentElement.setAttribute('data-theme', storedTheme);
+            atualizarIconeTema(storedTheme);
+        }
 
-            // 1. Aplica o tema salvo assim que carrega
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'dark') {
-                document.documentElement.setAttribute('data-theme', 'dark');
-                if (themeIcon) themeIcon.className = 'fas fa-sun';
+        if (themeBtn) {
+            themeBtn.addEventListener('click', () => {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                atualizarIconeTema(newTheme);
+            });
+        }
+
+        function atualizarIconeTema(theme) {
+            if (!themeBtn) return;
+            const icon = themeBtn.querySelector('i');
+            if (icon) {
+                icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
             }
+        }
 
-            // 2. Alterna o tema ao clicar
-            if (themeToggleBtn) {
-                themeToggleBtn.addEventListener('click', function() {
-                    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-                    
-                    if (isDark) {
-                        document.documentElement.removeAttribute('data-theme');
-                        localStorage.setItem('theme', 'light');
-                        if (themeIcon) themeIcon.className = 'far fa-moon';
-                    } else {
-                        document.documentElement.setAttribute('data-theme', 'dark');
-                        localStorage.setItem('theme', 'dark');
-                        if (themeIcon) themeIcon.className = 'fas fa-sun';
+        // ==========================================
+        // 2. CONTAGEM AUTOMÁTICA DE CONTOS PUBLICADOS
+        // ==========================================
+        function contarContosPublicados() {
+            // Conta quantos cards de categorias/contos existem na página
+            const totalContos = document.querySelectorAll('.category-card').length;
+            const elemContos = document.getElementById('stat-contos');
+            if (elemContos) {
+                elemContos.innerText = totalContos;
+            }
+        }
+        contarContosPublicados();
+
+        // ==========================================
+        // 3. CONTAGEM AUTOMÁTICA DE ACESSOS AO SITE
+        // ==========================================
+        function carregarAcessosSite() {
+            const domainKey = 'docescontos-com-br-v1';
+            
+            fetch(`https://api.countapi.xyz/hit/${domainKey}/visits`)
+                .then(res => res.json())
+                .then(data => {
+                    const elemAcessos = document.getElementById('stat-acessos');
+                    if (elemAcessos && data.value) {
+                        // Formata o número no padrão brasileiro (ex: 1.250)
+                        elemAcessos.innerText = data.value.toLocaleString('pt-BR');
                     }
+                })
+                .catch(() => {
+                    const elemAcessos = document.getElementById('stat-acessos');
+                    if (elemAcessos) elemAcessos.innerText = '1';
                 });
+        }
+        carregarAcessosSite();
+
+        // ==========================================
+        // 4. CONTAGEM DE LEITORES DA NEWSLETTER
+        // ==========================================
+        const BASE_LEITORES = 100; // Valor inicial/mínimo da sua base
+        
+        function atualizarContadorInscritos() {
+            const inscritosLocais = parseInt(localStorage.getItem('newsletter_subscribers') || '0', 10);
+            const total = BASE_LEITORES + inscritosLocais;
+            const elemLeitores = document.getElementById('stat-leitores');
+            if (elemLeitores) {
+                elemLeitores.innerText = total.toLocaleString('pt-BR');
             }
-        })();
-    </script>
+        }
+        atualizarContadorInscritos();
+
+        // Inscreve novo e-mail e soma +1 ao contador automaticamente
+        const newsletterForm = document.querySelector('.newsletter-form');
+        if (newsletterForm) {
+            newsletterForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const input = newsletterForm.querySelector('input[type="email"]');
+                if (input && input.value) {
+                    alert(`Obrigado por se inscrever, ${input.value}! Você receberá nossas histórias.`);
+                    
+                    // Incrementa o número de leitores no localStorage
+                    let inscritosLocais = parseInt(localStorage.getItem('newsletter_subscribers') || '0', 10);
+                    inscritosLocais++;
+                    localStorage.setItem('newsletter_subscribers', inscritosLocais);
+                    
+                    // Atualiza a exibição na hora
+                    atualizarContadorInscritos();
+                    input.value = '';
+                }
+            });
+        }
+    });
+</script>
 </body>
 </html>
