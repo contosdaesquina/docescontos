@@ -1,5 +1,5 @@
 /* ==========================================================================
-   1. RESET & VARIÁVEIS DE TEMA (Modo Claro / Modo Escuro)
+   1. RESET & VARIÁVEIS DE TEMA
    ========================================================================== */
 * {
     margin: 0;
@@ -7,7 +7,6 @@
     box-sizing: border-box;
 }
 
-/* TEMA CLARO (PADRÃO) */
 :root {
     --bg-primary: #ffffff;
     --bg-secondary: #f9fafb;
@@ -17,12 +16,12 @@
     --border-color: rgba(0, 0, 0, 0.1);
     --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     
-    --primary-color: #d97706; /* Dourado / Âmbar */
+    --primary-color: #d97706; /* Âmbar / Dourado */
+    --accent-red: #991b1b;     /* Tom destacado das estatísticas */
     --font-heading: 'Playfair Display', serif;
     --font-body: 'Inter', sans-serif;
 }
 
-/* TEMA ESCURO */
 [data-theme="dark"] {
     --bg-primary: #0a0a0a;
     --bg-secondary: #121212;
@@ -33,11 +32,16 @@
     --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 
     --primary-color: #f59e0b;
+    --accent-red: #ef4444;
 }
 
 /* ==========================================================================
    2. ESTILOS GERAIS
    ========================================================================== */
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     font-family: var(--font-body);
     background-color: var(--bg-primary);
@@ -127,7 +131,7 @@ body {
 }
 
 /* ==========================================================================
-   4. HOME - HERO SECTION
+   4. HERO SECTION
    ========================================================================== */
 .hero {
     display: flex;
@@ -192,7 +196,7 @@ body {
 }
 
 /* ==========================================================================
-   5. HOME - SOBRE & CATEGORIAS
+   5. SOBRE & ESTATÍSTICAS
    ========================================================================== */
 .about-section, .categories-section {
     padding: 4rem 5%;
@@ -211,6 +215,68 @@ body {
     color: var(--text-muted);
 }
 
+/* Card de Estatísticas do Autor */
+.stats-card {
+    max-width: 300px;
+    margin: 2.5rem auto 0 auto;
+    padding: 1.25rem 1.5rem;
+    text-align: left;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    box-shadow: var(--card-shadow);
+}
+
+.stats-author {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--accent-red);
+    text-transform: uppercase;
+    margin-bottom: .075rem;
+}
+
+.stats-quote {
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-size: 1rem;
+    line-height: 1;
+    color: var(--text-primary);
+    margin-bottom: 1.25rem;
+}
+
+.stats-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.stats-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.stats-item:last-child {
+    border-bottom: none;
+}
+
+.stats-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.stats-value {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+/* ==========================================================================
+   6. CATEGORIAS
+   ========================================================================== */
 .categories-grid {
     display: flex;
     justify-content: center;
@@ -257,95 +323,97 @@ body {
 }
 
 /* ==========================================================================
-   6. PÁGINA DO CONTO (Texto Centralizado + Espaçamento entre Parágrafos)
+   7. NEWSLETTER
    ========================================================================== */
-.story-container {
-    padding: 3rem 1.5rem;
-    max-width: 720px;          /* Largura ideal para leitura de contos */
-    margin: 0 auto;             /* Centraliza a coluna na página */
+.newsletter-section {
+    padding: 2rem 5%;
+    max-width: 520px;
+    margin: 1.5rem auto;
 }
 
-.story-header {
-    text-align: center;         /* Centraliza título e autor */
-    margin-bottom: 2.5rem;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 1.5rem;
-}
-
-.story-category {
-    text-transform: uppercase;
-    font-size: 0.85rem;
-    letter-spacing: 1.5px;
-    color: var(--primary-color);
-    font-weight: 600;
-    display: block;
-    margin-bottom: 0.5rem;
-}
-
-.story-title {
-    font-family: var(--font-heading);
-    font-size: 2.4rem;
-    color: var(--text-primary);
-    margin-bottom: 0.5rem;
-}
-
-.story-author {
-    font-size: 0.95rem;
-    color: var(--text-muted);
-}
-
-.story-body {
-    font-size: 1.15rem;
-    line-height: 1.8;
-    color: var(--text-primary);
-    text-align: left;
-}
-
-/* Espaçamento perfeito entre parágrafos (Quebras de linha) */
-.story-body p {
-    margin-bottom: 1.8rem;
-}
-
-.story-dialogue {
-    font-style: italic;
-}
-
-.story-footer {
-    margin-top: 3.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--border-color);
+.newsletter-card {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 1.75rem 1.5rem;
     text-align: center;
+    box-shadow: var(--card-shadow);
 }
 
-.btn-back {
+.newsletter-icon {
+    font-size: 2.5rem;
     color: var(--primary-color);
-    text-decoration: none;
-    font-weight: 600;
+    margin-bottom: 0.4rem;
+}
+
+.newsletter-title {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    color: var(--text-primary);
+    margin-bottom: 0.4rem;
+}
+
+.newsletter-subtitle {
+    color: var(--text-muted);
+    font-size: .85rem;
+    margin-bottom: 1.25rem;
+}
+
+.newsletter-form {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.newsletter-input {
+    flex: 1;
+    padding: 0.85rem 1.2rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    outline: none;
+}
+
+.newsletter-input:focus {
+    border-color: var(--primary-color);
+}
+
+.btn-newsletter {
+    padding: 0.65rem 1rem;
+    font-size: 0.8rem;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
 }
 
 /* ==========================================================================
-   7. RODAPÉ
+   8. RODAPÉ
    ========================================================================== */
 .rodape {
     text-align: center;
-    padding: 2.5rem 1rem;
+    padding: 2rem 1rem;
     background-color: var(--bg-secondary);
     border-top: 1px solid var(--border-color);
-    margin-top: 4rem;
+    margin-top: 2rem;
 }
 
 .rodape-image {
-    max-width: 140px;
+    max-width: 100px;
     margin-bottom: 1rem;
 }
 
 .direitos {
-    font-size: 0.9rem;
+    font-size: 0.7rem;
     color: var(--text-muted);
 }
 
 /* ==========================================================================
-   8. RESPONSIVIDADE (Telas menores)
+   9. RESPONSIVIDADE & AJUSTE DARK MODE
    ========================================================================== */
 @media (max-width: 768px) {
     .cabecalho, .hero {
@@ -357,14 +425,12 @@ body {
         justify-content: center;
     }
 
-    .story-container {
-        padding: 2rem 1rem;
+    .newsletter-form {
+        flex-direction: column;
     }
 }
 
-/* ==========================================================================
-   9. ILUSTRAÇÕES PARA O MODO ESCURO (Fora da Media Query)
-   ========================================================================== */
+/* Inversão do traçado das ilustrações no Modo Escuro */
 [data-theme="dark"] .hero-image,
 [data-theme="dark"] .cabecalho-logo,
 [data-theme="dark"] .rodape-image {
