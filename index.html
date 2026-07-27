@@ -127,7 +127,16 @@
     </footer>
 
     <!-- JAVASCRIPT INTEGRADO -->
-    <script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+    // ==========================================
+    // CONFIGURAÇÃO DO SUPABASE
+    // ==========================================
+    const SUPABASE_URL = 'https://wlghtkzunixojfldupwk.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndsZ2h0a3p1bml4b2pmbGR1cHdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxNzkzMTAsImV4cCI6MjEwMDc1NTMxMH0.BSIvzjfeLfgvSQs2-v4cBxIYsuD45QjJnJXGn1aPAp8'; // Pegue em Project Settings > API Keys
+    const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
     document.addEventListener('DOMContentLoaded', () => {
         // ==========================================
         // 1. ALTERNÂNCIA DE TEMA (LIGHT / DARK)
@@ -163,7 +172,6 @@
         // 2. CONTAGEM AUTOMÁTICA DE CONTOS PUBLICADOS
         // ==========================================
         function contarContosPublicados() {
-            // Conta quantos cards de categorias/contos existem na página
             const totalContos = document.querySelectorAll('.category-card').length;
             const elemContos = document.getElementById('stat-contos');
             if (elemContos) {
@@ -183,7 +191,6 @@
                 .then(data => {
                     const elemAcessos = document.getElementById('stat-acessos');
                     if (elemAcessos && data.value) {
-                        // Formata o número no padrão brasileiro (ex: 1.250)
                         elemAcessos.innerText = data.value.toLocaleString('pt-BR');
                     }
                 })
@@ -195,13 +202,17 @@
         carregarAcessosSite();
 
         // ==========================================
-        // 4. CONTAGEM DE LEITORES DA NEWSLETTER
+        // 4. CADASTRO DE LEITORES NO SUPABASE
         // ==========================================
-        const BASE_LEITORES = 100; // Valor inicial/mínimo da sua base
+        const BASE_LEITORES = 100;
         
-        function atualizarContadorInscritos() {
-            const inscritosLocais = parseInt(localStorage.getItem('newsletter_subscribers') || '0', 10);
-            const total = BASE_LEITORES + inscritosLocais;
+        // Busca o total real de e-mails direto do banco Supabase
+        async function atualizarContadorInscritos() {
+            const { count } = await db
+                .from('subscribers')
+                .select('*', { count: 'exact', head: true });
+
+            const total = BASE_LEITORES + (count || 0);
             const elemLeitores = document.getElementById('stat-leitores');
             if (elemLeitores) {
                 elemLeitores.innerText = total.toLocaleString('pt-BR');
@@ -209,23 +220,32 @@
         }
         atualizarContadorInscritos();
 
-        // Inscreve novo e-mail e soma +1 ao contador automaticamente
+        // Salva novo e-mail no Supabase
         const newsletterForm = document.querySelector('.newsletter-form');
         if (newsletterForm) {
-            newsletterForm.addEventListener('submit', (e) => {
+            newsletterForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const input = newsletterForm.querySelector('input[type="email"]');
+                
                 if (input && input.value) {
-                    alert(`Obrigado por se inscrever, ${input.value}! Você receberá nossas histórias.`);
-                    
-                    // Incrementa o número de leitores no localStorage
-                    let inscritosLocais = parseInt(localStorage.getItem('newsletter_subscribers') || '0', 10);
-                    inscritosLocais++;
-                    localStorage.setItem('newsletter_subscribers', inscritosLocais);
-                    
-                    // Atualiza a exibição na hora
-                    atualizarContadorInscritos();
-                    input.value = '';
+                    const emailDigitado = input.value.trim();
+
+                    // Insere na tabela subscribers
+                    const { error } = await db
+                        .from('subscribers')
+                        .insert([{ email: emailDigitado }]);
+
+                    if (error) {
+                        if (error.code === '23505') {
+                            alert('Este e-mail já está cadastrado!');
+                        } else {
+                            alert('Ocorreu um erro ao cadastrar. Tente novamente!');
+                        }
+                    } else {
+                        alert(`Obrigado por se inscrever, ${emailDigitado}! Você receberá nossas histórias.`);
+                        input.value = '';
+                        atualizarContadorInscritos(); // Recarrega a contagem real de leitores
+                    }
                 }
             });
         }
