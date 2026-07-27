@@ -126,15 +126,15 @@
         <p class="direitos">&copy; Doces Contos. Todos os direitos reservados.</p>
     </footer>
 
-    <!-- JAVASCRIPT INTEGRADO -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Biblioteca do Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
     // ==========================================
     // CONFIGURAÇÃO DO SUPABASE
     // ==========================================
     const SUPABASE_URL = 'https://wlghtkzunixojfldupwk.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndsZ2h0a3p1bml4b2pmbGR1cHdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxNzkzMTAsImV4cCI6MjEwMDc1NTMxMH0.BSIvzjfeLfgvSQs2-v4cBxIYsuD45QjJnJXGn1aPAp8'; // Pegue em Project Settings > API Keys
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndsZ2h0a3p1bml4b2pmbGR1cHdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxNzkzMTAsImV4cCI6MjEwMDc1NTMxMH0.BSIvzjfeLfgvSQs2-v4cBxIYsuD45QjJnJXGn1aPAp8'; // Cole a sua chave anon completa aqui
     const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -169,10 +169,10 @@
         }
 
         // ==========================================
-        // 2. CONTAGEM AUTOMÁTICA DE CONTOS PUBLICADOS
+        // 2. CONTAGEM DE CONTOS PUBLICADOS
         // ==========================================
         function contarContosPublicados() {
-            const totalContos = document.querySelectorAll('.categories-grid .category-card').length;
+            const totalContos = 3; // Altere manualmente conforme publicar novos contos
             const elemContos = document.getElementById('stat-contos');
             if (elemContos) {
                 elemContos.innerText = totalContos;
@@ -181,11 +181,10 @@
         contarContosPublicados();
 
         // ==========================================
-        // 3. CONTAGEM AUTOMÁTICA DE ACESSOS AO SITE
+        // 3. CONTAGEM DE ACESSOS AO SITE
         // ==========================================
         function carregarAcessosSite() {
             const domainKey = 'docescontos-com-br-v1';
-            
             fetch(`https://api.countapi.xyz/hit/${domainKey}/visits`)
                 .then(res => res.json())
                 .then(data => {
@@ -202,56 +201,51 @@
         carregarAcessosSite();
 
         // ==========================================
-// 4. CONTAGEM E CADASTRO DE LEITORES (SUPABASE)
-// ==========================================
-
-// Consulta a quantidade total de e-mails na tabela subscribers
-async function atualizarContadorInscritos() {
-    const { count, error } = await db
-        .from('subscribers')
-        .select('*', { count: 'exact', head: true });
-
-    if (!error && count !== null) {
-        const elemLeitores = document.getElementById('stat-leitores');
-        if (elemLeitores) {
-            elemLeitores.innerText = count.toLocaleString('pt-BR');
-        }
-    }
-}
-
-// Atualiza o número de inscritos assim que a página carrega
-atualizarContadorInscritos();
-
-// Trata o envio do formulário de e-mail
-const newsletterForm = document.querySelector('.newsletter-form');
-if (newsletterForm) {
-    newsletterForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const input = newsletterForm.querySelector('input[type="email"]');
-        
-        if (input && input.value) {
-            const emailDigitado = input.value.trim();
-
-            // Insere o novo e-mail na tabela subscribers do Supabase
-            const { error } = await db
+        // 4. CADASTRO E CONTAGEM DE LEITORES (SUPABASE)
+        // ==========================================
+        async function atualizarContadorInscritos() {
+            const { count, error } = await db
                 .from('subscribers')
-                .insert([{ email: emailDigitado }]);
+                .select('*', { count: 'exact', head: true });
 
-            if (error) {
-                if (error.code === '23505') {
-                    alert('Este e-mail já está cadastrado!');
-                } else {
-                    alert('Ocorreu um erro ao cadastrar. Tente novamente!');
+            if (!error && count !== null) {
+                const elemLeitores = document.getElementById('stat-acessos'); // id de leitores e acessos
+                if (elemLeitores) {
+                    elemLeitores.innerText = count.toLocaleString('pt-BR');
                 }
-            } else {
-                alert(`Obrigado por se inscrever, ${emailDigitado}! Você receberá nossas histórias.`);
-                input.value = '';
-                // Recarrega o contador direto do Supabase na hora
-                await atualizarContadorInscritos(); 
             }
         }
+        atualizarContadorInscritos();
+
+        // Formulário de Newsletter
+        const newsletterForm = document.querySelector('.newsletter-form');
+        if (newsletterForm) {
+            newsletterForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const input = newsletterForm.querySelector('input[type="email"]');
+                
+                if (input && input.value) {
+                    const emailDigitado = input.value.trim();
+
+                    const { error } = await db
+                        .from('subscribers')
+                        .insert([{ email: emailDigitado }]);
+
+                    if (error) {
+                        if (error.code === '23505') {
+                            alert('Este e-mail já está cadastrado!');
+                        } else {
+                            alert('Ocorreu um erro ao cadastrar. Tente novamente!');
+                        }
+                    } else {
+                        alert(`Obrigado por se inscrever, ${emailDigitado}! Você receberá nossas histórias.`);
+                        input.value = '';
+                        await atualizarContadorInscritos();
+                    }
+                }
+            });
+        }
     });
-}
 </script>
 </body>
 </html>
