@@ -172,7 +172,7 @@
         // 2. CONTAGEM AUTOMÁTICA DE CONTOS PUBLICADOS
         // ==========================================
         function contarContosPublicados() {
-            const totalContos = document.querySelectorAll('.category-card').length;
+            const totalContos = document.querySelectorAll('.categories-grid .category-card').length;
             const elemContos = document.getElementById('stat-contos');
             if (elemContos) {
                 elemContos.innerText = totalContos;
