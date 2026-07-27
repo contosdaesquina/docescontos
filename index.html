@@ -202,54 +202,56 @@
         carregarAcessosSite();
 
         // ==========================================
-        // 4. CADASTRO DE LEITORES NO SUPABASE
-        // ==========================================
-        const BASE_LEITORES = 100;
-        
-        // Busca o total real de e-mails direto do banco Supabase
-        async function atualizarContadorInscritos() {
-            const { count } = await db
-                .from('subscribers')
-                .select('*', { count: 'exact', head: true });
+// 4. CONTAGEM E CADASTRO DE LEITORES (SUPABASE)
+// ==========================================
 
-            const total = BASE_LEITORES + (count || 0);
-            const elemLeitores = document.getElementById('stat-leitores');
-            if (elemLeitores) {
-                elemLeitores.innerText = total.toLocaleString('pt-BR');
+// Consulta a quantidade total de e-mails na tabela subscribers
+async function atualizarContadorInscritos() {
+    const { count, error } = await db
+        .from('subscribers')
+        .select('*', { count: 'exact', head: true });
+
+    if (!error && count !== null) {
+        const elemLeitores = document.getElementById('stat-leitores');
+        if (elemLeitores) {
+            elemLeitores.innerText = count.toLocaleString('pt-BR');
+        }
+    }
+}
+
+// Atualiza o número de inscritos assim que a página carrega
+atualizarContadorInscritos();
+
+// Trata o envio do formulário de e-mail
+const newsletterForm = document.querySelector('.newsletter-form');
+if (newsletterForm) {
+    newsletterForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const input = newsletterForm.querySelector('input[type="email"]');
+        
+        if (input && input.value) {
+            const emailDigitado = input.value.trim();
+
+            // Insere o novo e-mail na tabela subscribers do Supabase
+            const { error } = await db
+                .from('subscribers')
+                .insert([{ email: emailDigitado }]);
+
+            if (error) {
+                if (error.code === '23505') {
+                    alert('Este e-mail já está cadastrado!');
+                } else {
+                    alert('Ocorreu um erro ao cadastrar. Tente novamente!');
+                }
+            } else {
+                alert(`Obrigado por se inscrever, ${emailDigitado}! Você receberá nossas histórias.`);
+                input.value = '';
+                // Recarrega o contador direto do Supabase na hora
+                await atualizarContadorInscritos(); 
             }
         }
-        atualizarContadorInscritos();
-
-        // Salva novo e-mail no Supabase
-        const newsletterForm = document.querySelector('.newsletter-form');
-        if (newsletterForm) {
-            newsletterForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const input = newsletterForm.querySelector('input[type="email"]');
-                
-                if (input && input.value) {
-                    const emailDigitado = input.value.trim();
-
-                    // Insere na tabela subscribers
-                    const { error } = await db
-                        .from('subscribers')
-                        .insert([{ email: emailDigitado }]);
-
-                    if (error) {
-                        if (error.code === '23505') {
-                            alert('Este e-mail já está cadastrado!');
-                        } else {
-                            alert('Ocorreu um erro ao cadastrar. Tente novamente!');
-                        }
-                    } else {
-                        alert(`Obrigado por se inscrever, ${emailDigitado}! Você receberá nossas histórias.`);
-                        input.value = '';
-                        atualizarContadorInscritos(); // Recarrega a contagem real de leitores
-                    }
-                }
-            });
-        }
     });
+}
 </script>
 </body>
 </html>
