@@ -135,7 +135,9 @@
     // CONFIGURAÇÃO DO SUPABASE
     // ==========================================
     const SUPABASE_URL = 'https://wlghtkzunixojfldupwk.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndsZ2h0a3p1bml4b2pmbGR1cHdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxNzkzMTAsImV4cCI6MjEwMDc1NTMxMH0.BSIvzjfeLfgvSQs2-v4cBxIYsuD45QjJnJXGn1aPAp8'; // Cole a sua chave anon completa aqui
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndsZ2h0a3p1bml4b2pmbGR1cHdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxNzkzMTAsImV4cCI6MjEwMDc1NTMxMH0.BSIvzjfeLfgvSQs2-v4cBxIYsuD45QjJnJXGn1aPAp8';
+    
+    // Inicialização do cliente Supabase
     const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -173,57 +175,50 @@
         // 2. CONTAGEM DE CONTOS PUBLICADOS (SUPABASE)
         // ==========================================
         async function contarContosPublicados() {
-            const { count, error } = await db
-                .from('contos')
-                .select('*', { count: 'exact', head: true });
+            try {
+                const { count, error } = await db
+                    .from('contos')
+                    .select('*', { count: 'exact', head: true });
 
-            if (!error && count !== null) {
                 const elemContos = document.getElementById('stat-contos');
-                if (elemContos) {
+
+                if (error) {
+                    console.error('Erro ao buscar contos no Supabase:', error);
+                    return;
+                }
+
+                if (count !== null && elemContos) {
                     elemContos.innerText = count;
                 }
+            } catch (err) {
+                console.error('Erro ao conectar com o Supabase:', err);
             }
         }
         contarContosPublicados();
 
         // ==========================================
-        // 3. CONTAGEM DE ACESSOS AO SITE
-        // ==========================================
-        function carregarAcessosSite() {
-            const domainKey = 'docescontos-com-br-v1';
-            fetch(`https://api.countapi.xyz/hit/${domainKey}/visits`)
-                .then(res => res.json())
-                .then(data => {
-                    const elemAcessos = document.getElementById('stat-acessos');
-                    if (elemAcessos && data.value) {
-                        elemAcessos.innerText = data.value.toLocaleString('pt-BR');
-                    }
-                })
-                .catch(() => {
-                    const elemAcessos = document.getElementById('stat-acessos');
-                    if (elemAcessos) elemAcessos.innerText = '1';
-                });
-        }
-        carregarAcessosSite();
-
-        // ==========================================
-        // 4. CADASTRO E CONTAGEM DE LEITORES (SUPABASE)
+        // 3. CONTAGEM DE LEITORES E INSCRITOS (SUPABASE)
         // ==========================================
         async function atualizarContadorInscritos() {
-            const { count, error } = await db
-                .from('subscribers')
-                .select('*', { count: 'exact', head: true });
+            try {
+                const { count, error } = await db
+                    .from('subscribers')
+                    .select('*', { count: 'exact', head: true });
 
-            if (!error && count !== null) {
-                const elemLeitores = document.getElementById('stat-acessos'); // id de leitores e acessos
-                if (elemLeitores) {
+                const elemLeitores = document.getElementById('stat-leitores'); // Certifique-se de ter id="stat-leitores" no HTML
+
+                if (!error && count !== null && elemLeitores) {
                     elemLeitores.innerText = count.toLocaleString('pt-BR');
                 }
+            } catch (err) {
+                console.error('Erro ao buscar leitores:', err);
             }
         }
         atualizarContadorInscritos();
 
-        // Formulário de Newsletter
+        // ==========================================
+        // 4. FORMULÁRIO DE NEWSLETTER
+        // ==========================================
         const newsletterForm = document.querySelector('.newsletter-form');
         if (newsletterForm) {
             newsletterForm.addEventListener('submit', async (e) => {
