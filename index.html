@@ -93,7 +93,7 @@
             <div class="stats-list">
                 <div class="stats-item">
                     <span class="stats-label">Contos publicados</span>
-                    <span class="stats-value" id="stat-contos">0</span>
+                    <span class="stats-value" id="stat-contos">...</span>
                 </div>
                 <div class="stats-item">
                     <span class="stats-label">Leitores e acesso</span>
@@ -170,13 +170,18 @@
         }
 
         // ==========================================
-        // 2. CONTAGEM DE CONTOS PUBLICADOS
+        // 2. CONTAGEM DE CONTOS PUBLICADOS (SUPABASE)
         // ==========================================
-        function contarContosPublicados() {
-            const totalContos = 3; // Altere manualmente conforme publicar novos contos
-            const elemContos = document.getElementById('stat-contos');
-            if (elemContos) {
-                elemContos.innerText = totalContos;
+        async function contarContosPublicados() {
+            const { count, error } = await db
+                .from('contos')
+                .select('*', { count: 'exact', head: true });
+
+            if (!error && count !== null) {
+                const elemContos = document.getElementById('stat-contos');
+                if (elemContos) {
+                    elemContos.innerText = count;
+                }
             }
         }
         contarContosPublicados();
