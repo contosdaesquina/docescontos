@@ -205,7 +205,7 @@
                     .from('subscribers')
                     .select('*', { count: 'exact', head: true });
 
-                const elemLeitores = document.getElementById('stat-leitores'); // Certifique-se de ter id="stat-leitores" no HTML
+                const elemLeitores = document.getElementById('stat-acessos'); // Certifique-se de ter id="stat-leitores" no HTML
 
                 if (!error && count !== null && elemLeitores) {
                     elemLeitores.innerText = count.toLocaleString('pt-BR');
