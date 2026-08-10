@@ -118,6 +118,64 @@
             
         </div>
 
+        <div
+        class="feedback-section"
+        style="
+          margin-top: 2rem;
+          padding: 1rem 0;
+          text-align: center;
+          border-top: 1px solid var(--border-color);
+        "
+      >
+        <p
+          style="
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 0.8rem;
+          "
+        >
+          O que achou desta história?
+        </p>
+        <div style="display: flex; justify-content: center; gap: 1rem">
+          <button
+            id="btn-like"
+            onclick="votar('like')"
+            style="
+              background: transparent;
+              border: 1px solid var(--border-color);
+              padding: 0.5rem 1rem;
+              border-radius: 20px;
+              color: var(--text-primary);
+              cursor: pointer;
+              display: inline-flex;
+              align-items: center;
+              gap: 0.5rem;
+              transition: 0.2s;
+            "
+          >
+            <i class="fas fa-thumbs-up"></i> <span id="count-likes">0</span>
+          </button>
+          <button
+            id="btn-dislike"
+            onclick="votar('dislike')"
+            style="
+              background: transparent;
+              border: 1px solid var(--border-color);
+              padding: 0.5rem 1rem;
+              border-radius: 20px;
+              color: var(--text-primary);
+              cursor: pointer;
+              display: inline-flex;
+              align-items: center;
+              gap: 0.5rem;
+              transition: 0.2s;
+            "
+          >
+            <i class="fas fa-thumbs-down"></i>
+            <span id="count-dislikes">0</span>
+          </button>
+        </div>
+
     </main>
 
     <!-- RODAPÉ DA PÁGINA -->
