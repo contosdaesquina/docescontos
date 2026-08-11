@@ -101,6 +101,18 @@
         Parte 2 <i class="fas fa-arrow-right"></i>
     </a>
 </div>
+<!-- SEÇÃO DE REAÇÕES (LIKES / DISLIKES) -->
+        <div class="feedback-section" style="margin-top: 2.5rem; padding: 1.5rem 0; text-align: center; border-top: 1px solid var(--border-color);">
+            <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 0.8rem;">O que achou desta história?</p>
+            <div style="display: flex; justify-content: center; gap: 1rem;">
+                <button id="btn-like" onclick="votar('like')" style="background: transparent; border: 1px solid var(--border-color); padding: 0.5rem 1.2rem; border-radius: 20px; color: var(--text-primary); cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; transition: 0.2s; font-size: 0.95rem;">
+                    <i class="fas fa-thumbs-up"></i> <span id="count-likes">0</span>
+                </button>
+                <button id="btn-dislike" onclick="votar('dislike')" style="background: transparent; border: 1px solid var(--border-color); padding: 0.5rem 1.2rem; border-radius: 20px; color: var(--text-primary); cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; transition: 0.2s; font-size: 0.95rem;">
+                    <i class="fas fa-thumbs-down"></i> <span id="count-dislikes">0</span>
+                </button>
+            </div>
+        </div>
 
     </main>
 
