@@ -167,91 +167,98 @@
         });
     </script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const themeBtn = document.getElementById('theme-toggle');
-            const storedTheme = localStorage.getItem('theme') || 'dark';
+<!-- SCRIPT DE INTEGRAÇÃO SUPABASE (TABELA CONTOS) -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+    const SUPABASE_URL = 'https://wlghtkzunixojfldupwk.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInRefiI6IndsZ2h0a3p1bml4b2pmbGR1cHdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxNzkzMTAsImV4cCI6MjEwMDc1NTMxMH0.BSIvzjfeLfgvSQs2-v4cBxIYsuD45QjJnJXGn1aPAp8';
+    const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-            document.documentElement.setAttribute('data-theme', storedTheme);
-            atualizarIconeTema(storedTheme);
+    // ID deste conto específico na tabela 'contos' do Supabase
+    const CONTO_ID = 5; 
+    const STORAGE_KEY = `voto_conto_${CONTO_ID}`;
 
-            if (themeBtn) {
-                themeBtn.addEventListener('click', () => {
-                    const currentTheme = document.documentElement.getAttribute('data-theme');
-                    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    document.addEventListener('DOMContentLoaded', () => {
+        carregarVotos();
+        verificarVotoExistente();
+    });
 
-                    document.documentElement.setAttribute('data-theme', newTheme);
-                    localStorage.setItem('theme', newTheme);
-                    atualizarIconeTema(newTheme);
-                });
+    async function carregarVotos() {
+        try {
+            const { data, error } = await db
+                .from('contos')
+                .select('likes, dislikes')
+                .eq('id', CONTO_ID)
+                .single();
+
+            if (error) {
+                console.error('Erro ao carregar votos do Supabase:', error);
+                return;
             }
 
-            carregarVotos();
+            if (data) {
+                document.getElementById('count-likes').innerText = data.likes || 0;
+                document.getElementById('count-dislikes').innerText = data.dislikes || 0;
+            }
+        } catch (err) {
+            console.error('Erro de conexão:', err);
+        }
+    }
+
+    function verificarVotoExistente() {
+        const votoAnterior = localStorage.getItem(STORAGE_KEY);
+        if (votoAnterior) {
+            const btnLike = document.getElementById('btn-like');
+            const btnDislike = document.getElementById('btn-dislike');
+            
+            if (votoAnterior === 'like') {
+                btnLike.style.borderColor = '#f39c12';
+                btnLike.style.color = '#f39c12';
+            } else if (votoAnterior === 'dislike') {
+                btnDislike.style.borderColor = '#e74c3c';
+                btnDislike.style.color = '#e74c3c';
+            }
+            
+            btnLike.disabled = true;
+            btnDislike.disabled = true;
+        }
+    }
+
+    async function votar(tipo) {
+        if (localStorage.getItem(STORAGE_KEY)) return;
+
+        // Busca o total atual no banco
+        const { data, error: searchError } = await db
+            .from('contos')
+            .select('likes, dislikes')
+            .eq('id', CONTO_ID)
+            .single();
+
+        if (searchError || !data) {
+            console.error('Erro ao buscar conto:', searchError);
+            alert('Não foi possível registrar o voto.');
+            return;
+        }
+
+        const novosLikes = tipo === 'like' ? (data.likes || 0) + 1 : (data.likes || 0);
+        const novosDislikes = tipo === 'dislike' ? (data.dislikes || 0) + 1 : (data.dislikes || 0);
+
+        // Atualiza a tabela 'contos'
+        const { error: updateError } = await db
+            .from('contos')
+            .update({ likes: novosLikes, dislikes: novosDislikes })
+            .eq('id', CONTO_ID);
+
+        if (updateError) {
+            console.error('Erro ao atualizar banco:', updateError);
+            alert('Erro ao salvar no banco. Verifique as permissões de UPDATE da tabela contos.');
+        } else {
+            document.getElementById('count-likes').innerText = novosLikes;
+            document.getElementById('count-dislikes').innerText = novosDislikes;
+            localStorage.setItem(STORAGE_KEY, tipo);
             verificarVotoExistente();
-        });
-
-        function atualizarIconeTema(theme) {
-            const themeBtn = document.getElementById('theme-toggle');
-            if (!themeBtn) return;
-            const icon = themeBtn.querySelector('i');
-            if (icon) {
-                icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
-            }
         }
-
-        const tituloConto = document.querySelector('main h1') ? document.querySelector('main h1').innerText.trim() : '';
-        const voteKey = `voto_${tituloConto}`;
-        const storageKey = 'docesContosVotos';
-
-        function carregarVotos() {
-            const votos = JSON.parse(localStorage.getItem(storageKey) || '{}');
-            const votoAtual = votos[tituloConto] || { likes: 0, dislikes: 0 };
-
-            const countLikesElement = document.getElementById('count-likes');
-            const countDislikesElement = document.getElementById('count-dislikes');
-
-            if (countLikesElement) countLikesElement.innerText = votoAtual.likes;
-            if (countDislikesElement) countDislikesElement.innerText = votoAtual.dislikes;
-        }
-
-        function verificarVotoExistente() {
-            const voto = localStorage.getItem(voteKey);
-            const btnLike = document.getElementById('btn-like');
-            const btnDislike = document.getElementById('btn-dislike');
-
-            if (voto) {
-                if (btnLike) btnLike.disabled = true;
-                if (btnDislike) btnDislike.disabled = true;
-            }
-        }
-
-        function votar(tipo) {
-            const btnLike = document.getElementById('btn-like');
-            const btnDislike = document.getElementById('btn-dislike');
-            if (localStorage.getItem(voteKey)) return;
-
-            const votos = JSON.parse(localStorage.getItem(storageKey) || '{}');
-            const atual = votos[tituloConto] || { likes: 0, dislikes: 0 };
-
-            if (tipo === 'like') {
-                atual.likes += 1;
-            } else if (tipo === 'dislike') {
-                atual.dislikes += 1;
-            }
-
-            votos[tituloConto] = atual;
-            localStorage.setItem(storageKey, JSON.stringify(votos));
-            localStorage.setItem(voteKey, tipo);
-
-            const countLikesElement = document.getElementById('count-likes');
-            const countDislikesElement = document.getElementById('count-dislikes');
-
-            if (countLikesElement) countLikesElement.innerText = atual.likes;
-            if (countDislikesElement) countDislikesElement.innerText = atual.dislikes;
-
-            if (btnLike) btnLike.disabled = true;
-            if (btnDislike) btnDislike.disabled = true;
-        }
-    </script>
+    }
+</script>
 </body>
 </html>
