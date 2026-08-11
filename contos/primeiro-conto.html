@@ -138,5 +138,100 @@
             }
         });
     </script>
+
+    <!-- SCRIPT DE INTEGRAÇÃO SUPABASE (TABELA CONTOS) -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+    const SUPABASE_URL = 'https://wlghtkzunixojfldupwk.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInRefiI6IndsZ2h0a3p1bml4b2pmbGR1cHdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxNzkzMTAsImV4cCI6MjEwMDc1NTMxMH0.BSIvzjfeLfgvSQs2-v4cBxIYsuD45QjJnJXGn1aPAp8';
+    const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // ID deste conto específico na tabela 'contos' do Supabase
+    const CONTO_ID = 1; 
+    const STORAGE_KEY = `voto_conto_${CONTO_ID}`;
+
+    document.addEventListener('DOMContentLoaded', () => {
+        carregarVotos();
+        verificarVotoExistente();
+    });
+
+    async function carregarVotos() {
+        try {
+            const { data, error } = await db
+                .from('contos')
+                .select('likes, dislikes')
+                .eq('id', CONTO_ID)
+                .single();
+
+            if (error) {
+                console.error('Erro ao carregar votos do Supabase:', error);
+                return;
+            }
+
+            if (data) {
+                document.getElementById('count-likes').innerText = data.likes || 0;
+                document.getElementById('count-dislikes').innerText = data.dislikes || 0;
+            }
+        } catch (err) {
+            console.error('Erro de conexão:', err);
+        }
+    }
+
+    function verificarVotoExistente() {
+        const votoAnterior = localStorage.getItem(STORAGE_KEY);
+        if (votoAnterior) {
+            const btnLike = document.getElementById('btn-like');
+            const btnDislike = document.getElementById('btn-dislike');
+            
+            if (votoAnterior === 'like') {
+                btnLike.style.borderColor = '#f39c12';
+                btnLike.style.color = '#f39c12';
+            } else if (votoAnterior === 'dislike') {
+                btnDislike.style.borderColor = '#e74c3c';
+                btnDislike.style.color = '#e74c3c';
+            }
+            
+            btnLike.disabled = true;
+            btnDislike.disabled = true;
+        }
+    }
+
+    async function votar(tipo) {
+        if (localStorage.getItem(STORAGE_KEY)) return;
+
+        // Busca o total atual no banco
+        const { data, error: searchError } = await db
+            .from('contos')
+            .select('likes, dislikes')
+            .eq('id', CONTO_ID)
+            .single();
+
+        if (searchError || !data) {
+            console.error('Erro ao buscar conto:', searchError);
+            alert('Não foi possível registrar o voto.');
+            return;
+        }
+
+        const novosLikes = tipo === 'like' ? (data.likes || 0) + 1 : (data.likes || 0);
+        const novosDislikes = tipo === 'dislike' ? (data.dislikes || 0) + 1 : (data.dislikes || 0);
+
+        // Atualiza a tabela 'contos'
+        const { error: updateError } = await db
+            .from('contos')
+            .update({ likes: novosLikes, dislikes: novosDislikes })
+            .eq('id', CONTO_ID);
+
+        if (updateError) {
+            console.error('Erro ao atualizar banco:', updateError);
+            alert('Erro ao salvar no banco. Verifique as permissões de UPDATE da tabela contos.');
+        } else {
+            document.getElementById('count-likes').innerText = novosLikes;
+            document.getElementById('count-dislikes').innerText = novosDislikes;
+            localStorage.setItem(STORAGE_KEY, tipo);
+            verificarVotoExistente();
+        }
+    }
+</script>
+    
 </body>
 </html>
