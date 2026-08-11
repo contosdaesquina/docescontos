@@ -172,17 +172,18 @@
             const { data, error } = await db
                 .from('contos')
                 .select('likes, dislikes')
-                .eq('id', CONTO_ID)
-                .single();
+                .eq('id', CONTO_ID);
 
             if (error) {
-                console.error('Erro ao carregar votos do Supabase:', error);
+                console.error('Erro na leitura do Supabase:', error);
                 return;
             }
 
-            if (data) {
-                document.getElementById('count-likes').innerText = data.likes || 0;
-                document.getElementById('count-dislikes').innerText = data.dislikes || 0;
+            if (data && data.length > 0) {
+                document.getElementById('count-likes').innerText = data[0].likes || 0;
+                document.getElementById('count-dislikes').innerText = data[0].dislikes || 0;
+            } else {
+                console.warn('Nenhum dado retornado para o ID', CONTO_ID);
             }
         } catch (err) {
             console.error('Erro de conexão:', err);
@@ -211,36 +212,45 @@
     async function votar(tipo) {
         if (localStorage.getItem(STORAGE_KEY)) return;
 
-        // Busca o total atual no banco
-        const { data, error: searchError } = await db
-            .from('contos')
-            .select('likes, dislikes')
-            .eq('id', CONTO_ID)
-            .single();
+        try {
+            // 1. Busca os valores atuais
+            const { data, error: searchError } = await db
+                .from('contos')
+                .select('likes, dislikes')
+                .eq('id', CONTO_ID);
 
-        if (searchError || !data) {
-            console.error('Erro ao buscar conto:', searchError);
-            alert('Não foi possível registrar o voto.');
-            return;
-        }
+            if (searchError) {
+                console.error('Erro na consulta:', searchError);
+                alert('Erro ao consultar banco: ' + searchError.message);
+                return;
+            }
 
-        const novosLikes = tipo === 'like' ? (data.likes || 0) + 1 : (data.likes || 0);
-        const novosDislikes = tipo === 'dislike' ? (data.dislikes || 0) + 1 : (data.dislikes || 0);
+            if (!data || data.length === 0) {
+                alert(`O registro ID ${CONTO_ID} não foi localizado via API. Verifique a permissão do perfil "anon".`);
+                return;
+            }
 
-        // Atualiza a tabela 'contos'
-        const { error: updateError } = await db
-            .from('contos')
-            .update({ likes: novosLikes, dislikes: novosDislikes })
-            .eq('id', CONTO_ID);
+            const registro = data[0];
+            const novosLikes = tipo === 'like' ? (registro.likes || 0) + 1 : (registro.likes || 0);
+            const novosDislikes = tipo === 'dislike' ? (registro.dislikes || 0) + 1 : (registro.dislikes || 0);
 
-        if (updateError) {
-            console.error('Erro ao atualizar banco:', updateError);
-            alert('Erro ao salvar no banco. Verifique as permissões de UPDATE da tabela contos.');
-        } else {
-            document.getElementById('count-likes').innerText = novosLikes;
-            document.getElementById('count-dislikes').innerText = novosDislikes;
-            localStorage.setItem(STORAGE_KEY, tipo);
-            verificarVotoExistente();
+            // 2. Atualiza os totais no Supabase
+            const { error: updateError } = await db
+                .from('contos')
+                .update({ likes: novosLikes, dislikes: novosDislikes })
+                .eq('id', CONTO_ID);
+
+            if (updateError) {
+                console.error('Erro no update:', updateError);
+                alert('Erro ao gravar voto: ' + updateError.message);
+            } else {
+                document.getElementById('count-likes').innerText = novosLikes;
+                document.getElementById('count-dislikes').innerText = novosDislikes;
+                localStorage.setItem(STORAGE_KEY, tipo);
+                verificarVotoExistente();
+            }
+        } catch (err) {
+            console.error('Erro inesperado:', err);
         }
     }
 </script>
