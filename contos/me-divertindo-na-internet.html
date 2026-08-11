@@ -168,100 +168,108 @@
     </script>
 
     <!-- SCRIPT DE INTEGRAÇÃO SUPABASE (TABELA CONTOS) -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script>
-        const SUPABASE_URL = 'https://wlghtkzunixojfldupwk.supabase.co';
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInRefiI6IndsZ2h0a3p1bml4b2pmbGR1cHdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxNzkzMTAsImV4cCI6MjEwMDc1NTMxMH0.BSIvzjfeLfgvSQs2-v4cBxIYsuD45QjJnJXGn1aPAp8';
-        const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+    const SUPABASE_URL = 'https://wlghtkzunixojfldupwk.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInRefiI6IndsZ2h0a3p1bml4b2pmbGR1cHdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxNzkzMTAsImV4cCI6MjEwMDc1NTMxMH0.BSIvzjfeLfgvSQs2-v4cBxIYsuD45QjJnJXGn1aPAp8';
+    
+    const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // ID deste conto específico na tabela 'contos' do Supabase
-        const CONTO_ID = 5; 
-        const STORAGE_KEY = `voto_conto_${CONTO_ID}`;
+    // ID exatamente igual à linha "Me divertindo na internet" no banco (int8)
+    const CONTO_ID = 5; 
+    const STORAGE_KEY = `voto_conto_${CONTO_ID}`;
 
-        document.addEventListener('DOMContentLoaded', () => {
-            carregarVotos();
-            verificarVotoExistente();
-        });
+    document.addEventListener('DOMContentLoaded', () => {
+        carregarVotos();
+        verificarVotoExistente();
+    });
 
-        async function carregarVotos() {
-            try {
-                const { data, error } = await db
-                    .from('contos')
-                    .select('likes, dislikes')
-                    .eq('id', CONTO_ID);
+    async function carregarVotos() {
+        try {
+            const { data, error } = await db
+                .from('contos')
+                .select('likes, dislikes')
+                .eq('id', CONTO_ID);
 
-                if (error) {
-                    console.error('Erro ao carregar votos do Supabase:', error);
-                    return;
-                }
-
-                if (data && data.length > 0) {
-                    document.getElementById('count-likes').innerText = data[0].likes || 0;
-                    document.getElementById('count-dislikes').innerText = data[0].dislikes || 0;
-                }
-            } catch (err) {
-                console.error('Erro de conexão:', err);
+            if (error) {
+                console.error('Erro na leitura do Supabase:', error);
+                return;
             }
-        }
 
-        function verificarVotoExistente() {
-            const votoAnterior = localStorage.getItem(STORAGE_KEY);
-            if (votoAnterior) {
-                const btnLike = document.getElementById('btn-like');
-                const btnDislike = document.getElementById('btn-dislike');
-                
-                if (votoAnterior === 'like') {
-                    btnLike.style.borderColor = '#f39c12';
-                    btnLike.style.color = '#f39c12';
-                } else if (votoAnterior === 'dislike') {
-                    btnDislike.style.borderColor = '#e74c3c';
-                    btnDislike.style.color = '#e74c3c';
-                }
-                
-                btnLike.disabled = true;
-                btnDislike.disabled = true;
+            if (data && data.length > 0) {
+                document.getElementById('count-likes').innerText = data[0].likes || 0;
+                document.getElementById('count-dislikes').innerText = data[0].dislikes || 0;
+            } else {
+                console.warn('Nenhum dado retornado para o ID:', CONTO_ID);
             }
+        } catch (err) {
+            console.error('Erro de conexão:', err);
         }
+    }
 
-        async function votar(tipo) {
-            if (localStorage.getItem(STORAGE_KEY)) return;
-
-            try {
-                // Busca os votos atuais da linha no banco
-                const { data, error: searchError } = await db
-                    .from('contos')
-                    .select('likes, dislikes')
-                    .eq('id', CONTO_ID);
-
-                if (searchError || !data || data.length === 0) {
-                    console.error('Erro de busca no Supabase:', searchError);
-                    alert('Erro ao buscar conto no banco de dados.');
-                    return;
-                }
-
-                const contoAtual = data[0];
-                const novosLikes = tipo === 'like' ? (contoAtual.likes || 0) + 1 : (contoAtual.likes || 0);
-                const novosDislikes = tipo === 'dislike' ? (contoAtual.dislikes || 0) + 1 : (contoAtual.dislikes || 0);
-
-                // Envia a atualização do total para a tabela 'contos'
-                const { error: updateError } = await db
-                    .from('contos')
-                    .update({ likes: novosLikes, dislikes: novosDislikes })
-                    .eq('id', CONTO_ID);
-
-                if (updateError) {
-                    console.error('Erro ao salvar voto no Supabase:', updateError);
-                    alert('Erro de permissão no Supabase: ' + updateError.message);
-                } else {
-                    document.getElementById('count-likes').innerText = novosLikes;
-                    document.getElementById('count-dislikes').innerText = novosDislikes;
-                    localStorage.setItem(STORAGE_KEY, tipo);
-                    verificarVotoExistente();
-                }
-            } catch (err) {
-                console.error('Erro inesperado na gravação:', err);
+    function verificarVotoExistente() {
+        const votoAnterior = localStorage.getItem(STORAGE_KEY);
+        if (votoAnterior) {
+            const btnLike = document.getElementById('btn-like');
+            const btnDislike = document.getElementById('btn-dislike');
+            
+            if (votoAnterior === 'like') {
+                btnLike.style.borderColor = '#f39c12';
+                btnLike.style.color = '#f39c12';
+            } else if (votoAnterior === 'dislike') {
+                btnDislike.style.borderColor = '#e74c3c';
+                btnDislike.style.color = '#e74c3c';
             }
+            
+            btnLike.disabled = true;
+            btnDislike.disabled = true;
         }
-    </script>
+    }
+
+    async function votar(tipo) {
+        if (localStorage.getItem(STORAGE_KEY)) return;
+
+        try {
+            // 1. Busca os valores atuais
+            const { data, error: searchError } = await db
+                .from('contos')
+                .select('likes, dislikes')
+                .eq('id', CONTO_ID);
+
+            if (searchError) {
+                console.error('Erro na consulta:', searchError);
+                alert('Erro ao consultar banco: ' + searchError.message);
+                return;
+            }
+
+            if (!data || data.length === 0) {
+                alert(`O registro ID ${CONTO_ID} não foi localizado via API. Verifique a permissão do perfil "anon".`);
+                return;
+            }
+
+            const registro = data[0];
+            const novosLikes = tipo === 'like' ? (registro.likes || 0) + 1 : (registro.likes || 0);
+            const novosDislikes = tipo === 'dislike' ? (registro.dislikes || 0) + 1 : (registro.dislikes || 0);
+
+            // 2. Atualiza os totais no Supabase
+            const { error: updateError } = await db
+                .from('contos')
+                .update({ likes: novosLikes, dislikes: novosDislikes })
+                .eq('id', CONTO_ID);
+
+            if (updateError) {
+                console.error('Erro no update:', updateError);
+                alert('Erro ao gravar voto: ' + updateError.message);
+            } else {
+                document.getElementById('count-likes').innerText = novosLikes;
+                document.getElementById('count-dislikes').innerText = novosDislikes;
+                localStorage.setItem(STORAGE_KEY, tipo);
+                verificarVotoExistente();
+            }
+        } catch (err) {
+            console.error('Erro inesperado:', err);
+        }
+    }
+</script>
 </body>
 </html>
