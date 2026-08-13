@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sussurros proibidos. - Doces Contos</title>
+
+    <!-- Link para o CSS principal na raiz -->
+    <link rel="stylesheet" href="../style.css" />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;1,400&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- CABEÇALHO DA PÁGINA -->
+    <header class="cabecalho">
+      <a href="../index.html">
+        <img
+          class="cabecalho-logo"
+          src="../dist/logo.png"
+          alt="Doces Contos Logo"
+        />
+      </a>
+
+      <div class="header-actions">
+        <button id="theme-toggle" class="btn-theme" title="Alternar tema">
+          <i class="fas fa-sun"></i>
+        </button>
+        <a
+          href="https://instagram.com/doces.contosbr"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-social"
+          title="Instagram"
+          ><i class="fab fa-instagram"></i
+        ></a>
+        <a
+          href="https://t.me/lendocontos"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-social"
+          title="Telegram"
+          ><i class="fab fa-telegram"></i
+        ></a>
+      </div>
+    </header>
+
+    <!-- CONTEÚDO DO CONTO -->
+    <main
+      style="
+        max-width: 720px;
+        margin: 3rem auto 5rem auto;
+        padding: 0 1.5rem;
+        line-height: 1.8;
+      "
+    >
+      <!-- CABEÇALHO DO CONTO -->
+      <div
+        style="
+          border-bottom: 1px solid var(--border-color);
+          padding-bottom: 1.5rem;
+          margin-bottom: 2rem;
+        "
+      >
+        <span
+          style="
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+          "
+          >Conto Erótico</span
+        >
+        <h1
+          style="
+            font-family: &quot;Playfair Display&quot;, serif;
+            font-size: 2.5rem;
+            margin: 0.5rem 0;
+            color: var(--text-primary);
+          "
+        >
+          Esposa infiel e o vizinho chantagista
+        </h1>
+        <p
+          style="
+            color: var(--text-muted);
+            font-style: italic;
+            font-size: 0.95rem;
+          "
+        >
+          Por Fabby Lima
+        </p>
+      </div>
+
+      <!-- CORPO DO TEXTO DA HISTÓRIA -->
+      <article
+        style="
+          font-size: 1.1rem;
+          color: var(--text-primary);
+          display: flex;
+          flex-direction: column;
+          gap: 1.4rem;
+        "
+      >
+        <p>Aguarde... em breve novas histórias por aqui.</p>
+
+
+      </article>
+
+      <!-- ÚNICO BOTÃO DE VOLTAR NO FINAL DA PÁGINA -->
+      <!-- NAVEGAÇÃO ENTRE CAPÍTULOS -->
+      <div
+        style="
+          margin-top: 3rem;
+          padding-top: 1.5rem;
+          border-top: 1px solid var(--border-color);
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 1rem;
+          flex-wrap: wrap;
+        "
+      >
+        <a
+          href="../index.html"
+          style="
+            text-decoration: none;
+            padding: 0.6rem 1.2rem;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: var(--primary-color, #f39c12);
+            color: #ffffff;
+            border-radius: 6px;
+            font-weight: 600;
+          "
+        >
+          <i class="fas fa-arrow-left"></i> Início
+        </a>
+
+      </div>
+      <!-- SEÇÃO DE REAÇÕES (LIKES / DISLIKES) -->
+      <div
+        class="feedback-section"
+        style="
+          margin-top: 2.5rem;
+          padding: 1.5rem 0;
+          text-align: center;
+          border-top: 1px solid var(--border-color);
+        "
+      >
+        <p
+          style="
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 0.8rem;
+          "
+        >
+          O que achou desta história?
+        </p>
+        <div style="display: flex; justify-content: center; gap: 1rem">
+          <button
+            id="btn-like"
+            onclick="votar('like')"
+            style="
+              background: transparent;
+              border: 1px solid var(--border-color);
+              padding: 0.5rem 1.2rem;
+              border-radius: 20px;
+              color: var(--text-primary);
+              cursor: pointer;
+              display: inline-flex;
+              align-items: center;
+              gap: 0.5rem;
+              transition: 0.2s;
+              font-size: 0.95rem;
+            "
+          >
+            <i class="fas fa-thumbs-up"></i> <span id="count-likes">0</span>
+          </button>
+          <button
+            id="btn-dislike"
+            onclick="votar('dislike')"
+            style="
+              background: transparent;
+              border: 1px solid var(--border-color);
+              padding: 0.5rem 1.2rem;
+              border-radius: 20px;
+              color: var(--text-primary);
+              cursor: pointer;
+              display: inline-flex;
+              align-items: center;
+              gap: 0.5rem;
+              transition: 0.2s;
+              font-size: 0.95rem;
+            "
+          >
+            <i class="fas fa-thumbs-down"></i>
+            <span id="count-dislikes">0</span>
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- RODAPÉ DA PÁGINA -->
+    <footer class="rodape">
+      <p class="direitos">&copy; Doces Contos. Todos os direitos reservados.</p>
+    </footer>
+
+    <!-- SCRIPT DE TEMA -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const themeBtn = document.getElementById("theme-toggle");
+        const storedTheme = localStorage.getItem("theme") || "dark";
+
+        document.documentElement.setAttribute("data-theme", storedTheme);
+        atualizarIconeTema(storedTheme);
+
+        if (themeBtn) {
+          themeBtn.addEventListener("click", () => {
+            const currentTheme =
+              document.documentElement.getAttribute("data-theme");
+            const newTheme = currentTheme === "dark" ? "light" : "dark";
+
+            document.documentElement.setAttribute("data-theme", newTheme);
+            localStorage.setItem("theme", newTheme);
+            atualizarIconeTema(newTheme);
+          });
+        }
+
+        function atualizarIconeTema(theme) {
+          if (!themeBtn) return;
+          const icon = themeBtn.querySelector("i");
+          if (icon) {
+            icon.className = theme === "dark" ? "fas fa-sun" : "fas fa-moon";
+          }
+        }
+      });
+    </script>
+
+    <!-- SCRIPT DE INTEGRAÇÃO SUPABASE (TABELA CONTOS) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      const SUPABASE_URL = "https://wlghtkzunixojfldupwk.supabase.co";
+      const SUPABASE_KEY =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndsZ2h0a3p1bml4b2pmbGR1cHdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxNzkzMTAsImV4cCI6MjEwMDc1NTMxMH0.BSIvzjfeLfgvSQs2-v4cBxIYsuD45QjJnJXGn1aPAp8";
+      const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+      // ID deste conto específico na tabela 'contos' do Supabase
+      const CONTO_ID = 1;
+      const STORAGE_KEY = `voto_conto_${CONTO_ID}`;
+
+      document.addEventListener("DOMContentLoaded", () => {
+        carregarVotos();
+        verificarVotoExistente();
+      });
+
+      async function carregarVotos() {
+        try {
+          const { data, error } = await db
+            .from("contos")
+            .select("likes, dislikes")
+            .eq("id", CONTO_ID);
+
+          if (error) {
+            console.error("Erro na leitura do Supabase:", error);
+            return;
+          }
+
+          if (data && data.length > 0) {
+            document.getElementById("count-likes").innerText =
+              data[0].likes || 0;
+            document.getElementById("count-dislikes").innerText =
+              data[0].dislikes || 0;
+          } else {
+            console.warn("Nenhum dado retornado para o ID", CONTO_ID);
+          }
+        } catch (err) {
+          console.error("Erro de conexão:", err);
+        }
+      }
+
+      function verificarVotoExistente() {
+        const votoAnterior = localStorage.getItem(STORAGE_KEY);
+        if (votoAnterior) {
+          const btnLike = document.getElementById("btn-like");
+          const btnDislike = document.getElementById("btn-dislike");
+
+          if (votoAnterior === "like") {
+            btnLike.style.borderColor = "#f39c12";
+            btnLike.style.color = "#f39c12";
+          } else if (votoAnterior === "dislike") {
+            btnDislike.style.borderColor = "#e74c3c";
+            btnDislike.style.color = "#e74c3c";
+          }
+
+          btnLike.disabled = true;
+          btnDislike.disabled = true;
+        }
+      }
+
+      async function votar(tipo) {
+        if (localStorage.getItem(STORAGE_KEY)) return;
+
+        try {
+          // 1. Busca os valores atuais
+          const { data, error: searchError } = await db
+            .from("contos")
+            .select("likes, dislikes")
+            .eq("id", CONTO_ID);
+
+          if (searchError) {
+            console.error("Erro na consulta:", searchError);
+            alert("Erro ao consultar banco: " + searchError.message);
+            return;
+          }
+
+          if (!data || data.length === 0) {
+            alert(
+              `O registro ID ${CONTO_ID} não foi localizado via API. Verifique a permissão do perfil "anon".`,
+            );
+            return;
+          }
+
+          const registro = data[0];
+          const novosLikes =
+            tipo === "like" ? (registro.likes || 0) + 1 : registro.likes || 0;
+          const novosDislikes =
+            tipo === "dislike"
+              ? (registro.dislikes || 0) + 1
+              : registro.dislikes || 0;
+
+          // 2. Atualiza os totais no Supabase
+          const { error: updateError } = await db
+            .from("contos")
+            .update({ likes: novosLikes, dislikes: novosDislikes })
+            .eq("id", CONTO_ID);
+
+          if (updateError) {
+            console.error("Erro no update:", updateError);
+            alert("Erro ao gravar voto: " + updateError.message);
+          } else {
+            document.getElementById("count-likes").innerText = novosLikes;
+            document.getElementById("count-dislikes").innerText = novosDislikes;
+            localStorage.setItem(STORAGE_KEY, tipo);
+            verificarVotoExistente();
+          }
+        } catch (err) {
+          console.error("Erro inesperado:", err);
+        }
+      }
+    </script>
+  </body>
+</html>
