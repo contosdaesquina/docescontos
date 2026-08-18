@@ -10,6 +10,7 @@
 :root {
     --bg-primary: #ffffff;
     --bg-secondary: #f9fafb;
+    --bg-card: #f8f8f8;
     --bg-header: rgba(255, 255, 255, 0.85);
     --text-primary: #1f2937;
     --text-muted: #4b5563;
