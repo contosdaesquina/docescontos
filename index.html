@@ -1,28 +1,32 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+    <!-- Configuração inicial da página: idioma, responsividade e título da aba -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Doces Contos</title>
     
-    <!-- Fontes do Google -->
+    <!-- Carrega as fontes bonitas usadas no site -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
     
-    <!-- Ícones do FontAwesome -->
+    <!-- Carrega os ícones do Font Awesome para os botões sociais e tema -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- CSS Principal -->
+    <!-- Conecta o HTML com o arquivo CSS que define o visual do site -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- CABEÇALHO DA PÁGINA -->
+    <!-- Cabeçalho principal: logo, menu e redes sociais -->
     <header class="cabecalho">
-        <a href="index.html">
-            <img class="cabecalho-logo" src="dist/logo.png" alt="Doces Contos Logo">
-        </a>
+        <div class="cabecalho-brand">
+            <a href="index.html" class="cabecalho-logo-link">
+                <img class="cabecalho-logo" src="dist/logo.png" alt="Doces Contos Logo">
+            </a>
+            <p class="cabecalho-titulo">Doces Contos</p>
+        </div>
         
         <nav class="menu">
             <a href="index.html" class="menu-item">Início</a>
@@ -40,7 +44,7 @@
         </div>
     </header>
 
-    <!-- SEÇÃO PRINCIPAL (HERO) -->
+    <!-- Hero principal: título, frase de impacto e botões de ação -->
     <section class="hero">
         <div class="hero-content">
             <h1 class="hero-title">Doces Contos</h1>
@@ -60,7 +64,7 @@
         <img class="hero-image" src="dist/image.png" alt="Ilustração de Destaque">
     </section>
 
-    <!-- SEÇÃO SOBRE & ESTATÍSTICAS DO AUTOR -->
+    <!-- Seção sobre o site: explica a proposta e a ideia dos contos -->
     <section id="sobre" class="about-section">
         <h3 class="section-title">O que <span class="destaque">cabe em um conto?</span></h3>
         
@@ -72,7 +76,7 @@
     </section>
         
 
-    <!-- SEÇÃO DE CATEGORIAS -->
+    <!-- Seção de categorias: mostra as histórias em cartões clicáveis -->
     <section id="categorias" class="categories-section">
         <h3 class="section-title">Categorias</h3>
 
@@ -110,7 +114,7 @@
 
     </section>
 
-    <!-- BLOCO DE ESTATÍSTICAS E CITAÇÃO DO AUTOR -->
+    <!-- Bloco de estatísticas: mostra contos publicados, acessos e atualização -->
         <div class="stats-card">
             <div class="stats-list">
                 <div class="stats-item">
@@ -129,7 +133,7 @@
         </div>
     </section>
     
-    <!-- SEÇÃO DE NEWSLETTER -->
+    <!-- Newsletter: coleta e-mails para avisar sobre novos contos -->
     <section id="newsletter" class="newsletter-section">
         <div class="newsletter-card">
             <i class="far fa-envelope newsletter-icon"></i>
@@ -143,7 +147,7 @@
         </div>
     </section>
 
-    <!-- RODAPÉ DA PÁGINA -->
+    <!-- Rodapé final: imagem de fechamento e direitos reservados -->
     <footer class="rodape">
         <img class="rodape-image" src="dist/rodape.png" alt="Ilustração do rodapé">
         <p class="direitos">&copy; Doces Contos. Todos os direitos reservados.</p>
