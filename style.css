@@ -1,6 +1,5 @@
-/* ==========================================================================
-   1. RESET & VARIÁVEIS DE TEMA
-   ========================================================================== */
+/* 1. RESET E VARIÁVEIS DE TEMA
+   Esta parte limpa os estilos padrão e define as cores e fontes do site. */
 * {
     margin: 0;
     padding: 0;
@@ -8,6 +7,10 @@
 }
 
 :root {
+    /* CONFIGURAÇÕES GERAIS DO SITE
+       Alterar aqui muda a aparência geral da página: cores, fontes e sombras.
+       Ex.: trocar --primary-color para mudar a cor dourada do texto e botões.
+    */
     --bg-primary: #ffffff;
     --bg-secondary: #f9fafb;
     --bg-card: #f8f8f8;
@@ -17,10 +20,10 @@
     --border-color: rgba(0, 0, 0, 0.1);
     --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     
-    --primary-color: #d97706; /* Âmbar / Dourado */
-    --accent-red: #991b1b;     /* Tom destacado das estatísticas */
-    --font-heading: 'Playfair Display', serif;
-    --font-body: 'Inter', sans-serif;
+    --primary-color: #d97706; /* Cor principal do site (amarelo/dourado) */
+    --accent-red: #991b1b;     /* Cor de destaque para elementos especiais */
+    --font-heading: 'Playfair Display', serif; /* Fonte do título principal */
+    --font-body: 'Inter', sans-serif; /* Fonte do corpo do texto */
 }
 
 [data-theme="dark"] {
@@ -36,9 +39,8 @@
     --accent-red: #ef4444;
 }
 
-/* ==========================================================================
-   2. ESTILOS GERAIS
-   ========================================================================== */
+/* 2. ESTILOS GERAIS
+   Define o fundo, a fonte e a base visual da página inteira. */
 html {
     scroll-behavior: smooth;
 }
@@ -61,30 +63,70 @@ body {
     margin-bottom: 2rem;
 }
 
-/* ==========================================================================
-   3. CABEÇALHO
-   ========================================================================== */
+/* 3. CABEÇALHO
+   Organiza a parte superior da página: logo, menu e ícones. */
 .cabecalho {
+    /* CONFIGURAÇÃO DO CABEÇALHO
+       Aqui você ajusta o espaçamento, alinhamento e largura do topo do site.
+       Ex.: mude o padding para aumentar ou diminuir a altura do topo.
+    */
     position: sticky;
     top: 0;
     z-index: 100;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
     padding: 0.8rem 5%;
     background: var(--bg-header);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border-color);
 }
 
+.cabecalho-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-width: 180px;
+}
+
+.cabecalho-titulo {
+    /* CONFIGURAÇÃO DO NOME DO SITE NO CABEÇALHO
+       Ajuste aqui para mudar tamanho, cor e estilo do texto do nome.
+       Ex.: altere font-size para deixar o texto maior ou menor.
+    */
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--primary-color);
+    margin: 0;
+    white-space: nowrap;
+    text-shadow: 0 0 14px rgba(245, 158, 11, 0.18);
+}
+
+.cabecalho-logo-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .cabecalho-logo {
-    max-height: 45px;
+    /* CONFIGURAÇÃO DA LOGO
+       Ajuste width e height para mudar o tamanho da logo.
+       Se quiser ela maior ou menor, altere esses valores.
+    */
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
     display: block;
 }
 
 .menu {
     display: flex;
     align-items: center;
+    justify-content: center;
+    flex: 1;
     gap: 1.5rem;
 }
 
@@ -131,9 +173,8 @@ body {
     transform: translateY(-2px);
 }
 
-/* ==========================================================================
-   4. HERO SECTION
-   ========================================================================== */
+/* 4. HERO
+   Cria a apresentação principal do site com título, slogan e botões. */
 .hero {
     display: flex;
     align-items: center;
@@ -145,6 +186,9 @@ body {
 }
 
 .hero-title {
+    /* CONFIGURAÇÃO DO TÍTULO PRINCIPAL
+       Ajuste font-size para mudar o tamanho do texto grande da apresentação.
+    */
     font-family: var(--font-heading);
     font-size: 3.2rem;
     color: var(--primary-color);
@@ -152,6 +196,9 @@ body {
 }
 
 .hero-subtitle {
+    /* CONFIGURAÇÃO DA FRASE DE APOIO
+       Aqui você altera o tamanho e a cor da frase abaixo do título principal.
+    */
     font-size: 1.3rem;
     font-weight: 400;
     color: var(--text-muted);
@@ -172,6 +219,9 @@ body {
 }
 
 .btn-primary {
+    /* CONFIGURAÇÃO DO BOTÃO PRINCIPAL
+       Alterar background-color e color muda o visual do botão de destaque.
+    */
     background-color: var(--primary-color);
     color: #ffffff;
 }
@@ -196,9 +246,8 @@ body {
     height: auto;
 }
 
-/* ==========================================================================
-   5. SOBRE & ESTATÍSTICAS
-   ========================================================================== */
+/* 5. SOBRE E ESTATÍSTICAS
+   Explica a proposta do projeto e exibe os dados resumidos do site. */
 .about-section, .categories-section {
     padding: 4rem 5%;
     max-width: 1000px;
@@ -275,9 +324,8 @@ body {
     color: var(--text-primary);
 }
 
-/* ==========================================================================
-   6. CATEGORIAS
-   ========================================================================== */
+/* 6. CATEGORIAS
+   Cria a grade de cartões com imagem e título para cada conto. */
 .categories-grid {
     display: flex;
     justify-content: center;
@@ -323,9 +371,8 @@ body {
     font-weight: 600;
 }
 
-/* ==========================================================================
-   7. NEWSLETTER
-   ========================================================================== */
+/* 7. NEWSLETTER
+   Estiliza a área de inscrição para receber e-mails dos visitantes. */
 .newsletter-section {
     padding: 2rem 5%;
     max-width: 460px;
@@ -392,9 +439,8 @@ body {
     white-space: nowrap;
 }
 
-/* ==========================================================================
-   8. RODAPÉ
-   ========================================================================== */
+/* 8. RODAPÉ
+   Fecha a página com a imagem final e a mensagem de direitos autorais. */
 .rodape {
     text-align: center;
     padding: 2rem 1rem;
