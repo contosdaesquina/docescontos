@@ -220,6 +220,19 @@
     <!-- SCRIPT DE TEMA -->
     <script>
       document.addEventListener("DOMContentLoaded", () => {
+          // ALTERAÇÃO: calcula as palavras e o tempo estimado a partir do texto do conto.
+        const story = document.querySelector("article");
+        const wordCount = document.getElementById("word-count");
+        const readingTime = document.getElementById("reading-time");
+
+        if (story && wordCount && readingTime) {
+          const words = story.textContent.trim().match(/\S+/g) || [];
+          const minutes = Math.max(1, Math.ceil(words.length / 200));
+
+          wordCount.textContent = `${words.length} palavras`;
+          readingTime.textContent = `${minutes} min de leitura`;
+        }
+          
         const themeBtn = document.getElementById("theme-toggle");
         const storedTheme = localStorage.getItem("theme") || "dark";
 
