@@ -52,7 +52,26 @@ body {
     line-height: 1.6;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
+/* ALTERAÇÃO: organzia o autor e informações da história na mesma linha. */ 
+.story-meta {
+   dispaly: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: 1rem;
+}
 
+.story-meta p {
+   margin: 0;   
+}
+
+.story-stats {
+   display: flex;
+   align-items: center;
+   gap: 0.45rem;
+   color: var(--text-muted);
+   font-size: 0.8rem;
+   white-space: nowrap;
+}
 article p:first-child::first-letter {
     display: inline-block;
     vertical-align: bottom;
