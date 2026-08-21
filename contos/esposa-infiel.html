@@ -93,15 +93,23 @@
         >
           Esposa infiel e o vizinho chantagista - Parte 1
         </h1>
-        <p
-          style="
+        <div class="story-meta">
+          <p
+            style="
             color: var(--text-muted);
             font-style: italic;
             font-size: 0.95rem;
           "
-        >
-          Por Fabby Lima
-        </p>
+          >
+            Por Fabby Lima
+          </p>
+
+          <p class="story-stats">
+            <span id="word-count">0 palavras</span>
+            <span aria-hidden="true">&bull;</span>
+            <span id="reading-time">1 min de leitura</span>
+          </p>
+        </div>
       </div>
 
       <!-- CORPO DO TEXTO DA HISTÓRIA -->
@@ -297,6 +305,19 @@
     <!-- SCRIPT DE TEMA -->
     <script>
       document.addEventListener("DOMContentLoaded", () => {
+        // ALTERAÇÃO: calcula as palavras e o tempo estimado a partir do texto do conto.
+        const story = document.querySelector("article"); // busca o bloco <article> do HTML, onde está o texto do conto
+        const wordCount = document.getElementById("word-count"); // localiza o local exato no HTML onde será exibido o número de palavras
+        const readingTime = document.getElementById("reading-time"); // Localiza o local exato no HTML onde será exibido o tempo estimado de leitura
+
+        if (story && wordCount && readingTime) {
+          const words = story.textContent.trim().match(/\S+/g) || [];
+          const minutes = Math.max(1, Math.ceil(words.length / 200));
+
+          wordCount.textContent = `${words.length} palavras`;
+          readingTime.textContent = `${minutes} min de leitura`;
+          // o codigo com a contagem de palavras e tempo de leitura finaliza aqui, e o restante do script é para o tema da página inclui a chave abaixo
+        }
         const themeBtn = document.getElementById("theme-toggle");
         const storedTheme = localStorage.getItem("theme") || "dark";
 
