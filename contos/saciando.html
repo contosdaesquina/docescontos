@@ -47,7 +47,7 @@
                 <p class="story-stats">
                     <span id="word-count">0 palavras</span>
                     <span aria-hidden="true">&bull;</span>
-                    <span id="eading-time">1 min de leitura</span>
+                    <span id="reading-time">1 min de leitura</span>
                 </p>
             </div>
         </div>
@@ -221,160 +221,160 @@
     </footer>
 
     <!-- SCRIPT DE TEMA -->
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        // ALTERAÇÃO: calcula as palavras e o tempo estimado a partir do texto do conto.
-        const story = document.querySelector("article");
-        const wordCount = document.getElementById("word-count");
-        const readingTime = document.getElementById("reading-time");
+    <!-- SCRIPT DE CÁLCULO E TEMA -->
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    // 1. Cálculo dinâmico de palavras e tempo de leitura
+    const story = document.querySelector("article");
+    const wordCount = document.getElementById("word-count");
+    const readingTime = document.getElementById("reading-time"); // ID corrigido aqui
 
-        if (story && wordCount && readingTime) {
-          const words = story.textContent.trim().match(/\S+/g) || [];
-          const minutes = Math.max(1, Math.ceil(words.length / 200));
+    if (story && wordCount && readingTime) {
+      const words = story.textContent.trim().match(/\S+/g) || [];
+      const minutes = Math.max(1, Math.ceil(words.length / 200));
 
-          wordCount.textContent = `${words.length} palavras`;
-          readingTime.textContent = `${minutes} min de leitura`;
-        }
+      wordCount.textContent = `${words.length} palavras`;
+      readingTime.textContent = `${minutes} min de leitura`;
+    }
 
-        const themeBtn = document.getElementById("theme-toggle");
-        const storedTheme = localStorage.getItem("theme") || "dark";
+    // 2. Alternância de tema (Dark/Light)
+    const themeBtn = document.getElementById("theme-toggle");
+    const storedTheme = localStorage.getItem("theme") || "dark";
 
-        document.documentElement.setAttribute("data-theme", storedTheme);
-        atualizarIconeTema(storedTheme);
+    document.documentElement.setAttribute("data-theme", storedTheme);
+    atualizarIconeTema(storedTheme);
 
-        if (themeBtn) {
-          themeBtn.addEventListener("click", () => {
-            const currentTheme =
-              document.documentElement.getAttribute("data-theme");
-            const newTheme = currentTheme === "dark" ? "light" : "dark";
+    if (themeBtn) {
+      themeBtn.addEventListener("click", () => {
+        const currentTheme =
+          document.documentElement.getAttribute("data-theme");
+        const newTheme = currentTheme === "dark" ? "light" : "dark";
 
-            document.documentElement.setAttribute("data-theme", newTheme);
-            localStorage.setItem("theme", newTheme);
-            atualizarIconeTema(newTheme);
-          });
-        }
-
-        function atualizarIconeTema(theme) {
-          if (!themeBtn) return;
-          const icon = themeBtn.querySelector("i");
-          if (icon) {
-            icon.className = theme === "dark" ? "fas fa-sun" : "fas fa-moon";
-          }
-        }
+        document.documentElement.setAttribute("data-theme", newTheme);
+        localStorage.setItem("theme", newTheme);
+        atualizarIconeTema(newTheme);
       });
-    </script>
+    }
 
-    <!-- SCRIPT DE INTEGRAÇÃO SUPABASE (TABELA CONTOS) -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script>
-      const SUPABASE_URL = "https://wlghtkzunixojfldupwk.supabase.co";
-      const SUPABASE_KEY =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndsZ2h0a3p1bml4b2pmbGR1cHdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxNzkzMTAsImV4cCI6MjEwMDc1NTMxMH0.BSIvzjfeLfgvSQs2-v4cBxIYsuD45QjJnJXGn1aPAp8";
-      const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    function atualizarIconeTema(theme) {
+      if (!themeBtn) return;
+      const icon = themeBtn.querySelector("i");
+      if (icon) {
+        icon.className = theme === "dark" ? "fas fa-sun" : "fas fa-moon";
+      }
+    }
+  });
+</script>
 
-      // ID deste conto específico na tabela 'contos' do Supabase
-      const CONTO_ID = 2;
-      const STORAGE_KEY = `voto_conto_${CONTO_ID}`;
+<!-- SCRIPT DE INTEGRAÇÃO SUPABASE (TABELA CONTOS) -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL = "https://wlghtkzunixojfldupwk.supabase.co";
+  const SUPABASE_KEY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndsZ2h0a3p1bml4b2pmbGR1cHdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxNzkzMTAsImV4cCI6MjEwMDc1NTMxMH0.BSIvzjfeLfgvSQs2-v4cBxIYsuD45QjJnJXGn1aPAp8";
+  const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-      document.addEventListener("DOMContentLoaded", () => {
-        carregarVotos();
+  // ID deste conto específico (Parte 2)
+  const CONTO_ID = 2;
+  const STORAGE_KEY = `voto_conto_${CONTO_ID}`;
+
+  document.addEventListener("DOMContentLoaded", () => {
+    carregarVotos();
+    verificarVotoExistente();
+  });
+
+  async function carregarVotos() {
+    try {
+      const { data, error } = await db
+        .from("contos")
+        .select("likes, dislikes")
+        .eq("id", CONTO_ID);
+
+      if (error) {
+        console.error("Erro na leitura do Supabase:", error);
+        return;
+      }
+
+      if (data && data.length > 0) {
+        document.getElementById("count-likes").innerText =
+          data[0].likes || 0;
+        document.getElementById("count-dislikes").innerText =
+          data[0].dislikes || 0;
+      } else {
+        console.warn("Nenhum dado retornado para o ID", CONTO_ID);
+      }
+    } catch (err) {
+      console.error("Erro de conexão:", err);
+    }
+  }
+
+  function verificarVotoExistente() {
+    const votoAnterior = localStorage.getItem(STORAGE_KEY);
+    if (votoAnterior) {
+      const btnLike = document.getElementById("btn-like");
+      const btnDislike = document.getElementById("btn-dislike");
+
+      if (votoAnterior === "like") {
+        btnLike.style.borderColor = "#f39c12";
+        btnLike.style.color = "#f39c12";
+      } else if (votoAnterior === "dislike") {
+        btnDislike.style.borderColor = "#e74c3c";
+        btnDislike.style.color = "#e74c3c";
+      }
+
+      btnLike.disabled = true;
+      btnDislike.disabled = true;
+    }
+  }
+
+  async function votar(tipo) {
+    if (localStorage.getItem(STORAGE_KEY)) return;
+
+    try {
+      const { data, error: searchError } = await db
+        .from("contos")
+        .select("likes, dislikes")
+        .eq("id", CONTO_ID);
+
+      if (searchError) {
+        console.error("Erro na consulta:", searchError);
+        alert("Erro ao consultar banco: " + searchError.message);
+        return;
+      }
+
+      if (!data || data.length === 0) {
+        alert(
+          `O registro ID ${CONTO_ID} não foi localizado via API. Verifique a permissão do perfil "anon".`,
+        );
+        return;
+      }
+
+      const registro = data[0];
+      const novosLikes =
+        tipo === "like" ? (registro.likes || 0) + 1 : registro.likes || 0;
+      const novosDislikes =
+        tipo === "dislike"
+          ? (registro.dislikes || 0) + 1
+          : registro.dislikes || 0;
+
+      const { error: updateError } = await db
+        .from("contos")
+        .update({ likes: novosLikes, dislikes: novosDislikes })
+        .eq("id", CONTO_ID);
+
+      if (updateError) {
+        console.error("Erro no update:", updateError);
+        alert("Erro ao gravar voto: " + updateError.message);
+      } else {
+        document.getElementById("count-likes").innerText = novosLikes;
+        document.getElementById("count-dislikes").innerText = novosDislikes;
+        localStorage.setItem(STORAGE_KEY, tipo);
         verificarVotoExistente();
-      });
-
-      async function carregarVotos() {
-        try {
-          const { data, error } = await db
-            .from("contos")
-            .select("likes, dislikes")
-            .eq("id", CONTO_ID);
-
-          if (error) {
-            console.error("Erro na leitura do Supabase:", error);
-            return;
-          }
-
-          if (data && data.length > 0) {
-            document.getElementById("count-likes").innerText =
-              data[0].likes || 0;
-            document.getElementById("count-dislikes").innerText =
-              data[0].dislikes || 0;
-          } else {
-            console.warn("Nenhum dado retornado para o ID", CONTO_ID);
-          }
-        } catch (err) {
-          console.error("Erro de conexão:", err);
-        }
       }
-
-      function verificarVotoExistente() {
-        const votoAnterior = localStorage.getItem(STORAGE_KEY);
-        if (votoAnterior) {
-          const btnLike = document.getElementById("btn-like");
-          const btnDislike = document.getElementById("btn-dislike");
-
-          if (votoAnterior === "like") {
-            btnLike.style.borderColor = "#f39c12";
-            btnLike.style.color = "#f39c12";
-          } else if (votoAnterior === "dislike") {
-            btnDislike.style.borderColor = "#e74c3c";
-            btnDislike.style.color = "#e74c3c";
-          }
-
-          btnLike.disabled = true;
-          btnDislike.disabled = true;
-        }
-      }
-
-      async function votar(tipo) {
-        if (localStorage.getItem(STORAGE_KEY)) return;
-
-        try {
-          // 1. Busca os valores atuais
-          const { data, error: searchError } = await db
-            .from("contos")
-            .select("likes, dislikes")
-            .eq("id", CONTO_ID);
-
-          if (searchError) {
-            console.error("Erro na consulta:", searchError);
-            alert("Erro ao consultar banco: " + searchError.message);
-            return;
-          }
-
-          if (!data || data.length === 0) {
-            alert(
-              `O registro ID ${CONTO_ID} não foi localizado via API. Verifique a permissão do perfil "anon".`,
-            );
-            return;
-          }
-
-          const registro = data[0];
-          const novosLikes =
-            tipo === "like" ? (registro.likes || 0) + 1 : registro.likes || 0;
-          const novosDislikes =
-            tipo === "dislike"
-              ? (registro.dislikes || 0) + 1
-              : registro.dislikes || 0;
-
-          // 2. Atualiza os totais no Supabase
-          const { error: updateError } = await db
-            .from("contos")
-            .update({ likes: novosLikes, dislikes: novosDislikes })
-            .eq("id", CONTO_ID);
-
-          if (updateError) {
-            console.error("Erro no update:", updateError);
-            alert("Erro ao gravar voto: " + updateError.message);
-          } else {
-            document.getElementById("count-likes").innerText = novosLikes;
-            document.getElementById("count-dislikes").innerText = novosDislikes;
-            localStorage.setItem(STORAGE_KEY, tipo);
-            verificarVotoExistente();
-          }
-        } catch (err) {
-          console.error("Erro inesperado:", err);
-        }
-      }
-    </script>
-  </body>
+    } catch (err) {
+      console.error("Erro inesperado:", err);
+    }
+  }
+</script>
+</body>
 </html>
