@@ -53,6 +53,17 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+article p:first-child::first-letter {
+    display: inline-block;
+    vertical-align: bottom;
+    padding-right: 0.15em;
+    color: var(--primary-color);
+    font-family: var(--font-heading);
+    font-size: 3.8em;
+    font-weight: 600;
+    line-height: 0.8;
+}
+
 .destaque {
     color: var(--primary-color);
 }
