@@ -223,7 +223,7 @@
     <!-- SCRIPT DE TEMA -->
     <script>
       document.addEventListener("DOMContentLoaded", () => {
-          // ALTERAÇÃO: calcula as palavras e o tempo estimado a partir do texto do conto.
+        // ALTERAÇÃO: calcula as palavras e o tempo estimado a partir do texto do conto.
         const story = document.querySelector("article");
         const wordCount = document.getElementById("word-count");
         const readingTime = document.getElementById("reading-time");
@@ -235,7 +235,7 @@
           wordCount.textContent = `${words.length} palavras`;
           readingTime.textContent = `${minutes} min de leitura`;
         }
-          
+
         const themeBtn = document.getElementById("theme-toggle");
         const storedTheme = localStorage.getItem("theme") || "dark";
 
