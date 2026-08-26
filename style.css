@@ -19,6 +19,8 @@
     --text-muted: #4b5563;
     --border-color: rgba(0, 0, 0, 0.1);
     --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    /* Altere estes valores para controlar a sombra e o brilho no tema claro. */
+    --story-shadow: 0 18px 35px rgba(0, 0, 0, 0.14), 0 0 0 1px rgba(217, 119, 6, 0.08);
     
     --primary-color: #d97706; /* Cor principal do site (amarelo/dourado) */
     --accent-red: #991b1b;     /* Cor de destaque para elementos especiais */
@@ -34,6 +36,8 @@
     --text-muted: #9ca3af;
     --border-color: rgba(255, 255, 255, 0.12);
     --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    /* Altere estes valores para controlar a sombra e o brilho no tema escuro. */
+    --story-shadow: 0 20px 42px rgba(0, 0, 0, 0.65), 0 0 24px rgba(245, 158, 11, 0.1);
 
     --primary-color: #f59e0b;
     --accent-red: #ef4444;
@@ -72,6 +76,53 @@ body {
     color: var(--text-muted);
     font-size: 0.8rem;
     white-space: nowrap;
+}
+
+/* Caixa que envolve o conto. Os valores abaixo controlam sua aparência. */
+.story-box {
+    position: relative;
+    /* Espaço interno: aumente para deixar o texto mais afastado das bordas. */
+    padding: 2.5rem clamp(1.25rem, 4vw, 3rem);
+    /* Arredondamento: troque 14px por um valor maior ou menor. */
+    border-radius: 14px;
+    /* Borda principal: usa a cor definida pelo tema atual. */
+    border: 1px solid var(--border-color);
+    /* Fundo interno: muda automaticamente entre claro e escuro. */
+    background: var(--bg-secondary);
+    /* Sombra externa: altera a sensação de distância do fundo. */
+    box-shadow: var(--story-shadow);
+    /* Elevação: valores negativos deixam a caixa visualmente mais alta. */
+    transform: translateY(-4px);
+    transition: background-color 0.3s ease, border-color 0.3s ease,
+        box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+/* Detalhes dos cantos: altere width e height para aumentar a moldura. */
+.story-box::before,
+.story-box::after {
+    position: absolute;
+    width: 2.75rem;
+    height: 2.75rem;
+    /* A cor acompanha o destaque do tema claro ou escuro. */
+    border-color: var(--primary-color);
+    border-style: solid;
+    content: "";
+    pointer-events: none;
+    transition: border-color 0.3s ease;
+}
+
+/* Canto superior esquerdo: border-width desenha somente dois lados. */
+.story-box::before {
+    top: -1px;
+    left: -1px;
+    border-width: 2px 0 0 2px;
+}
+
+/* Canto inferior direito: altere border-width para mudar os lados visíveis. */
+.story-box::after {
+    right: -1px;
+    bottom: -1px;
+    border-width: 0 2px 2px 0;
 }
 
 /* ALTERAÇÃO: cria a capitular dourada na primeira letra do conto. */
