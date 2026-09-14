@@ -274,5 +274,52 @@
         }
     });
 </script>
+<!-- 1. Biblioteca oficial do Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+  // 2. Substitua pelas suas credenciais (encontradas em Project Settings > API no Supabase)
+  const SUPABASE_URL = 'https://SEU_PROJETO.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndsZ2h0a3p1bml4b2pmbGR1cHdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxNzkzMTAsImV4cCI6MjEwMDc1NTMxMH0.BSIvzjfeLfgvSQs2-v4cBxIYsuD45QjJnJXGn1aPAp8';
+
+  const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  async function registrarEAtualizarAcesso() {
+    try {
+      // Busca a contagem atual do registro id = 1
+      const { data, error } = await supabaseClient
+        .from('count')
+        .select('acessos')
+        .eq('id', 1)
+        .single();
+
+      if (error) throw error;
+
+      // Calcula o novo valor (+1)
+      const novosAcessos = (data ? data.acessos : 0) + 1;
+
+      // Atualiza o valor no Supabase
+      await supabaseClient
+        .from('count')
+        .update({ acessos: novosAcessos })
+        .eq('id', 1);
+
+      // Atualiza o texto na tela no elemento id="stat-acessos"
+      const statElement = document.getElementById('stat-acessos');
+      if (statElement) {
+        statElement.innerText = novosAcessos;
+      }
+    } catch (err) {
+      console.error('Erro ao atualizar contador de acessos:', err);
+      const statElement = document.getElementById('stat-acessos');
+      if (statElement) {
+        statElement.innerText = '1';
+      }
+    }
+  }
+
+  // Executa ao carregar a página
+  document.addEventListener('DOMContentLoaded', registrarEAtualizarAcesso);
+</script>
 </body>
 </html>
