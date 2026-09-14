@@ -75,7 +75,6 @@
         </div>
     </section>
         
-
     <!-- Seção de categorias: mostra as histórias em cartões clicáveis -->
     <section id="categorias" class="categories-section">
         <h3 class="section-title">Categorias</h3>
@@ -95,15 +94,17 @@
                 <div class="category-card-overlay">
                     <h4 class="category-card-title">Encontro casual</h4>
                 </div>
+            </a>
 
-            <!-- card 3 -->
+            <!-- Card 3 -->
             <a href="contos/primeiro-encontro.html" class="category-card">
                 <img src="dist/kelly.png" alt="kelly" class="category-card-img">
                 <div class="category-card-overlay">
-                    <h4 class="category-card-title">Insáciavel</h4>
+                    <h4 class="category-card-title">Insaciável</h4>
                 </div>
             </a>
 
+            <!-- Card 4 -->
             <a href="contos/esposa-infiel.html" class="category-card">
                 <img src="dist/sussurro.png" alt="sussurro" class="category-card-img">
                 <div class="category-card-overlay">
@@ -111,10 +112,10 @@
                 </div>
             </a>
         </div>
-
     </section>
 
     <!-- Bloco de estatísticas: mostra contos publicados, acessos e atualização -->
+    <section class="stats-section">
         <div class="stats-card">
             <div class="stats-list">
                 <div class="stats-item">
@@ -153,173 +154,136 @@
         <p class="direitos">&copy; Doces Contos. Todos os direitos reservados.</p>
     </footer>
 
-    <!-- Biblioteca do Supabase -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Biblioteca do Supabase (Apenas uma importação) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<script>
-    // ==========================================
-    // CONFIGURAÇÃO DO SUPABASE
-    // ==========================================
-    const SUPABASE_URL = 'https://wlghtkzunixojfldupwk.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndsZ2h0a3p1bml4b2pmbGR1cHdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxNzkzMTAsImV4cCI6MjEwMDc1NTMxMH0.BSIvzjfeLfgvSQs2-v4cBxIYsuD45QjJnJXGn1aPAp8';
-    
-    // Inicialização do cliente Supabase
-    const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-    document.addEventListener('DOMContentLoaded', () => {
+    <script>
         // ==========================================
-        // 1. ALTERNÂNCIA DE TEMA (LIGHT / DARK)
+        // CONFIGURAÇÃO UNIFICADA DO SUPABASE
         // ==========================================
-        const themeBtn = document.getElementById('theme-toggle');
-        const storedTheme = localStorage.getItem('theme');
+        const SUPABASE_URL = 'https://wlghtkzunixojfldupwk.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndsZ2h0a3p1bml4b2pmbGR1cHdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxNzkzMTAsImV4cCI6MjEwMDc1NTMxMH0.BSIvzjfeLfgvSQs2-v4cBxIYsuD45QjJnJXGn1aPAp8';
         
-        if (storedTheme) {
-            document.documentElement.setAttribute('data-theme', storedTheme);
-            atualizarIconeTema(storedTheme);
-        }
+        const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        if (themeBtn) {
-            themeBtn.addEventListener('click', () => {
-                const currentTheme = document.documentElement.getAttribute('data-theme');
-                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-                
-                document.documentElement.setAttribute('data-theme', newTheme);
-                localStorage.setItem('theme', newTheme);
-                atualizarIconeTema(newTheme);
-            });
-        }
-
-        function atualizarIconeTema(theme) {
-            if (!themeBtn) return;
-            const icon = themeBtn.querySelector('i');
-            if (icon) {
-                icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+        document.addEventListener('DOMContentLoaded', () => {
+            // ==========================================
+            // 1. ALTERNÂNCIA DE TEMA (LIGHT / DARK)
+            // ==========================================
+            const themeBtn = document.getElementById('theme-toggle');
+            const storedTheme = localStorage.getItem('theme');
+            
+            if (storedTheme) {
+                document.documentElement.setAttribute('data-theme', storedTheme);
+                atualizarIconeTema(storedTheme);
             }
-        }
 
-        // ==========================================
-        // 2. CONTAGEM DE CONTOS PUBLICADOS (SUPABASE)
-        // ==========================================
-        async function contarContosPublicados() {
-            try {
-                const { count, error } = await db
-                    .from('contos')
-                    .select('*', { count: 'exact', head: true });
-
-                const elemContos = document.getElementById('stat-contos');
-
-                if (error) {
-                    console.error('Erro ao buscar contos no Supabase:', error);
-                    return;
-                }
-
-                if (count !== null && elemContos) {
-                    elemContos.innerText = count;
-                }
-            } catch (err) {
-                console.error('Erro ao conectar com o Supabase:', err);
+            if (themeBtn) {
+                themeBtn.addEventListener('click', () => {
+                    const currentTheme = document.documentElement.getAttribute('data-theme');
+                    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                    
+                    document.documentElement.setAttribute('data-theme', newTheme);
+                    localStorage.setItem('theme', newTheme);
+                    atualizarIconeTema(newTheme);
+                });
             }
-        }
-        contarContosPublicados();
 
-        // ==========================================
-        // 3. CONTAGEM DE LEITORES E INSCRITOS (SUPABASE)
-        // ==========================================
-        async function atualizarContadorInscritos() {
-            try {
-                const { count, error } = await db
-                    .from('subscribers')
-                    .select('*', { count: 'exact', head: true });
-
-                const elemLeitores = document.getElementById('stat-acessos'); // Certifique-se de ter id="stat-leitores" no HTML
-
-                if (!error && count !== null && elemLeitores) {
-                    elemLeitores.innerText = count.toLocaleString('pt-BR');
+            function atualizarIconeTema(theme) {
+                if (!themeBtn) return;
+                const icon = themeBtn.querySelector('i');
+                if (icon) {
+                    icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
                 }
-            } catch (err) {
-                console.error('Erro ao buscar leitores:', err);
             }
-        }
-        atualizarContadorInscritos();
 
-        // ==========================================
-        // 4. FORMULÁRIO DE NEWSLETTER
-        // ==========================================
-        const newsletterForm = document.querySelector('.newsletter-form');
-        if (newsletterForm) {
-            newsletterForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const input = newsletterForm.querySelector('input[type="email"]');
-                
-                if (input && input.value) {
-                    const emailDigitado = input.value.trim();
+            // ==========================================
+            // 2. CONTAGEM DE CONTOS PUBLICADOS
+            // ==========================================
+            async function contarContosPublicados() {
+                try {
+                    const { count, error } = await db
+                        .from('contos')
+                        .select('*', { count: 'exact', head: true });
 
-                    const { error } = await db
-                        .from('subscribers')
-                        .insert([{ email: emailDigitado }]);
+                    const elemContos = document.getElementById('stat-contos');
+
+                    if (!error && count !== null && elemContos) {
+                        elemContos.innerText = count;
+                    }
+                } catch (err) {
+                    console.error('Erro ao buscar contos no Supabase:', err);
+                }
+            }
+            contarContosPublicados();
+
+            // ==========================================
+            // 3. REGISTRAR E ATUALIZAR ACESSOS NA TABELA "acessos"
+            // ==========================================
+            async function registrarEAtualizarAcesso() {
+                try {
+                    // Busca a contagem atual do registro id = 1 na tabela 'acessos'
+                    const { data, error } = await db
+                        .from('acessos')
+                        .select('acessos')
+                        .eq('id', 1)
+                        .maybeSingle();
 
                     if (error) {
-                        if (error.code === '23505') {
-                            alert('Este e-mail já está cadastrado!');
-                        } else {
-                            alert('Ocorreu um erro ao cadastrar. Tente novamente!');
-                        }
-                    } else {
-                        alert(`Obrigado por se inscrever, ${emailDigitado}! Você receberá nossas histórias.`);
-                        input.value = '';
-                        await atualizarContadorInscritos();
+                        console.error('Erro ao consultar acessos:', error);
+                        return;
                     }
+
+                    const acessosAtuais = data && data.acessos ? Number(data.acessos) : 0;
+                    const novosAcessos = acessosAtuais + 1;
+
+                    // Atualiza no banco de dados
+                    await db
+                        .from('acessos')
+                        .update({ acessos: novosAcessos })
+                        .eq('id', 1);
+
+                    // Exibe o número atualizado na tela
+                    const statElement = document.getElementById('stat-acessos');
+                    if (statElement) {
+                        statElement.innerText = novosAcessos.toLocaleString('pt-BR');
+                    }
+                } catch (err) {
+                    console.error('Erro ao registrar acesso:', err);
                 }
-            });
-        }
-    });
-</script>
-<!-- 1. Biblioteca oficial do Supabase -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+            }
+            registrarEAtualizarAcesso();
 
-<script>
-  // 2. Substitua pelas suas credenciais (encontradas em Project Settings > API no Supabase)
-  const SUPABASE_URL = 'https://SEU_PROJETO.supabase.co';
-  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndsZ2h0a3p1bml4b2pmbGR1cHdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxNzkzMTAsImV4cCI6MjEwMDc1NTMxMH0.BSIvzjfeLfgvSQs2-v4cBxIYsuD45QjJnJXGn1aPAp8';
+            // ==========================================
+            // 4. FORMULÁRIO DE NEWSLETTER
+            // ==========================================
+            const newsletterForm = document.querySelector('.newsletter-form');
+            if (newsletterForm) {
+                newsletterForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const input = newsletterForm.querySelector('input[type="email"]');
+                    
+                    if (input && input.value) {
+                        const emailDigitado = input.value.trim();
 
-  const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                        const { error } = await db
+                            .from('subscribers')
+                            .insert([{ email: emailDigitado }]);
 
-  async function registrarEAtualizarAcesso() {
-    try {
-      // Busca a contagem atual do registro id = 1
-      const { data, error } = await supabaseClient
-        .from('count')
-        .select('acessos')
-        .eq('id', 1)
-        .single();
-
-      if (error) throw error;
-
-      // Calcula o novo valor (+1)
-      const novosAcessos = (data ? data.acessos : 0) + 1;
-
-      // Atualiza o valor no Supabase
-      await supabaseClient
-        .from('count')
-        .update({ acessos: novosAcessos })
-        .eq('id', 1);
-
-      // Atualiza o texto na tela no elemento id="stat-acessos"
-      const statElement = document.getElementById('stat-acessos');
-      if (statElement) {
-        statElement.innerText = novosAcessos;
-      }
-    } catch (err) {
-      console.error('Erro ao atualizar contador de acessos:', err);
-      const statElement = document.getElementById('stat-acessos');
-      if (statElement) {
-        statElement.innerText = '1';
-      }
-    }
-  }
-
-  // Executa ao carregar a página
-  document.addEventListener('DOMContentLoaded', registrarEAtualizarAcesso);
-</script>
+                        if (error) {
+                            if (error.code === '23505') {
+                                alert('Este e-mail já está cadastrado!');
+                            } else {
+                                alert('Ocorreu um erro ao cadastrar. Tente novamente!');
+                            }
+                        } else {
+                            alert(`Obrigado por se inscrever, ${emailDigitado}! Você receberá nossas histórias.`);
+                            input.value = '';
+                        }
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>
