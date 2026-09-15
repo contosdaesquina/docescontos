@@ -221,38 +221,48 @@
             // 3. REGISTRAR E ATUALIZAR ACESSOS NA TABELA "acessos"
             // ==========================================
             async function registrarEAtualizarAcesso() {
-                try {
-                    // Busca a contagem atual do registro id = 1 na tabela 'acessos'
-                    const { data, error } = await db
-                        .from('acessos')
-                        .select('acessos')
-                        .eq('id', 1)
-                        .maybeSingle();
+    try {
+        const jaContouNessaSessao = sessionStorage.getItem('acesso_registrado');
+        let totalAcessos = 0;
 
-                    if (error) {
-                        console.error('Erro ao consultar acessos:', error);
-                        return;
-                    }
+        if (!jaContouNessaSessao) {
+            // Chama a função atômica no Supabase que soma +1 com segurança
+            const { data, error } = await db.rpc('incrementar_acessos');
 
-                    const acessosAtuais = data && data.acessos ? Number(data.acessos) : 0;
-                    const novosAcessos = acessosAtuais + 1;
-
-                    // Atualiza no banco de dados
-                    await db
-                        .from('acessos')
-                        .update({ acessos: novosAcessos })
-                        .eq('id', 1);
-
-                    // Exibe o número atualizado na tela
-                    const statElement = document.getElementById('stat-acessos');
-                    if (statElement) {
-                        statElement.innerText = novosAcessos.toLocaleString('pt-BR');
-                    }
-                } catch (err) {
-                    console.error('Erro ao registrar acesso:', err);
-                }
+            if (error) {
+                console.error('Erro ao incrementar acessos:', error);
+                return;
             }
-            registrarEAtualizarAcesso();
+
+            sessionStorage.setItem('acesso_registrado', 'true');
+            totalAcessos = data;
+        } else {
+            // Se o usuário apenas deu F5, apenas busca o valor sem incrementar de novo
+            const { data, error } = await db
+                .from('acessos')
+                .select('acessos')
+                .eq('id', 1)
+                .maybeSingle();
+
+            if (error) {
+                console.error('Erro ao consultar acessos:', error);
+                return;
+            }
+
+            totalAcessos = data?.acessos ?? 0;
+        }
+
+        // Exibe o número atualizado na tela
+        const statElement = document.getElementById('stat-acessos');
+        if (statElement) {
+            statElement.innerText = Number(totalAcessos).toLocaleString('pt-BR');
+        }
+    } catch (err) {
+        console.error('Erro ao registrar acesso:', err);
+    }
+}
+
+registrarEAtualizarAcesso();
 
             // ==========================================
             // 4. FORMULÁRIO DE NEWSLETTER
