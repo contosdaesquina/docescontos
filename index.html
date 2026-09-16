@@ -31,8 +31,8 @@
         <nav class="menu">
             <a href="index.html" class="menu-item">Início</a>
             <a href="#sobre" class="menu-item">Sobre</a>
-            <a href="#categorias" class="menu-item">Categorias</a>
-            <a href="#suporte" class="menu-item">Suporte</a>
+            <a href="#historias" class="menu-item">Histórias</a>
+            <a href="#comunidade" class="menu-item">Comunidade</a>
         </nav>
 
         <div class="header-actions">
@@ -47,37 +47,69 @@
     <!-- Hero principal: título, frase de impacto e botões de ação -->
     <section class="hero">
         <div class="hero-content">
+            <p class="hero-kicker">Edição especial · histórias para ler no seu ritmo</p>
             <h1 class="hero-title">Doces Contos</h1>
-            <p class="hero-subtitle">"Transforme seus desejos, memórias e segredos em histórias inesquecíveis."</p>
+            <p class="hero-subtitle">Contos autorais sobre desejo, memória e os segredos que transformam uma noite comum em uma história inesquecível.</p>
             <div class="hero-cta">
-                <a href="#categorias" class="btn btn-primary">Explorar Contos</a>
+                <a href="#historias" class="btn btn-primary">Escolher uma história</a>
                 <a href="mailto:sjr.autor@gmail.com?subject=Envio%20de%20Hist%C3%B3ria%20-%20Doces%20Contos&body=Ol%C3%A1!%0A%0AGostaria%20de%20enviar%20minha%20hist%C3%B3ria%20para%20o%20Doces%20Contos.%0A%0A-%20Nome%2FAlias%3A%20%0A-%20Categoria%3A%20%0A-%20Texto%3A%20%0A" 
                 target="_blank"
                 rel="noopener noreferrer"
                 style="text-decoration: none; padding: 0.8rem 1.5rem; border: 1px solid var(--primary-color, #f39c12); color: var(--primary-color, #f39c12); border-radius: 6px; font-weight: 600; display: inline-block; background-color: transparent; transition: all 0.2s ease;"
                 onmouseover="this.style.backgroundColor='transparent'; this.style.color='var(--primary-color, #f39c12)'; this.style.borderColor='var(--primary-color, #f39c12)'; this.style.boxShadow='0 0 8px rgba(243, 156, 18, 0.4)';" 
                 onmouseout="this.style.backgroundColor='transparent'; this.style.color='var(--primary-color, #f39c12)'; this.style.borderColor='var(--primary-color, #f39c12)'; this.style.boxShadow='none';">
-                    Enviar História
+                    Enviar minha história
                 </a>
             </div>
         </div>
         <img class="hero-image" src="dist/image.png" alt="Ilustração de Destaque">
     </section>
 
-    <!-- Seção sobre o site: explica a proposta e a ideia dos contos -->
+    <!-- Manifesto editorial -->
     <section id="sobre" class="about-section">
-        <h3 class="section-title">O que <span class="destaque">cabe em um conto?</span></h3>
-        
+        <p class="section-kicker">A proposta</p>
+        <h2 class="section-title">O que <span class="destaque">cabe em um conto?</span></h2>
         <div class="about-text">
-            <p class="quote">"Vivemos apressados olhando o relógio e a tela do celular. No caminho entre o café e o trabalho, ignoramos <strong>as histórias</strong> que acontecem debaixo do nosso nariz."</p>
-            <p>O <strong style="color: var(--primary-color, #f39c12);">Doces Contos</strong> nasceu para dar uma pausa. Um lugar para <strong style="color: var(--primary-color, #f39c12);">observar o extraordinário</strong> no comum. Aqui, cada palavra conta uma história e cada contador vira personagem.</p>
-            <p>Seja bem-vindo(a) à nossa página. Qual história <strong style="color: var(--primary-color, #f39c12);">gostaria de contar hoje?</strong> Conta pra nós!</p>
+            <p class="quote">Uma pausa para observar o extraordinário no comum e descobrir personagens onde ninguém mais está olhando.</p>
+            <p>Leia histórias independentes, acompanhe seus personagens e escolha a próxima leitura conforme o seu humor.</p>
+        </div>
+    </section>
+
+    <!-- História em destaque -->
+    <section class="featured-story" aria-labelledby="featured-title">
+        <div class="featured-story-copy">
+            <p class="section-kicker">Em destaque</p>
+            <h2 id="featured-title">Primeiro Namorado</h2>
+            <p>Ele é fogo que consome lentamente. Ela é um vulcão em erupção. Conheça Aline e Ronaldo antes de decidir qual capítulo abrir primeiro.</p>
+            <a href="#featured-profiles" class="text-link">Conhecer o casal <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="featured-story-mark">01</div>
+
+        <div id="featured-profiles" class="featured-profiles">
+            <div class="featured-profile">
+                <h3>Aline <span>(18 anos)</span></h3>
+                <p><strong>Perfil:</strong> Jovem, impulsiva e sedutora. Gosta de manter o controle sobre o ritmo e a intensidade das situações.</p>
+                <p><strong>Dinâmica:</strong> Movida pela busca por adrenalina e pelo proibido, desafia limites ao instigar momentos de intimidade em locais de risco, como no carro dos pais ou em espaços públicos.</p>
+                <p><strong>Marca registrada:</strong> Combina inocência com atitudes ousadas e jogos de provocação direta.</p>
+            </div>
+            <div class="featured-profile">
+                <h3>Ronaldo <span>(20 anos)</span></h3>
+                <p><strong>Perfil:</strong> Tem olhos verdes, forte magnetismo físico e uma presença dominante, mas se entrega à intensidade do casal.</p>
+                <p><strong>Dinâmica:</strong> Responde instantaneamente às provocações de Aline, alimentando a urgência e a tensão constante entre os dois.</p>
+                <p><strong>Marca registrada:</strong> Responde às provocações de Aline e entra nos jogos de sedução e risco propostos por ela.</p>
+            </div>
         </div>
     </section>
         
-    <!-- Seção de categorias: mostra as histórias em cartões clicáveis -->
-    <section id="categorias" class="categories-section">
-        <h3 class="section-title">Categorias</h3>
+    <!-- Catálogo editorial de histórias -->
+    <section id="historias" class="categories-section">
+        <div class="section-heading-row">
+            <div>
+                <p class="section-kicker">Catálogo</p>
+                <h2 class="section-title">Escolha uma história</h2>
+            </div>
+            <p class="section-heading-note">Cada conto tem seu próprio ritmo, atmosfera e personagens.</p>
+        </div>
 
         <div class="categories-grid">
             <!-- Card 1 -->
@@ -85,7 +117,6 @@
                 <img src="dist/primeiro-namorado.png" alt="Primeiro Namorado" class="category-card-img">
                 <div class="category-card-overlay">
                     <h4 class="category-card-title">Primeiro Namorado</h4>
-                    <h6><i>Ele é fogo que consome lentamente. Ela é um vulcão em erupção...</i></h6>
                 </div>
             </a>
 
@@ -115,6 +146,57 @@
         </div>
     </section>
 
+    <!-- Temas para orientar a escolha do leitor -->
+    <section id="temas" class="themes-section">
+        <div class="section-heading-row">
+            <div>
+                <p class="section-kicker">Leitura rápida</p>
+                <h2 class="section-title">Quer escolher por tema?</h2>
+            </div>
+            <p class="section-heading-note">Encontre um conto curto para começar sem compromisso.</p>
+        </div>
+        <div class="themes-list">
+            <a href="#historias" class="theme-chip">Desejo</a>
+            <a href="#historias" class="theme-chip">Encontros</a>
+            <a href="#historias" class="theme-chip">Segredos</a>
+            <a href="#historias" class="theme-chip">Risco</a>
+        </div>
+    </section>
+
+    <!-- Resumo das histórias que já estão publicadas -->
+    <section class="published-section" aria-labelledby="published-title">
+        <div class="section-heading-row">
+            <div>
+                <p class="section-kicker">Arquivo</p>
+                <h2 id="published-title" class="section-title">Histórias já publicadas</h2>
+            </div>
+            <p class="section-heading-note">Uma visão rápida do catálogo para escolher sua próxima leitura.</p>
+        </div>
+
+        <div class="published-list">
+            <a href="contos/primeiro-conto.html" class="published-story">
+                <span class="published-story-number">01</span>
+                <span><strong>Primeiro Namorado</strong><small>Aline e Ronaldo · Desejo e risco</small></span>
+                <span class="published-story-arrow" aria-hidden="true">→</span>
+            </a>
+            <a href="contos/porta-entreaberta.html" class="published-story">
+                <span class="published-story-number">02</span>
+                <span><strong>Encontro casual</strong><small>Uma aproximação inesperada · Encontros</small></span>
+                <span class="published-story-arrow" aria-hidden="true">→</span>
+            </a>
+            <a href="contos/primeiro-encontro.html" class="published-story">
+                <span class="published-story-number">03</span>
+                <span><strong>Insaciável</strong><small>Desejo sem medida · Segredos</small></span>
+                <span class="published-story-arrow" aria-hidden="true">→</span>
+            </a>
+            <a href="contos/esposa-infiel.html" class="published-story">
+                <span class="published-story-number">04</span>
+                <span><strong>Sussurros Proibidos</strong><small>O que não deveria ser dito · Proibido</small></span>
+                <span class="published-story-arrow" aria-hidden="true">→</span>
+            </a>
+        </div>
+    </section>
+
     <!-- Bloco de estatísticas: mostra contos publicados, acessos e atualização -->
     <section class="stats-section">
         <div class="stats-card">
@@ -135,6 +217,16 @@
         </div>
     </section>
     
+    <!-- Espaço para participação da comunidade -->
+    <section id="comunidade" class="community-section">
+        <div>
+            <p class="section-kicker">Comunidade</p>
+            <h2 class="section-title">Você também tem uma história?</h2>
+            <p>Envie seu conto para fazer parte do universo Doces Contos.</p>
+        </div>
+        <a href="mailto:sjr.autor@gmail.com?subject=Envio%20de%20Hist%C3%B3ria%20-%20Doces%20Contos" class="btn btn-primary">Enviar história</a>
+    </section>
+
     <!-- Newsletter: coleta e-mails para avisar sobre novos contos -->
     <section id="newsletter" class="newsletter-section">
         <div class="newsletter-card">
@@ -152,6 +244,23 @@
     <!-- Rodapé final: imagem de fechamento e direitos reservados -->
     <footer class="rodape">
         <img class="rodape-image" src="dist/rodape.png" alt="Ilustração do rodapé">
+        <div class="footer-columns">
+            <div>
+                <strong>Explorar</strong>
+                <a href="#historias">Histórias</a>
+                <a href="#temas">Temas</a>
+            </div>
+            <div>
+                <strong>Ajuda</strong>
+                <a href="#sobre">Sobre</a>
+                <a href="#comunidade">Comunidade</a>
+            </div>
+            <div>
+                <strong>Redes</strong>
+                <a href="https://www.instagram.com/doces.contosbr" target="_blank" rel="noopener noreferrer">Instagram</a>
+                <a href="https://t.me/lendocontos" target="_blank" rel="noopener noreferrer">Telegram</a>
+            </div>
+        </div>
         <p class="direitos">&copy; Doces Contos. Todos os direitos reservados.</p>
     </footer>
 
