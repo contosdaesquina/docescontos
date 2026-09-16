@@ -199,10 +199,6 @@ article p:first-child::first-letter {
 }
 
 .cabecalho-logo {
-    /* CONFIGURAÇÃO DA LOGO
-       Ajuste width e height para mudar o tamanho da logo.
-       Se quiser ela maior ou menor, altere esses valores.
-    */
     width: 100%;
     height: 100%;
     object-fit: contain;
@@ -1017,9 +1013,8 @@ article p:first-child::first-letter {
     }
 }
 
-/* Inversão do traçado das ilustrações no Modo Escuro */
+/* Inversão das ilustrações no modo escuro */
 [data-theme="dark"] .hero-image,
-[data-theme="dark"] .cabecalho-logo,
 [data-theme="dark"] .rodape-image {
     filter: invert(1) brightness(1.8);
     transition: filter 0.3s ease;
