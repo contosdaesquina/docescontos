@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-labelledby="logo-title logo-desc">
+  <title id="logo-title">Doces Contos</title>
+  <desc id="logo-desc">Logo circular clara dourada com uma pena e o texto Doces Contos</desc>
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#9a681c"/>
+      <stop offset="0.45" stop-color="#d79b32"/>
+      <stop offset="1" stop-color="#9a681c"/>
+    </linearGradient>
+  </defs>
+  <circle cx="120" cy="120" r="112" fill="#fffaf0" stroke="url(#gold)" stroke-width="3"/>
+  <circle cx="120" cy="120" r="104" fill="none" stroke="#d7b46a" stroke-width="1"/>
+  <g fill="none" stroke="url(#gold)" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M119 105 C115 83 123 52 153 31 C164 45 160 68 145 85 C135 96 125 102 119 105Z" stroke-width="3"/>
+    <path d="M120 105 C133 82 146 61 159 43" stroke-width="2"/>
+    <path d="M145 57 L130 61 M151 67 L134 72 M146 78 L130 83 M137 89 L124 94" stroke-width="1.5"/>
+    <path d="M119 104 C108 111 98 120 93 132 C101 130 109 126 116 120 C120 115 121 109 119 104Z" stroke-width="2"/>
+    <path d="M118 104 C112 119 108 132 108 146" stroke-width="2"/>
+  </g>
+  <text x="120" y="157" text-anchor="middle" fill="url(#gold)" font-family="Georgia, serif" font-size="22" font-weight="700" letter-spacing="1.5">DOCES</text>
+  <text x="120" y="179" text-anchor="middle" fill="#332718" font-family="Georgia, serif" font-size="21" font-weight="700" letter-spacing="1">CONTOS</text>
+  <path d="M55 190 H185" stroke="#b8862f" stroke-width="1"/>
+  <text x="120" y="203" text-anchor="middle" fill="#8f6428" font-family="Arial, sans-serif" font-size="6.5" letter-spacing="1.2">HISTORIAS QUE DESPERTAM</text>
+</svg>
