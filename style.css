@@ -193,6 +193,9 @@ article p:first-child::first-letter {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    width: 52px;
+    height: 52px;
+    flex: 0 0 52px;
 }
 
 .cabecalho-logo {
@@ -200,10 +203,11 @@ article p:first-child::first-letter {
        Ajuste width e height para mudar o tamanho da logo.
        Se quiser ela maior ou menor, altere esses valores.
     */
-    width: 42px;
-    height: 42px;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
     display: block;
+    image-rendering: auto;
 }
 
 .menu {
