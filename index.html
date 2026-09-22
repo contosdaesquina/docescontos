@@ -71,7 +71,10 @@
         <h2 class="section-title">O que <span class="destaque">cabe em um conto?</span></h2>
         <div class="about-text">
             <p class="quote">Uma pausa para observar o extraordinário no comum e descobrir personagens onde ninguém mais está olhando.</p>
-            <p>Leia histórias independentes, acompanhe seus personagens e escolha a próxima leitura conforme o seu humor.</p>
+            <p><span class="destaque"> Vivemos </span>apressados olhando a tela do celular ou para o relógio, 
+                raramente paramos para ver o que está <span class="destaque"> acontecento </span> ao nosso redor. O 
+                <span class="destaque"> Doces Contos </span> nasceu para dar uma pausa, é um espaço para refletir sobre 
+                momentos inesquecíveis que se tornam histórias memoráveis.</p>
         </div>
     </section>
 
@@ -108,7 +111,8 @@
                 <p class="section-kicker">Catálogo</p>
                 <h2 class="section-title">Escolha uma história</h2>
             </div>
-            <p class="section-heading-note">Cada conto tem seu próprio ritmo, atmosfera e personagens.</p>
+            <p class="section-heading-note">Cada conto tem seu próprio ritmo, atmosfera e claro, cada personagens
+                tem sua própria voz.</p>
         </div>
 
         <div class="categories-grid">
@@ -151,9 +155,23 @@
         <div class="section-heading-row">
             <div>
                 <p class="section-kicker">Leitura rápida</p>
-                <h2 class="section-title">Quer escolher por tema?</h2>
+                <h2 class="section-title">Quer escolher por <span class="destaque">tema?</span></h2>
             </div>
-            <p class="section-heading-note">Encontre um conto curto para começar sem compromisso.</p>
+
+            <div class="character-rotator" aria-label="Personagens dos contos">
+                <div class="character-portrait" data-character-card>
+                    <img src="dist/aline.png" alt="Aline" class="category-card-img" data-character-image>
+                    <span class="character-fallback" data-character-fallback>Al</span>
+                    <span class="character-name" data-character-name>Aline</span>
+                </div>
+                <div class="character-portrait" data-character-card>
+                    <img src="dist/ronaldo.png" alt="Ronaldo" class="category-card-img" data-character-image>
+                    <span class="character-fallback" data-character-fallback>Ro</span>
+                    <span class="character-name" data-character-name>Ronaldo</span>
+                </div>
+            </div>
+        </div>
+            
         </div>
         <div class="themes-list">
             <a href="#historias" class="theme-chip">Desejo</a>
@@ -306,9 +324,53 @@
                     icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
                 }
             }
-
+            
             // ==========================================
-            // 2. CONTAGEM DE CONTOS PUBLICADOS
+            // 3. CONTAGEM DE CONTOS PUBLICADOS
+            // ==========================================
+
+            const personagens = [
+                { nome: 'Aline', imagem:'dist/aline.png', iniciais: 'Al' },
+                { nome: 'Ronaldo', imagem:'dist/ronaldo.png', iniciais: 'Ro' },
+                { nome: 'Jussara', imagem:'dist/jussara.png', iniciais: 'Ju' }
+            ];
+            const characterCards = document.querySelectorAll('[data-character-card']);
+            let personagemInicial = 0;
+            
+            function atualizarPersonagens() {
+                characterCards.forEach((card, cardIndex) => {
+                    const personagem = personagens[(personagemInicial + cardIndex) % personagens.length];
+                    const image = card.querySelector('[data-character-image]');
+                    const fallback = card.querySelector('[data-character-fallback]');
+                    const name = card.querySelector('[data-character-name]');
+
+                    image.classList.remove('is-visible');
+                    image.onload = () => {
+                        image.classList.add('is-visible');
+                        fallback.hidden = true;
+                    };
+                    image.onerror = () => {
+                        image.classList.remove('is-visible');
+                        fallback.hidden = false;
+                    };
+                    image.alt = personagem.nome;
+                    image.src = personagem.imagem;
+                    fallback.textContent = personagem.iniciais;
+                    fallback.hidden = false;
+                    name.textContent = personagem.nome;
+                });
+
+                personagemInicial = (personagemInicial + characterCards.length) % personagens.length;
+            }
+
+            if (characterCards.length === 2) {
+                atualizarPersonagens();
+                window.setInterval(atualizarPersonagens, 4000);
+            }
+
+            
+            // ==========================================
+            // 3. CONTAGEM DE CONTOS PUBLICADOS
             // ==========================================
             async function contarContosPublicados() {
                 try {
