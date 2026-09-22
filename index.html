@@ -71,10 +71,10 @@
         <h2 class="section-title">O que <span class="destaque">cabe em um conto?</span></h2>
         <div class="about-text">
             <p class="quote">Uma pausa para observar o extraordinário no comum e descobrir personagens onde ninguém mais está olhando.</p>
-            <p><span class="destaque"> Vivemos </span>apressados olhando a tela do celular ou para o relógio, 
-                raramente paramos para ver o que está <span class="destaque"> acontecento </span> ao nosso redor. O 
-                <span class="destaque"> Doces Contos </span> nasceu para dar uma pausa, é um espaço para refletir sobre 
-                momentos inesquecíveis que se tornam histórias memoráveis.</p>
+            <p><span class="destaque">Vivemos </span>apressados olhando a tela do celular ou para o relógio, raramente 
+                paramos para ver o que está <span class="destaque">acontecendo </span>ao nosso redor. O 
+                <span class="destaque">Doces Contos</span> nasceu para dar uma pausa, é um espaço para refletir 
+                sobre momentos inesquecíveis que se tornam histórias memoráveis.</p>
         </div>
     </section>
 
@@ -99,7 +99,7 @@
                 <h3>Ronaldo <span>(20 anos)</span></h3>
                 <p><strong>Perfil:</strong> Tem olhos verdes, forte magnetismo físico e uma presença dominante, mas se entrega à intensidade do casal.</p>
                 <p><strong>Dinâmica:</strong> Responde instantaneamente às provocações de Aline, alimentando a urgência e a tensão constante entre os dois.</p>
-                <p><strong>Marca registrada:</strong> Responde às provocações de Aline e entra nos jogos de sedução e risco propostos por ela.</p>
+                <p><strong>Marca registrada:</strong> Não resiste às provocações de Aline e entra nos jogos de sedução e risco propostos por ela.</p>
             </div>
         </div>
     </section>
@@ -111,7 +111,7 @@
                 <p class="section-kicker">Catálogo</p>
                 <h2 class="section-title">Escolha uma história</h2>
             </div>
-            <p class="section-heading-note">Cada conto tem seu próprio ritmo, atmosfera e claro, cada personagens
+            <p class="section-heading-note">Cada conto tem seu próprio ritmo, atmosfera e claro, cada personagem
                 tem sua própria voz.</p>
         </div>
 
@@ -134,7 +134,7 @@
 
             <!-- Card 3 -->
             <a href="contos/primeiro-encontro.html" class="category-card">
-                <img src="dist/kelly.png" alt="kelly" class="category-card-img">
+                <img src="dist/kelly.png" alt="Kelly" class="category-card-img">
                 <div class="category-card-overlay">
                     <h4 class="category-card-title">Insaciável</h4>
                 </div>
@@ -142,7 +142,7 @@
 
             <!-- Card 4 -->
             <a href="contos/esposa-infiel.html" class="category-card">
-                <img src="dist/sussurro.png" alt="sussurro" class="category-card-img">
+                <img src="dist/jussara.png" alt="Jussara" class="category-card-img">
                 <div class="category-card-overlay">
                     <h4 class="category-card-title">Sussurros Proibidos</h4>
                 </div>
@@ -155,9 +155,8 @@
         <div class="section-heading-row">
             <div>
                 <p class="section-kicker">Leitura rápida</p>
-                <h2 class="section-title">Quer escolher por <span class="destaque">tema?</span></h2>
+                <h2 class="section-title">Quer escolher por tema?</h2>
             </div>
-
             <div class="character-rotator" aria-label="Personagens dos contos">
                 <div class="character-portrait" data-character-card>
                     <img src="dist/aline.png" alt="Aline" class="category-card-img" data-character-image>
@@ -170,8 +169,6 @@
                     <span class="character-name" data-character-name>Ronaldo</span>
                 </div>
             </div>
-        </div>
-            
         </div>
         <div class="themes-list">
             <a href="#historias" class="theme-chip">Desejo</a>
@@ -324,19 +321,20 @@
                     icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
                 }
             }
-            
+
             // ==========================================
-            // 3. CONTAGEM DE CONTOS PUBLICADOS
+            // 2. EXIBIÇÃO DE IMAGENS DE PERSONAGENS
             // ==========================================
 
             const personagens = [
-                { nome: 'Aline', imagem:'dist/aline.png', iniciais: 'Al' },
-                { nome: 'Ronaldo', imagem:'dist/ronaldo.png', iniciais: 'Ro' },
-                { nome: 'Jussara', imagem:'dist/jussara.png', iniciais: 'Ju' }
+                { nome: 'Aline', imagem: 'dist/aline.png', iniciais: 'Al' },
+                { nome: 'Ronaldo', imagem: 'dist/ronaldo.png', iniciais: 'Ro' },
+                { nome: 'Jussara', imagem: 'dist/jussara.png', iniciais: 'Ju' },
+                { nome: 'Kelly', imagem: 'dist/kelly.png', iniciais: 'Ke' },
             ];
-            const characterCards = document.querySelectorAll('[data-character-card']);
+            const characterCards = document.querySelectorAll('[data-character-card]');
             let personagemInicial = 0;
-            
+
             function atualizarPersonagens() {
                 characterCards.forEach((card, cardIndex) => {
                     const personagem = personagens[(personagemInicial + cardIndex) % personagens.length];
@@ -368,7 +366,6 @@
                 window.setInterval(atualizarPersonagens, 4000);
             }
 
-            
             // ==========================================
             // 3. CONTAGEM DE CONTOS PUBLICADOS
             // ==========================================
@@ -390,7 +387,7 @@
             contarContosPublicados();
 
             // ==========================================
-            // 3. REGISTRAR E ATUALIZAR ACESSOS NA TABELA "acessos"
+            // 4. REGISTRAR E ATUALIZAR ACESSOS NA TABELA "acessos"
             // ==========================================
             async function registrarEAtualizarAcesso() {
     try {
@@ -437,7 +434,7 @@
 registrarEAtualizarAcesso();
 
             // ==========================================
-            // 4. FORMULÁRIO DE NEWSLETTER
+            // 5. FORMULÁRIO DE NEWSLETTER
             // ==========================================
             const newsletterForm = document.querySelector('.newsletter-form');
             if (newsletterForm) {
