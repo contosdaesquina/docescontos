@@ -43,10 +43,17 @@
             <div id="chapter-text" class="text-body" style="line-height: 1.8; font-size: 1.1rem; margin-top: 30px;">
                 <p>Aguarde enquanto buscamos a história...</p>
             </div>
+
+            <!-- BOTÕES DE CURTIR / INTERAÇÃO -->
+            <div class="chapter-interaction" style="display: flex; align-items: center; gap: 1rem; margin-top: 40px; padding-top: 20px; border-top: 1px dashed var(--border-color);">
+                <button id="like-btn" class="btn btn-outline" onclick="curtirCapitulo()" style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                    <i class="far fa-heart" id="like-icon"></i> Curtir história (<span id="like-count">0</span>)
+                </button>
+            </div>
         </article>
 
         <!-- Navegação numérica entre capítulos -->
-        <div class="chapter-pagination" style="display: flex; justify-content: space-between; margin-top: 50px; padding-top: 20px; border-top: 1px solid rgba(0,0,0,0.1);">
+        <div class="chapter-pagination">
             <button id="prev-btn" class="btn btn-primary" onclick="mudarCapitulo(-1)" style="display:none;">&larr; Capítulo Anterior</button>
             <button id="next-btn" class="btn btn-primary" onclick="mudarCapitulo(1)" style="display:none; margin-left: auto;">Próximo Capítulo &rarr;</button>
         </div>
