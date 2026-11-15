@@ -14,7 +14,7 @@
 </head>
 <body class="reader-body">
 
-    <!-- Cabeçalho simplificado para o modo de leitura -->
+    <!-- Cabeçalho idêntico ao index.html, com o botão de tema -->
     <header class="cabecalho">
         <div class="cabecalho-brand">
             <a href="index.html" class="cabecalho-logo-link">
@@ -22,9 +22,16 @@
             </a>
             <p class="cabecalho-titulo">Doces Contos</p>
         </div>
+        
         <nav class="menu">
             <a href="index.html" class="menu-item">&larr; Voltar ao Início</a>
         </nav>
+
+        <div class="header-actions">
+            <button id="theme-toggle" class="btn-theme" title="Alternar tema">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
     </header>
 
     <!-- Área principal do conteúdo do capítulo -->
@@ -54,87 +61,114 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script>
-        // Configuração unificada do Supabase (mesmas chaves do index.html)
+        // Configuração unificada do Supabase
         const SUPABASE_URL = 'https://wlghtkzunixojfldupwk.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndsZ2h0a3p1bml4b2pmbGR1cHdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxNzkzMTAsImV4cCI6MjEwMDc1NTMxMH0.BSIvzjfeLfgvSQs2-v4cBxIYsuD45QjJnJXGn1aPAp8';
         
         const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // Captura os parâmetros da URL (ex: leitor.html?historia=menina-atrevida&cap=1)
-        const params = new URLSearchParams(window.location.search);
-        const historiaSlug = params.get('historia');
-        let capAtual = parseInt(params.get('cap')) || 1;
+        document.addEventListener('DOMContentLoaded', () => {
+            // ==========================================
+            // 1. ALTERNÂNCIA DE TEMA (LIGHT / DARK)
+            // ==========================================
+            const themeBtn = document.getElementById('theme-toggle');
+            const storedTheme = localStorage.getItem('theme');
+            
+            if (storedTheme) {
+                document.documentElement.setAttribute('data-theme', storedTheme);
+                atualizarIconeTema(storedTheme);
+            }
 
-        async function carregarCapitulo(slug, numero) {
-            try {
-                const { data, error } = await db
-                    .from('capitulos')
-                    .select('*')
-                    .eq('slug_historia', slug)
-                    .eq('numero_capitulo', numero)
-                    .maybeSingle();
+            if (themeBtn) {
+                themeBtn.addEventListener('click', () => {
+                    const currentTheme = document.documentElement.getAttribute('data-theme');
+                    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                    
+                    document.documentElement.setAttribute('data-theme', newTheme);
+                    localStorage.setItem('theme', newTheme);
+                    atualizarIconeTema(newTheme);
+                });
+            }
 
-                if (error || !data) {
-                    document.getElementById('story-category').innerText = "Aviso";
-                    document.getElementById('chapter-title').innerText = "Capítulo não encontrado";
-                    document.getElementById('chapter-text').innerHTML = "<p>Ops! Este capítulo ainda não foi publicado ou o link está incorreto.</p>";
-                    return;
+            function atualizarIconeTema(theme) {
+                if (!themeBtn) return;
+                const icon = themeBtn.querySelector('i');
+                if (icon) {
+                    icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+                }
+            }
+
+            // ==========================================
+            // 2. CARREGAMENTO DO CAPÍTULO DO SUPABASE
+            // ==========================================
+            const params = new URLSearchParams(window.location.search);
+            const historiaSlug = params.get('historia');
+            let capAtual = parseInt(params.get('cap')) || 1;
+
+            async function carregarCapitulo(slug, numero) {
+                try {
+                    const { data, error } = await db
+                        .from('capitulos')
+                        .select('*')
+                        .eq('slug_historia', slug)
+                        .eq('numero_capitulo', numero)
+                        .maybeSingle();
+
+                    if (error || !data) {
+                        document.getElementById('story-category').innerText = "Aviso";
+                        document.getElementById('chapter-title').innerText = "Capítulo não encontrado";
+                        document.getElementById('chapter-text').innerHTML = "<p>Ops! Este capítulo ainda não foi publicado ou o link está incorreto.</p>";
+                        return;
+                    }
+
+                    document.getElementById('page-title').innerText = `${data.titulo_capitulo} | Doces Contos`;
+                    document.getElementById('story-category').innerText = slug.replace(/-/g, ' ');
+                    document.getElementById('chapter-title').innerText = `Capítulo ${data.numero_capitulo}: ${data.titulo_capitulo}`;
+                    document.getElementById('chapter-text').innerHTML = data.conteudo;
+
+                    verificarNavegacao(slug, numero);
+
+                } catch (err) {
+                    console.error("Erro ao carregar o capítulo:", err);
+                }
+            }
+
+            async function verificarNavegacao(slug, numero) {
+                const prevBtn = document.getElementById('prev-btn');
+                const nextBtn = document.getElementById('next-btn');
+
+                if (numero > 1) {
+                    prevBtn.style.display = 'inline-block';
+                } else {
+                    prevBtn.style.display = 'none';
                 }
 
-                // Atualiza os elementos visuais com os dados vindos do Supabase
-                document.getElementById('page-title').innerText = `${data.titulo_capitulo} | Doces Contos`;
-                document.getElementById('story-category').innerText = slug.replace(/-/g, ' ');
-                document.getElementById('chapter-title').innerText = `Capítulo ${data.numero_capitulo}: ${data.titulo_capitulo}`;
-                
-                // Insere o texto salvo no banco (suporta tags HTML básicas como <p> e <br>)
-                document.getElementById('chapter-text').innerHTML = data.conteudo;
+                const { data } = await db
+                    .from('capitulos')
+                    .select('numero_capitulo')
+                    .eq('slug_historia', slug)
+                    .eq('numero_capitulo', numero + 1)
+                    .maybeSingle();
 
-                // Controla a exibição dos botões de avançar/voltar capítulo
-                verificarNavegacao(slug, numero);
-
-            } catch (err) {
-                console.error("Erro ao carregar o capítulo:", err);
+                if (data) {
+                    nextBtn.style.display = 'inline-block';
+                } else {
+                    nextBtn.style.display = 'none';
+                }
             }
-        }
 
-        async function verificarNavegacao(slug, numero) {
-            const prevBtn = document.getElementById('prev-btn');
-            const nextBtn = document.getElementById('next-btn');
+            window.mudarCapitulo = function(direcao) {
+                capAtual += direcao;
+                window.location.href = `leitor.html?historia=${historiaSlug}&cap=${capAtual}`;
+            };
 
-            // Botão anterior aparece se o capítulo for maior que 1
-            if (numero > 1) {
-                prevBtn.style.display = 'inline-block';
+            if (historiaSlug) {
+                carregarCapitulo(historiaSlug, capAtual);
             } else {
-                prevBtn.style.display = 'none';
+                document.getElementById('chapter-title').innerText = "Nenhuma história selecionada";
+                document.getElementById('chapter-text').innerHTML = "<p>Por favor, retorne à página inicial e escolha uma história.</p>";
             }
-
-            // Verifica se existe o próximo capítulo cadastrado no Supabase
-            const { data } = await db
-                .from('capitulos')
-                .select('numero_capitulo')
-                .eq('slug_historia', slug)
-                .eq('numero_capitulo', numero + 1)
-                .maybeSingle();
-
-            if (data) {
-                nextBtn.style.display = 'inline-block';
-            } else {
-                nextBtn.style.display = 'none';
-            }
-        }
-
-        function mudarCapitulo(direcao) {
-            capAtual += direcao;
-            window.location.href = `leitor.html?historia=${historiaSlug}&cap=${capAtual}`;
-        }
-
-        // Executa a busca ao carregar a página
-        if (historiaSlug) {
-            carregarCapitulo(historiaSlug, capAtual);
-        } else {
-            document.getElementById('chapter-title').innerText = "Nenhuma história selecionada";
-            document.getElementById('chapter-text').innerHTML = "<p>Por favor, retorne à página inicial e escolha uma história.</p>";
-        }
+        });
     </script>
 </body>
 </html>
