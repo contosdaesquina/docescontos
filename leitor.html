@@ -176,6 +176,28 @@
                 document.getElementById('chapter-text').innerHTML = "<p>Por favor, retorne à página inicial e escolha uma história.</p>";
             }
         });
+        // Função simples para registrar curtida no capítulo atual
+        let jaCurtiu = false;
+        async function curtirCapitulo() {
+            if (jaCurtiu) {
+                alert('Você já curtiu este capítulo nesta sessão!');
+                return;
+            }
+
+            const likeCountElem = document.getElementById('like-count');
+            const likeIcon = document.getElementById('like-icon');
+            
+            let atual = parseInt(likeCountElem.innerText) || 0;
+            atual++;
+            likeCountElem.innerText = atual;
+            
+            likeIcon.className = "fas fa-heart";
+            likeIcon.style.color = "var(--accent-red, #ef4444)";
+            jaCurtiu = true;
+
+            // Se você quiser salvar o incremento no Supabase, pode criar uma coluna 'curtidas' 
+            // na tabela capitulos e atualizar aqui via .update() com base no slug_historia e numero_capitulo.
+        }
     </script>
 </body>
 </html>
