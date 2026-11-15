@@ -70,173 +70,177 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script>
-        // Configuração unificada do Supabase
-        const SUPABASE_URL = 'https://wlghtkzunixojfldupwk.supabase.co';
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndsZ2h0a3p1bml4b2pmbGR1cHdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxNzkzMTAsImV4cCI6MjEwMDc1NTMxMH0.BSIvzjfeLfgvSQs2-v4cBxIYsuD45QjJnJXGn1aPAp8';
+    // Configuração unificada do Supabase
+    const SUPABASE_URL = 'https://wlghtkzunixojfldupwk.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndsZ2h0a3p1bml4b2pmbGR1cHdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxNzkzMTAsImV4cCI6MjEwMDc1NTMxMH0.BSIvzjfeLfgvSQs2-v4cBxIYsuD45QjJnJXGn1aPAp8';
+    
+    const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // VARIÁVEis GLOBAIS (para ficarem acessíveis a qualquer função)
+    const params = new URLSearchParams(window.location.search);
+    const historiaSlug = params.get('historia');
+    let capAtual = parseInt(params.get('cap')) || 1;
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // ==========================================
+        // 1. ALTERNÂNCIA DE TEMA (LIGHT / DARK)
+        // ==========================================
+        const themeBtn = document.getElementById('theme-toggle');
+        const storedTheme = localStorage.getItem('theme');
         
-        const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        if (storedTheme) {
+            document.documentElement.setAttribute('data-theme', storedTheme);
+            atualizarIconeTema(storedTheme);
+        }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            // ==========================================
-            // 1. ALTERNÂNCIA DE TEMA (LIGHT / DARK)
-            // ==========================================
-            const themeBtn = document.getElementById('theme-toggle');
-            const storedTheme = localStorage.getItem('theme');
-            
-            if (storedTheme) {
-                document.documentElement.setAttribute('data-theme', storedTheme);
-                atualizarIconeTema(storedTheme);
+        if (themeBtn) {
+            themeBtn.addEventListener('click', () => {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                atualizarIconeTema(newTheme);
+            });
+        }
+
+        function atualizarIconeTema(theme) {
+            if (!themeBtn) return;
+            const icon = themeBtn.querySelector('i');
+            if (icon) {
+                icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
             }
+        }
 
-            if (themeBtn) {
-                themeBtn.addEventListener('click', () => {
-                    const currentTheme = document.documentElement.getAttribute('data-theme');
-                    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-                    
-                    document.documentElement.setAttribute('data-theme', newTheme);
-                    localStorage.setItem('theme', newTheme);
-                    atualizarIconeTema(newTheme);
-                });
-            }
+        // ==========================================
+        // 2. CARREGAMENTO DO CAPÍTULO DO SUPABASE
+        // ==========================================
+        if (historiaSlug) {
+            carregarCapitulo(historiaSlug, capAtual);
+        } else {
+            document.getElementById('chapter-title').innerText = "Nenhuma história selecionada";
+            document.getElementById('chapter-text').innerHTML = "<p>Por favor, retorne à página inicial e escolha uma história.</p>";
+        }
+    });
 
-            function atualizarIconeTema(theme) {
-                if (!themeBtn) return;
-                const icon = themeBtn.querySelector('i');
-                if (icon) {
-                    icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
-                }
-            }
-
-            // ==========================================
-            // 2. CARREGAMENTO DO CAPÍTULO DO SUPABASE
-            // ==========================================
-            const params = new URLSearchParams(window.location.search);
-            const historiaSlug = params.get('historia');
-            let capAtual = parseInt(params.get('cap')) || 1;
-
-            async function carregarCapitulo(slug, numero) {
-                try {
-                    const { data, error } = await db
-                        .from('capitulos')
-                        .select('*')
-                        .eq('slug_historia', slug)
-                        .eq('numero_capitulo', numero)
-                        .maybeSingle();
-
-                    if (error || !data) {
-                        document.getElementById('story-category').innerText = "Aviso";
-                        document.getElementById('chapter-title').innerText = "Capítulo não encontrado";
-                        document.getElementById('chapter-text').innerHTML = "<p>Ops! Este capítulo ainda não foi publicado ou o link está incorreto.</p>";
-                        return;
-                    }
-
-                    document.getElementById('page-title').innerText = `${data.titulo_capitulo} | Doces Contos`;
-                    document.getElementById('story-category').innerText = slug.replace(/-/g, ' ');
-                    document.getElementById('chapter-title').innerText = `Capítulo ${data.numero_capitulo}: ${data.titulo_capitulo}`;
-                    document.getElementById('chapter-text').innerHTML = data.conteudo;
-
-                    verificarNavegacao(slug, numero);
-
-                } catch (err) {
-                    console.error("Erro ao carregar o capítulo:", err);
-                }
-            }
-
-            async function verificarNavegacao(slug, numero) {
-                const prevBtn = document.getElementById('prev-btn');
-                const nextBtn = document.getElementById('next-btn');
-
-                if (numero > 1) {
-                    prevBtn.style.display = 'inline-block';
-                } else {
-                    prevBtn.style.display = 'none';
-                }
-
-                const { data } = await db
-                    .from('capitulos')
-                    .select('numero_capitulo')
-                    .eq('slug_historia', slug)
-                    .eq('numero_capitulo', numero + 1)
-                    .maybeSingle();
-
-                if (data) {
-                    nextBtn.style.display = 'inline-block';
-                } else {
-                    nextBtn.style.display = 'none';
-                }
-            }
-
-            window.mudarCapitulo = function(direcao) {
-                capAtual += direcao;
-                window.location.href = `leitor.html?historia=${historiaSlug}&cap=${capAtual}`;
-            };
-
-            if (historiaSlug) {
-                carregarCapitulo(historiaSlug, capAtual);
-            } else {
-                document.getElementById('chapter-title').innerText = "Nenhuma história selecionada";
-                document.getElementById('chapter-text').innerHTML = "<p>Por favor, retorne à página inicial e escolha uma história.</p>";
-            }
-        });
-        let votoRegistrado = false;
-
-        // Função para carregar os votos iniciais do capítulo do Supabase
-        async function carregarVotos(slug, numero) {
+    async function carregarCapitulo(slug, numero) {
+        try {
             const { data, error } = await db
                 .from('capitulos')
-                .select('likes, deslikes')
+                .select('*')
                 .eq('slug_historia', slug)
                 .eq('numero_capitulo', numero)
                 .maybeSingle();
 
-            if (!error && data) {
-                document.getElementById('like-count').innerText = data.likes || 0;
-                document.getElementById('dislike-count').innerText = data.deslikes || 0;
-            }
-        }
-
-        // Função para computar e salvar o voto no Supabase
-        async function votarCapitulo(tipo) {
-            const sessaoKey = `voto_${historiaSlug}_${capAtual}`;
-            if (localStorage.getItem(sessaoKey)) {
-                alert('Você já votou neste capítulo!');
+            if (error || !data) {
+                document.getElementById('story-category').innerText = "Aviso";
+                document.getElementById('chapter-title').innerText = "Capítulo não encontrado";
+                document.getElementById('chapter-text').innerHTML = "<p>Ops! Este capítulo ainda não foi publicado ou o link está incorreto.</p>";
                 return;
             }
 
-            const likeCountElem = document.getElementById('like-count');
-            const dislikeCountElem = document.getElementById('dislike-count');
-            const likeIcon = document.getElementById('like-icon');
-            const dislikeIcon = document.getElementById('dislike-icon');
+            document.getElementById('page-title').innerText = `${data.titulo_capitulo} | Doces Contos`;
+            document.getElementById('story-category').innerText = slug.replace(/-/g, ' ');
+            document.getElementById('chapter-title').innerText = `Capítulo ${data.numero_capitulo}: ${data.titulo_capitulo}`;
+            document.getElementById('chapter-text').innerHTML = data.conteudo;
 
-            let novoLikes = parseInt(likeCountElem.innerText) || 0;
-            let novosDislikes = parseInt(dislikeCountElem.innerText) || 0;
+            // Puxa os votos atuais do Supabase
+            carregarVotos(slug, numero);
+            verificarNavegacao(slug, numero);
 
-            if (tipo === 'like') {
-                novoLikes++;
-                likeCountElem.innerText = novoLikes;
-                likeIcon.className = "fas fa-heart";
-                likeIcon.style.color = "var(--primary-color)";
-            } else {
-                novosDislikes++;
-                dislikeCountElem.innerText = novosDislikes;
-                dislikeIcon.className = "fas fa-thumbs-down";
-                dislikeIcon.style.color = "var(--accent-red, #ef4444)";
-            }
-
-            // Trava para o usuário não votar de novo na mesma sessão
-            localStorage.setItem(sessaoKey, tipo);
-
-            // Atualiza de verdade no banco de dados do Supabase
-            const { error } = await db
-                .from('capitulos')
-                .update({ likes: novoLikes, deslikes: novosDislikes })
-                .eq('slug_historia', historiaSlug)
-                .eq('numero_capitulo', capAtual);
-
-            if (error) {
-                console.error("Erro ao registrar voto no Supabase:", error);
-            }
+        } catch (err) {
+            console.error("Erro ao carregar o capítulo:", err);
         }
-    </script>
+    }
+
+    async function carregarVotos(slug, numero) {
+        const { data, error } = await db
+            .from('capitulos')
+            .select('likes, deslikes')
+            .eq('slug_historia', slug)
+            .eq('numero_capitulo', numero)
+            .maybeSingle();
+
+        if (!error && data) {
+            document.getElementById('like-count').innerText = data.likes || 0;
+            document.getElementById('dislike-count').innerText = data.deslikes || 0;
+        }
+    }
+
+    async function verificarNavegacao(slug, numero) {
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+
+        if (numero > 1) {
+            prevBtn.style.display = 'inline-block';
+        } else {
+            prevBtn.style.display = 'none';
+        }
+
+        const { data } = await db
+            .from('capitulos')
+            .select('numero_capitulo')
+            .eq('slug_historia', slug)
+            .eq('numero_capitulo', numero + 1)
+            .maybeSingle();
+
+        if (data) {
+            nextBtn.style.display = 'inline-block';
+        } else {
+            nextBtn.style.display = 'none';
+        }
+    }
+
+    function mudarCapitulo(direcao) {
+        capAtual += direcao;
+        window.location.href = `leitor.html?historia=${historiaSlug}&cap=${capAtual}`;
+    }
+
+    // ==========================================
+    // 3. FUNÇÃO DE VOTAÇÃO (CURTIR / DESLIKE)
+    // ==========================================
+    async function votarCapitulo(tipo) {
+        const sessaoKey = `voto_${historiaSlug}_${capAtual}`;
+        if (localStorage.getItem(sessaoKey)) {
+            alert('Você já votou neste capítulo nesta sessão!');
+            return;
+        }
+
+        const likeCountElem = document.getElementById('like-count');
+        const dislikeCountElem = document.getElementById('dislike-count');
+        const likeIcon = document.getElementById('like-icon');
+        const dislikeIcon = document.getElementById('dislike-icon');
+
+        let novoLikes = parseInt(likeCountElem.innerText) || 0;
+        let novosDislikes = parseInt(dislikeCountElem.innerText) || 0;
+
+        if (tipo === 'like') {
+            novoLikes++;
+            likeCountElem.innerText = novoLikes;
+            likeIcon.className = "fas fa-heart";
+            likeIcon.style.color = "var(--primary-color)";
+        } else {
+            novosDislikes++;
+            dislikeCountElem.innerText = novosDislikes;
+            dislikeIcon.className = "fas fa-thumbs-down";
+            dislikeIcon.style.color = "var(--accent-red, #ef4444)";
+        }
+
+        // Salva no localStorage para impedir voto duplicado
+        localStorage.setItem(sessaoKey, tipo);
+
+        // Atualiza no banco de dados do Supabase
+        const { error } = await db
+            .from('capitulos')
+            .update({ likes: novoLikes, deslikes: novosDislikes })
+            .eq('slug_historia', historiaSlug)
+            .eq('numero_capitulo', capAtual);
+
+        if (error) {
+            console.error("Erro ao registrar voto no Supabase:", error);
+            alert("Erro ao salvar o voto. Verifique se a política de UPDATE foi criada no Supabase.");
+        }
+    }
+</script>
 </body>
 </html>
