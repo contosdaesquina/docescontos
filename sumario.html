@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Sumário da História | Doces Contos</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="cabecalho">
+        <div class="cabecalho-brand">
+            <a href="index.html" class="cabecalho-logo-link">
+                <img class="cabecalho-logo" src="dist/logo.svg" alt="Logo">
+            </a>
+            <p class="cabecalho-titulo">Doces Contos</p>
+        </div>
+        <nav class="menu">
+            <a href="index.html" class="menu-item">&larr; Voltar ao Início</a>
+        </nav>
+        <div class="header-actions">
+            <button id="theme-toggle" class="btn-theme" title="Alternar tema">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </header>
+
+    <main style="max-width: 800px; margin: 40px auto; padding: 0 20px;">
+        <h1 id="story-title" class="section-title" style="text-transform: capitalize;">Carregando história...</h1>
+        <p class="section-heading-note" style="margin-bottom: 30px;">Escolha abaixo o capítulo que deseja ler:</p>
+
+        <!-- Lista onde os capítulos cadastrados no Supabase vão aparecer -->
+        <div id="capitulos-list" style="display: flex; flex-direction: column; gap: 1rem;">
+            <p>Carregando capítulos...</p>
+        </div>
+    </main>
+
+    <footer class="rodape" style="margin-top: 80px;">
+        <p class="direitos">&copy; Doces Contos. Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = 'https://wlghtkzunixojfldupwk.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndsZ2h0a3p1bml4b2pmbGR1cHdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxNzkzMTAsImV4cCI6MjEwMDc1NTMxMH0.BSIvzjfeLfgvSQs2-v4cBxIYsuD45QjJnJXGn1aPAp8';
+        const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        const params = new URLSearchParams(window.location.search);
+        const historiaSlug = params.get('historia');
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Tema escuro/claro
+            const themeBtn = document.getElementById('theme-toggle');
+            const storedTheme = localStorage.getItem('theme');
+            if (storedTheme) {
+                document.documentElement.setAttribute('data-theme', storedTheme);
+                if(themeBtn) themeBtn.querySelector('i').className = storedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+            }
+            if (themeBtn) {
+                themeBtn.addEventListener('click', () => {
+                    const currentTheme = document.documentElement.getAttribute('data-theme');
+                    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                    document.documentElement.setAttribute('data-theme', newTheme);
+                    localStorage.setItem('theme', newTheme);
+                    themeBtn.querySelector('i').className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+                });
+            }
+
+            if (historiaSlug) {
+                carregarListaCapitulos(historiaSlug);
+            } else {
+                document.getElementById('story-title').innerText = "História não encontrada";
+                document.getElementById('capitulos-list').innerHTML = "<p>Nenhuma história foi selecionada.</p>";
+            }
+        });
+
+        async function carregarListaCapitulos(slug) {
+            const { data, error } = await db
+                .from('capitulos')
+                .select('numero_capitulo, titulo_capitulo')
+                .eq('slug_historia', slug)
+                .order('numero_capitulo', { ascending: true });
+
+            const container = document.getElementById('capitulos-list');
+            document.getElementById('story-title').innerText = slug.replace(/-/g, ' ');
+
+            if (error || !data || data.length === 0) {
+                container.innerHTML = "<p>Ainda não há capítulos publicados para esta história.</p>";
+                return;
+            }
+
+            // Cria a lista de capítulos dinamicamente com imagens menores / miniaturas estilo cartão
+            let html = '';
+            data.forEach(cap => {
+                html += `
+                    <a href="leitor.html?historia=${slug}&cap=${cap.numero_capitulo}" class="published-story" style="display: flex; align-items: center; justify-content: space-between; padding: 1rem; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; text-decoration: none; color: var(--text-primary); transition: border-color 0.2s;">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <span class="published-story-number" style="color: var(--primary-color); font-family: var(--font-heading); font-size: 1.2rem;">0${cap.numero_capitulo}</span>
+                            <div>
+                                <strong style="font-size: 1rem;">Capítulo ${cap.numero_capitulo}: ${cap.titulo_capitulo}</strong>
+                                <small style="display: block; color: var(--text-muted); font-size: 0.8rem; margin-top: 2px;">Clique para iniciar a leitura</small>
+                            </div>
+                        </div>
+                        <span class="published-story-arrow" style="color: var(--primary-color);">&rarr;</span>
+                    </a>
+                `;
+            });
+            container.innerHTML = html;
+        }
+    </script>
+</body>
+</html>
