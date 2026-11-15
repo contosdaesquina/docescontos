@@ -1090,3 +1090,56 @@ article p:first-child::first-letter {
     filter: invert(1) brightness(1.8);
     transition: filter 0.3s ease;
 }
+/* ==========================================================================
+   10. AJUSTES DO LEITOR DE CAPÍTULOS (Parágrafos e Tipografia Editorial)
+   ========================================================================== */
+
+/* Caixa principal de leitura */
+.reader-container {
+    max-width: 720px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* Estilização editorial dos parágrafos dentro do leitor */
+.text-body {
+    font-family: var(--font-body);
+    font-size: 1.15rem;
+    line-height: 1.85;
+    color: var(--text-primary);
+}
+
+/* Espaçamento vertical e recuo clássico de romance nas primeiras linhas */
+.text-body p {
+    margin-top: 0;
+    margin-bottom: 1rem;     /* Cria o respiro vertical ideal entre os parágrafos */
+    text-indent: 1.5em;       /* Dá o recuo charmoso na primeira linha de cada parágrafo */
+    text-align: justify;      /* Justifica o texto para dar aspecto de livro impresso */
+}
+
+/* O primeiro parágrafo não tem recuo, pois recebe a letra capitular */
+.text-body p:first-of-type {
+    text-indent: 0;
+}
+
+/* Letra capitular gigante na primeira letra do texto */
+.text-body p:first-of-type::first-letter {
+    display: inline-block;
+    vertical-align: bottom;
+    padding-right: 0.15em;
+    color: var(--primary-color);
+    font-family: var(--font-heading);
+    font-size: 3.8em;
+    font-weight: 600;
+    line-height: 0.8;
+}
+
+/* Rodapé do leitor / Paginação numérica entre capítulos */
+.chapter-pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 50px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+}
