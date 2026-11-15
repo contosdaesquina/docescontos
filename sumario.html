@@ -79,7 +79,7 @@
             }
         });
 
-        async function carregarListaCapitulos(slug) {
+       async function carregarListaCapitulos(slug) {
             const { data, error } = await db
                 .from('capitulos')
                 .select('numero_capitulo, titulo_capitulo')
@@ -93,6 +93,28 @@
                 container.innerHTML = "<p>Ainda não há capítulos publicados para esta história.</p>";
                 return;
             }
+
+            // Defina aqui a imagem de capa padrão para esta história (ex: 'dist/consolo-de-borracha-capa.png')
+            const imagemCapa = 'dist/consolo-de-borracha-capa.png';
+
+            let html = '';
+            data.forEach(cap => {
+                html += `
+                    <a href="leitor.html?historia=${slug}&cap=${cap.numero_capitulo}" class="published-story" style="display: flex; align-items: center; justify-content: space-between; padding: 1rem; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px; text-decoration: none; color: var(--text-primary); transition: border-color 0.2s;">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <!-- Imagem no lugar do número -->
+                            <img src="${imagemCapa}" alt="Capa Capítulo ${cap.numero_capitulo}" style="width: 55px; height: 55px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border-color);">
+                            <div>
+                                <strong style="font-size: 1rem; font-family: var(--font-heading);">Capítulo ${cap.numero_capitulo}: ${cap.titulo_capitulo}</strong>
+                                <small style="display: block; color: var(--text-muted); font-size: 0.8rem; margin-top: 2px;">Clique para iniciar a leitura</small>
+                            </div>
+                        </div>
+                        <span class="published-story-arrow" style="color: var(--primary-color);">&rarr;</span>
+                    </a>
+                `;
+            });
+            container.innerHTML = html;
+        }
 
             // Cria a lista de capítulos dinamicamente com imagens menores / miniaturas estilo cartão
             let html = '';
