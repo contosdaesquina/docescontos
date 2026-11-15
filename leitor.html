@@ -43,11 +43,13 @@
             <div id="chapter-text" class="text-body" style="line-height: 1.8; font-size: 1.1rem; margin-top: 30px;">
                 <p>Aguarde enquanto buscamos a história...</p>
             </div>
-
-            <!-- BOTÕES DE CURTIR / INTERAÇÃO -->
+            <!-- BOTÕES DE CURTIR E DESLIKE -->
             <div class="chapter-interaction" style="display: flex; align-items: center; gap: 1rem; margin-top: 40px; padding-top: 20px; border-top: 1px dashed var(--border-color);">
-                <button id="like-btn" class="btn btn-outline" onclick="curtirCapitulo()" style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                    <i class="far fa-heart" id="like-icon"></i> Curtir história (<span id="like-count">0</span>)
+                <button id="like-btn" class="btn btn-outline" onclick="votarCapitulo('like')" style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                    <i class="far fa-heart" id="like-icon"></i> Curti (<span id="like-count">0</span>)
+                </button>
+                <button id="dislike-btn" class="btn btn-outline" onclick="votarCapitulo('dislike')" style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; border-color: var(--text-muted); color: var(--text-muted);">
+                    <i class="far fa-thumbs-down" id="dislike-icon"></i> Não curti (<span id="dislike-count">0</span>)
                 </button>
             </div>
         </article>
@@ -176,27 +178,64 @@
                 document.getElementById('chapter-text').innerHTML = "<p>Por favor, retorne à página inicial e escolha uma história.</p>";
             }
         });
-        // Função simples para registrar curtida no capítulo atual
-        let jaCurtiu = false;
-        async function curtirCapitulo() {
-            if (jaCurtiu) {
-                alert('Você já curtiu este capítulo nesta sessão!');
+        let votoRegistrado = false;
+
+        // Função para carregar os votos iniciais do capítulo do Supabase
+        async function carregarVotos(slug, numero) {
+            const { data, error } = await db
+                .from('capitulos')
+                .select('likes, deslikes')
+                .eq('slug_historia', slug)
+                .eq('numero_capitulo', numero)
+                .maybeSingle();
+
+            if (!error && data) {
+                document.getElementById('like-count').innerText = data.likes || 0;
+                document.getElementById('dislike-count').innerText = data.deslikes || 0;
+            }
+        }
+
+        // Função para computar e salvar o voto no Supabase
+        async function votarCapitulo(tipo) {
+            const sessaoKey = `voto_${historiaSlug}_${capAtual}`;
+            if (localStorage.getItem(sessaoKey)) {
+                alert('Você já votou neste capítulo!');
                 return;
             }
 
             const likeCountElem = document.getElementById('like-count');
+            const dislikeCountElem = document.getElementById('dislike-count');
             const likeIcon = document.getElementById('like-icon');
-            
-            let atual = parseInt(likeCountElem.innerText) || 0;
-            atual++;
-            likeCountElem.innerText = atual;
-            
-            likeIcon.className = "fas fa-heart";
-            likeIcon.style.color = "var(--accent-red, #ef4444)";
-            jaCurtiu = true;
+            const dislikeIcon = document.getElementById('dislike-icon');
 
-            // Se você quiser salvar o incremento no Supabase, pode criar uma coluna 'curtidas' 
-            // na tabela capitulos e atualizar aqui via .update() com base no slug_historia e numero_capitulo.
+            let novoLikes = parseInt(likeCountElem.innerText) || 0;
+            let novosDislikes = parseInt(dislikeCountElem.innerText) || 0;
+
+            if (tipo === 'like') {
+                novoLikes++;
+                likeCountElem.innerText = novoLikes;
+                likeIcon.className = "fas fa-heart";
+                likeIcon.style.color = "var(--primary-color)";
+            } else {
+                novosDislikes++;
+                dislikeCountElem.innerText = novosDislikes;
+                dislikeIcon.className = "fas fa-thumbs-down";
+                dislikeIcon.style.color = "var(--accent-red, #ef4444)";
+            }
+
+            // Trava para o usuário não votar de novo na mesma sessão
+            localStorage.setItem(sessaoKey, tipo);
+
+            // Atualiza de verdade no banco de dados do Supabase
+            const { error } = await db
+                .from('capitulos')
+                .update({ likes: novoLikes, deslikes: novosDislikes })
+                .eq('slug_historia', historiaSlug)
+                .eq('numero_capitulo', capAtual);
+
+            if (error) {
+                console.error("Erro ao registrar voto no Supabase:", error);
+            }
         }
     </script>
 </body>
