@@ -88,7 +88,7 @@
         async function carregarListaCapitulos(slug) {
             const { data, error } = await db
                 .from('capitulos')
-                .select('numero_capitulo, titulo_capitulo')
+                .select('numero_capitulo, titulo_capitulo', imagem-capa)
                 .eq('slug_historia', slug)
                 .order('numero_capitulo', { ascending: true });
 
