@@ -22,10 +22,6 @@
             </a>
             <p class="cabecalho-titulo">Doces Contos</p>
         </div>
-        
-        <nav class="menu">
-            <a href="index.html" class="menu-item">&larr; Voltar ao Início</a>
-        </nav>
 
         <div class="header-actions">
             <button id="theme-toggle" class="btn-theme" title="Alternar tema">
@@ -36,25 +32,48 @@
 
     <!-- Área principal do conteúdo do capítulo -->
     <main class="reader-container" style="max-width: 720px; margin: 40px auto; padding: 0 20px;">
-        <article class="chapter-content">
-            <!-- Imagem de Destaque do Capítulo -->
-            
-            <span id="story-category" class="section-kicker" style="text-transform: uppercase; letter-spacing: 1px;">Carregando...</span>
-            <h1 id="chapter-title" class="section-title" style="margin-top: 10px; font-family: 'Playfair Display', serif;">Carregando capítulo...</h1>
-            
-            <div id="chapter-text" class="text-body" style="line-height: 1.8; font-size: 1.1rem; margin-top: 30px;">
-                <p>Aguarde enquanto buscamos a história...</p>
+        <header class="editorial-header">
+    <!-- 1. Linha de metadados superior -->
+    <div class="editorial-kicker">
+        <span class="kicker-line"></span>
+        <span id="meta-serie">Carregando...</span>
+        <span class="kicker-dot">&bull;</span>
+        <span id="meta-cap">Cap. 1</span>
+        <span class="kicker-dot">&bull;</span>
+        <span id="meta-data" class="kicker-date">--</span>
+    </div>
+
+    <!-- 2. Título do Capítulo -->
+    <h1 id="chapter-title" class="editorial-title">Carregando título...</h1>
+
+    <!-- 3. Subtítulo / Descrição em itálico -->
+    <p id="chapter-subtitle" class="editorial-subtitle"></p>
+
+    <!-- 4. Barra de Autoria e Tempo de Leitura -->
+    <div class="editorial-meta-bar">
+        <div class="author-box">
+            <div class="author-avatar">D</div>
+            <div class="author-details">
+                <strong class="author-name">Doces Contos</strong>
+                <span class="author-handle">@doces.contosbr</span>
             </div>
-            <!-- BOTÕES DE CURTIR E DESLIKE -->
-            <div class="chapter-interaction" style="display: flex; align-items: center; gap: 1rem; margin-top: 40px; padding-top: 20px; border-top: 1px dashed var(--border-color);">
-                <button id="like-btn" class="btn btn-outline" onclick="votarCapitulo('like')" style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                    <i class="far fa-heart" id="like-icon"></i> Curti (<span id="like-count">0</span>)
-                </button>
-                <button id="dislike-btn" class="btn btn-outline" onclick="votarCapitulo('dislike')" style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; border-color: var(--text-muted); color: var(--text-muted);">
-                    <i class="far fa-thumbs-down" id="dislike-icon"></i> Não curti (<span id="dislike-count">0</span>)
-                </button>
+        </div>
+
+        <div class="reading-metrics">
+            <div class="metric-item">
+                <strong id="word-count">0</strong>
+                <span>PALAVRAS</span>
             </div>
-        </article>
+            <div class="metric-item">
+                <strong id="read-time">0</strong>
+                <span>MINUTOS</span>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Corpo do texto do capítulo -->
+<div id="chapter-text" class="text-body"></div>
 
         <!-- Navegação numérica entre capítulos -->
         <div class="chapter-pagination">
