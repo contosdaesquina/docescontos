@@ -261,6 +261,44 @@
             console.error("Erro ao registrar voto no Supabase:", error);
             alert("Erro ao salvar o voto. Verifique se a política de UPDATE foi criada no Supabase.");
         }
+        // Formata o nome da série (ex: "primeiro-namorado" -> "Primeiro Namorado")
+const nomeSerie = slug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+document.getElementById('meta-serie').innerText = nomeSerie;
+document.getElementById('meta-cap').innerText = `Cap. ${data.numero_capitulo}`;
+
+// Formata a data de criação do registro no Supabase (ex: "16 DE NOV. DE 2026")
+if (data.created_at) {
+    const dataObj = new Date(data.created_at);
+    const dataFormatada = dataObj.toLocaleDateString('pt-BR', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric'
+    }).toUpperCase();
+    document.getElementById('meta-data').innerText = dataFormatada;
+}
+
+// Preenche título (usando innerHTML para permitir <em>palavra</em> em itálico) e subtítulo
+document.getElementById('chapter-title').innerHTML = data.titulo_capitulo;
+
+const subtitleEl = document.getElementById('chapter-subtitle');
+if (data.descricao) {
+    subtitleEl.innerText = data.descricao;
+    subtitleEl.style.display = 'block';
+} else {
+    subtitleEl.style.display = 'none';
+}
+
+// Insere o conteúdo do conto
+const chapterTextEl = document.getElementById('chapter-text');
+chapterTextEl.innerHTML = data.conteudo;
+
+// Calcula palavras (removendo tags HTML) e minutos de leitura (média de 200 palavras/min)
+const textoPuro = chapterTextEl.innerText || chapterTextEl.textContent || '';
+const totalPalavras = textoPuro.trim().split(/\s+/).filter(Boolean).length;
+const minutosLeitura = Math.max(1, Math.ceil(totalPalavras / 200));
+
+document.getElementById('word-count').innerText = totalPalavras;
+document.getElementById('read-time').innerText = minutosLeitura;
     }
 </script>
 </body>
