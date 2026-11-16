@@ -88,7 +88,7 @@
         async function carregarListaCapitulos(slug) {
             const { data, error } = await db
                 .from('capitulos')
-                .select('numero_capitulo, titulo_capitulo, imagem_capa')
+                .select('numero_capitulo, titulo_capitulo, imagem_capa, descricao')
                 .eq('slug_historia', slug)
                 .order('numero_capitulo', { ascending: true });
 
@@ -107,16 +107,21 @@
 
             let html = '';
             data.forEach(cap => {
-                // Usa a imagem específica do capítulo cadastrada no banco, ou a logo como padrão
-                const capaDoCapitulo = cap.imagem_capa || 'dist/logo.svg';
+                // Puxa a descrição individual do capítulo ou usa o texto padrão se estiver vazia
+                const resumoCapitulo = cap.descricao || 'Clique para iniciar a leitura';
+
+                // Se o capítulo tiver imagem cadastrada, exibe a miniatura; caso contrário, mostra o número formatado (02, 03...)
+                const miniaturaHtml = cap.imagem_capa 
+                    ? `<img src="${cap.imagem_capa}" alt="Capítulo ${cap.numero_capitulo}" onerror="this.onerror=null; this.src='dist/logo.svg';" style="width: 55px; height: 55px; min-width: 55px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border-color);">`
+                    : `<div style="width: 55px; height: 55px; min-width: 55px; display: flex; align-items: center; justify-content: center; background: var(--bg-primary); border-radius: 8px; border: 1px solid var(--border-color); color: var(--primary-color); font-family: var(--font-heading); font-weight: 600; font-size: 1.1rem;">${String(cap.numero_capitulo).padStart(2, '0')}</div>`;
 
                 html += `
                     <a href="leitor.html?historia=${slug}&cap=${cap.numero_capitulo}" class="published-story" style="display: flex; align-items: center; justify-content: space-between; padding: 1rem; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px; text-decoration: none; color: var(--text-primary); transition: border-color 0.2s;">
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <img src="${capaDoCapitulo}" alt="Capítulo ${cap.numero_capitulo}" style="width: 55px; height: 55px; min-width: 55px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border-color);">
+                        <div style="display: flex; align-items: center; gap: 1rem; padding-right: 1rem;">
+                            ${miniaturaHtml}
                             <div>
                                 <strong style="font-size: 1rem; font-family: var(--font-heading);">Capítulo ${cap.numero_capitulo}: ${cap.titulo_capitulo}</strong>
-                                <small style="display: block; color: var(--text-muted); font-size: 0.8rem; margin-top: 2px;">Cansada da faxina, mas fervendo de saudade. Quando a espera pelo Ronaldo passa dos limites, Aline recorre ao seu fiel escudeiro de silicone para dar conta do recado e aliviar o fogo antes do reencontro.</small>
+                                <small style="display: block; color: var(--text-muted); font-size: 0.85rem; margin-top: 4px; line-height: 1.4;">${resumoCapitulo}</small>
                             </div>
                         </div>
                         <span class="published-story-arrow" style="color: var(--primary-color);">&rarr;</span>
