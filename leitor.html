@@ -76,11 +76,27 @@
 <div id="chapter-text" class="text-body"></div>
 
         <!-- Navegação numérica entre capítulos -->
-        <div class="chapter-pagination">
-            <button id="prev-btn" class="btn btn-primary" onclick="mudarCapitulo(-1)" style="display:none;">&larr; Capítulo Anterior</button>
-            <button id="next-btn" class="btn btn-primary" onclick="mudarCapitulo(1)" style="display:none; margin-left: auto;">Próximo Capítulo &rarr;</button>
-        </div>
-    </main>
+        <nav class="editorial-nav-wrapper" aria-label="Navegação entre capítulos">
+        <!-- Link superior alinhado à direita -->
+            <div class="editorial-nav-top">
+                <a id="link-todos-capitulos" href="sumario.html" class="editorial-all-link">
+                VER TODOS OS CAPÍTULOS &rarr;
+                </a>
+            </div>
+
+        <!-- Grade dividida: Capítulo Anterior | Próximo Capítulo -->
+                <div class="editorial-nav-grid">
+        <!-- Lado Esquerdo: Anterior -->
+                <div id="nav-prev-slot" class="editorial-nav-col prev-col">
+        <!-- Preenchido via JavaScript -->
+                </div>
+
+        <!-- Lado Direito: Próximo -->
+                <div id="nav-next-slot" class="editorial-nav-col next-col">
+        <!-- Preenchido via JavaScript -->
+                </div>
+            </div>
+        </nav>
 
     <!-- Rodapé -->
     <footer class="rodape" style="margin-top: 80px;">
