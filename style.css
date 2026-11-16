@@ -1275,3 +1275,144 @@ article p:first-child::first-letter {
     color: var(--text-muted);
     margin-top: 2px;
 }
+.editorial-nav-wrapper {
+    margin-top: 4rem;
+    padding-top: 1rem;
+}
+
+.editorial-nav-top {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 0.75rem;
+}
+
+.editorial-all-link {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--text-primary);
+    padding-bottom: 6px;
+    border-bottom: 1.5px solid var(--text-primary);
+    transition: opacity 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.editorial-all-link:hover {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.editorial-nav-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-top: 1px solid var(--border-color);
+}
+
+.editorial-nav-col {
+    padding: 2rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.editorial-nav-col.prev-col {
+    border-right: 1px solid var(--border-color);
+    align-items: flex-start;
+    text-align: left;
+}
+
+.editorial-nav-col.next-col {
+    align-items: flex-end;
+    text-align: right;
+}
+
+.nav-direction-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.85rem;
+    display: block;
+}
+
+.nav-empty-text {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    opacity: 0.75;
+}
+
+.nav-chapter-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    max-width: 100%;
+}
+
+.nav-chapter-card:hover {
+    opacity: 0.85;
+}
+
+.next-col .nav-chapter-card {
+    flex-direction: row-reverse;
+}
+
+.nav-thumb {
+    width: 64px;
+    height: 64px;
+    min-width: 64px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 1px solid var(--border-color);
+}
+
+.nav-chapter-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.nav-chapter-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.1rem, 2.5vw, 1.45rem);
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--text-primary);
+    margin: 0 0 0.35rem 0;
+}
+
+.nav-chapter-title em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--primary-color);
+}
+
+.nav-chapter-meta {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+/* Ajuste para telas pequenas (celular) */
+@media (max-width: 640px) {
+    .editorial-nav-grid {
+        grid-template-columns: 1fr;
+    }
+    .editorial-nav-col.prev-col {
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+    }
+    .editorial-nav-col.next-col {
+        align-items: flex-start;
+        text-align: left;
+    }
+    .next-col .nav-chapter-card {
+        flex-direction: row;
+    }
+}
