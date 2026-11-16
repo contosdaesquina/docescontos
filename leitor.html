@@ -142,23 +142,27 @@
         });
 
         async function carregarCapitulo(slug, num) {
-            const { data, error } = await db
+            // Busca todos os capítulos da história ordenados para montar a navegação com miniaturas e tempos
+            const { data: todosCapitulos, error } = await db
                 .from('capitulos')
                 .select('*')
                 .eq('slug_historia', slug)
-                .eq('numero_capitulo', num)
-                .single();
+                .order('numero_capitulo', { ascending: true });
 
-            if (error || !data) {
-                console.error("Erro ao carregar capítulo:", error);
+            if (error || !todosCapitulos || todosCapitulos.length === 0) {
                 document.getElementById('chapter-title').innerText = "Capítulo não encontrado";
                 document.getElementById('chapter-text').innerHTML = `<p>Não foi possível carregar este capítulo. <a href="sumario.html?historia=${slug}">Voltar ao sumário</a>.</p>`;
                 return;
             }
 
+            const indiceAtual = todosCapitulos.findIndex(c => c.numero_capitulo === num);
+            const data = indiceAtual !== -1 ? todosCapitulos[indiceAtual] : todosCapitulos[0];
+            const capAnterior = indiceAtual > 0 ? todosCapitulos[indiceAtual - 1] : null;
+            const capProximo = indiceAtual < todosCapitulos.length - 1 ? todosCapitulos[indiceAtual + 1] : null;
+
             capituloAtualId = data.id;
 
-            // 1. Preenche o kicker superior
+            // --- CABEÇALHO DO CONTO ---
             const nomeSerie = slug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
             const metaSerie = document.getElementById('meta-serie');
             const metaCap = document.getElementById('meta-cap');
@@ -176,7 +180,6 @@
                 }).toUpperCase();
             }
 
-            // 2. Título e Subtítulo
             document.title = `${data.titulo_capitulo.replace(/<[^>]*>/g, '')} | Doces Contos`;
             document.getElementById('chapter-title').innerHTML = data.titulo_capitulo;
 
@@ -190,26 +193,82 @@
                 }
             }
 
-            // 3. Conteúdo do conto
             const chapterTextEl = document.getElementById('chapter-text');
             chapterTextEl.innerHTML = data.conteudo || '<p>Conteúdo em breve.</p>';
 
-            // 4. Contagem de palavras e minutos
-            const textoPuro = chapterTextEl.innerText || chapterTextEl.textContent || '';
-            const totalPalavras = textoPuro.trim().split(/\s+/).filter(Boolean).length;
-            const minutosLeitura = Math.max(1, Math.ceil(totalPalavras / 200));
+            // Cálculo de palavras e tempo do capítulo atual
+            const calcularMinutos = (htmlStr) => {
+                const divTemp = document.createElement('div');
+                divTemp.innerHTML = htmlStr || '';
+                const texto = divTemp.innerText || divTemp.textContent || '';
+                const palavras = texto.trim().split(/\s+/).filter(Boolean).length;
+                return { palavras, minutos: Math.max(1, Math.ceil(palavras / 200)) };
+            };
 
-            const wordCountEl = document.getElementById('word-count');
-            const readTimeEl = document.getElementById('read-time');
-            if (wordCountEl) wordCountEl.innerText = totalPalavras;
-            if (readTimeEl) readTimeEl.innerText = minutosLeitura;
+            const metricasAtuais = calcularMinutos(data.conteudo);
+            if (document.getElementById('word-count')) document.getElementById('word-count').innerText = metricasAtuais.palavras;
+            if (document.getElementById('read-time')) document.getElementById('read-time').innerText = metricasAtuais.minutos;
 
-            // 5. Atualiza contadores de likes/deslikes se existirem na página
+            // --- NAVEGAÇÃO INFERIOR COM MINIATURAS ---
+            const linkTodos = document.getElementById('link-todos-capitulos');
+            if (linkTodos) linkTodos.href = `sumario.html?historia=${slug}`;
+
+            const prevSlot = document.getElementById('nav-prev-slot');
+            if (prevSlot) {
+                if (capAnterior) {
+                    const minPrev = calcularMinutos(capAnterior.conteudo).minutos;
+                    const thumbPrev = capAnterior.imagem_capa
+                        ? `<img src="${capAnterior.imagem_capa}" alt="Capítulo ${capAnterior.numero_capitulo}" onerror="this.onerror=null; this.src='dist/logo.svg';" class="nav-thumb">`
+                        : '';
+                    prevSlot.innerHTML = `
+                        <span class="nav-direction-label">&larr; CAPÍTULO ANTERIOR</span>
+                        <a href="leitor.html?historia=${slug}&cap=${capAnterior.numero_capitulo}" class="nav-chapter-card">
+                            ${thumbPrev}
+                            <div class="nav-chapter-info">
+                                <h4 class="nav-chapter-title">${capAnterior.titulo_capitulo}</h4>
+                                <span class="nav-chapter-meta">cap. ${String(capAnterior.numero_capitulo).padStart(2, '0')} &bull; ${minPrev} min</span>
+                            </div>
+                        </a>
+                    `;
+                } else {
+                    prevSlot.innerHTML = `
+                        <span class="nav-direction-label">&larr; CAPÍTULO ANTERIOR</span>
+                        <span class="nav-empty-text">este é o primeiro capítulo</span>
+                    `;
+                }
+            }
+
+            const nextSlot = document.getElementById('nav-next-slot');
+            if (nextSlot) {
+                if (capProximo) {
+                    const minNext = calcularMinutos(capProximo.conteudo).minutos;
+                    const thumbNext = capProximo.imagem_capa
+                        ? `<img src="${capProximo.imagem_capa}" alt="Capítulo ${capProximo.numero_capitulo}" onerror="this.onerror=null; this.src='dist/logo.svg';" class="nav-thumb">`
+                        : '';
+                    nextSlot.innerHTML = `
+                        <span class="nav-direction-label">PRÓXIMO CAPÍTULO &rarr;</span>
+                        <a href="leitor.html?historia=${slug}&cap=${capProximo.numero_capitulo}" class="nav-chapter-card">
+                            ${thumbNext}
+                            <div class="nav-chapter-info">
+                                <h4 class="nav-chapter-title">${capProximo.titulo_capitulo}</h4>
+                                <span class="nav-chapter-meta">cap. ${String(capProximo.numero_capitulo).padStart(2, '0')} &bull; ${minNext} min</span>
+                            </div>
+                        </a>
+                    `;
+                } else {
+                    nextSlot.innerHTML = `
+                        <span class="nav-direction-label">PRÓXIMO CAPÍTULO &rarr;</span>
+                        <span class="nav-empty-text">você chegou ao último capítulo publicado</span>
+                    `;
+                }
+            }
+
+            // Atualiza contadores de likes/deslikes se existirem na página
             const likesEl = document.getElementById('likes-count');
             const deslikesEl = document.getElementById('deslikes-count');
             if (likesEl) likesEl.innerText = data.likes || 0;
             if (deslikesEl) deslikesEl.innerText = data.deslikes || 0;
-
+        }
             // 6. Configura link de voltar ao sumário
             const btnSumario = document.getElementById('btn-sumario');
             if (btnSumario) btnSumario.href = `sumario.html?historia=${slug}`;
