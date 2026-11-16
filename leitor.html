@@ -3,26 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="page-title">Leitura | Doces Contos</title>
+    <title>Leitura | Doces Contos</title>
     
-    <!-- Fontes e Estilos (mesmos do index.html) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-</head>
-<body class="reader-body">
 
-    <!-- Cabeçalho idêntico ao index.html, com o botão de tema -->
+    <style>
+        /* Cabeçalho Editorial */
+        .editorial-header { margin-bottom: 2.5rem; }
+        .editorial-kicker { display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem; font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.95rem; color: var(--primary-color); margin-bottom: 1rem; }
+        .kicker-line { display: inline-block; width: 28px; height: 1px; background-color: var(--primary-color); opacity: 0.7; }
+        .kicker-date { font-family: 'Inter', sans-serif; font-style: normal; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.85; }
+        .editorial-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 600; line-height: 1.15; color: var(--text-primary); margin: 0 0 1.25rem 0; }
+        .editorial-title em { font-style: italic; font-weight: 400; color: var(--primary-color); }
+        .editorial-subtitle { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.15rem; line-height: 1.6; color: var(--text-muted); margin: 0 0 2rem 0; }
+        .editorial-meta-bar { display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); gap: 1rem; }
+        .author-box { display: flex; align-items: center; gap: 0.85rem; }
+        .author-avatar { width: 42px; height: 42px; border-radius: 50%; background-color: var(--primary-color); color: #fff; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.2rem; font-weight: 600; }
+        .author-details { display: flex; flex-direction: column; }
+        .author-name { font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 600; color: var(--text-primary); }
+        .author-handle { font-family: 'Inter', sans-serif; font-size: 0.8rem; color: var(--primary-color); }
+        .reading-metrics { display: flex; align-items: center; gap: 1.75rem; }
+        .metric-item { display: flex; flex-direction: column; align-items: flex-end; }
+        .metric-item strong { font-family: 'Inter', sans-serif; font-size: 1.05rem; font-weight: 600; color: var(--text-primary); }
+        .metric-item span { font-family: 'Inter', sans-serif; font-size: 0.65rem; letter-spacing: 0.08em; color: var(--text-muted); margin-top: 2px; }
+
+        /* Corpo do Texto */
+        .text-body { font-size: 1.125rem; line-height: 1.85; color: var(--text-primary); }
+        .text-body p { margin-bottom: 1.5rem; }
+
+        /* Navegação Inferior Editorial */
+        .editorial-nav-wrapper { margin-top: 4rem; padding-top: 1rem; }
+        .editorial-nav-top { display: flex; justify-content: flex-end; margin-bottom: 0.75rem; }
+        .editorial-all-link { font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; color: var(--text-primary); padding-bottom: 6px; border-bottom: 1.5px solid var(--text-primary); transition: opacity 0.2s, color 0.2s, border-color 0.2s; }
+        .editorial-all-link:hover { color: var(--primary-color); border-color: var(--primary-color); }
+        .editorial-nav-grid { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--border-color); }
+        .editorial-nav-col { padding: 2rem 1.25rem; display: flex; flex-direction: column; justify-content: center; }
+        .editorial-nav-col.prev-col { border-right: 1px solid var(--border-color); align-items: flex-start; text-align: left; }
+        .editorial-nav-col.next-col { align-items: flex-end; text-align: right; }
+        .nav-direction-label { font-family: 'Inter', sans-serif; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.85rem; display: block; }
+        .nav-empty-text { font-family: 'Inter', sans-serif; font-size: 0.9rem; color: var(--text-muted); opacity: 0.75; }
+        .nav-chapter-card { display: flex; align-items: center; gap: 1rem; text-decoration: none; color: var(--text-primary); transition: opacity 0.2s ease; max-width: 100%; }
+        .nav-chapter-card:hover { opacity: 0.85; }
+        .next-col .nav-chapter-card { flex-direction: row-reverse; }
+        .nav-thumb { width: 64px; height: 64px; min-width: 64px; border-radius: 8px; object-fit: cover; border: 1px solid var(--border-color); }
+        .nav-chapter-info { display: flex; flex-direction: column; }
+        .nav-chapter-title { font-family: 'Playfair Display', serif; font-size: clamp(1.1rem, 2.5vw, 1.45rem); font-weight: 600; line-height: 1.25; color: var(--text-primary); margin: 0 0 0.35rem 0; }
+        .nav-chapter-title em { font-style: italic; font-weight: 400; color: var(--primary-color); }
+        .nav-chapter-meta { font-family: 'Inter', sans-serif; font-size: 0.75rem; color: var(--text-muted); }
+
+        @media (max-width: 640px) {
+            .editorial-nav-grid { grid-template-columns: 1fr; }
+            .editorial-nav-col.prev-col { border-right: none; border-bottom: 1px solid var(--border-color); }
+            .editorial-nav-col.next-col { align-items: flex-start; text-align: left; }
+            .next-col .nav-chapter-card { flex-direction: row; }
+        }
+    </style>
+</head>
+<body>
+
     <header class="cabecalho">
         <div class="cabecalho-brand">
             <a href="index.html" class="cabecalho-logo-link">
-                <img class="cabecalho-logo" src="dist/logo.svg" alt="Doces Contos Logo">
+                <img class="cabecalho-logo" src="dist/logo.svg" alt="Logo">
             </a>
             <p class="cabecalho-titulo">Doces Contos</p>
         </div>
-
+        <nav class="menu">
+            <a id="header-sumario-link" href="index.html" class="menu-item">&larr; Sumário</a>
+        </nav>
         <div class="header-actions">
             <button id="theme-toggle" class="btn-theme" title="Alternar tema">
                 <i class="fas fa-moon"></i>
@@ -30,80 +82,67 @@
         </div>
     </header>
 
-    <!-- Área principal do conteúdo do capítulo -->
-    <main class="reader-container" style="max-width: 720px; margin: 40px auto; padding: 0 20px;">
-        <header class="editorial-header">
-    <!-- 1. Linha de metadados superior -->
-    <div class="editorial-kicker">
-        <span class="kicker-line"></span>
-        <span id="meta-serie">Carregando...</span>
-        <span class="kicker-dot">&bull;</span>
-        <span id="meta-cap">Cap. 1</span>
-        <span class="kicker-dot">&bull;</span>
-        <span id="meta-data" class="kicker-date">--</span>
-    </div>
+    <main style="max-width: 760px; margin: 40px auto; padding: 0 20px;">
+        <article>
+            <header class="editorial-header">
+                <div class="editorial-kicker">
+                    <span class="kicker-line"></span>
+                    <span id="meta-serie">Carregando...</span>
+                    <span class="kicker-dot">&bull;</span>
+                    <span id="meta-cap">Cap. 1</span>
+                    <span class="kicker-dot">&bull;</span>
+                    <span id="meta-data" class="kicker-date">--</span>
+                </div>
 
-    <!-- 2. Título do Capítulo -->
-    <h1 id="chapter-title" class="editorial-title">Carregando título...</h1>
+                <h1 id="chapter-title" class="editorial-title">Carregando título...</h1>
+                <p id="chapter-subtitle" class="editorial-subtitle"></p>
 
-    <!-- 3. Subtítulo / Descrição em itálico -->
-    <p id="chapter-subtitle" class="editorial-subtitle"></p>
+                <div class="editorial-meta-bar">
+                    <div class="author-box">
+                        <div class="author-avatar">D</div>
+                        <div class="author-details">
+                            <strong class="author-name">Doces Contos</strong>
+                            <span class="author-handle">@doces.contosbr</span>
+                        </div>
+                    </div>
 
-    <!-- 4. Barra de Autoria e Tempo de Leitura -->
-    <div class="editorial-meta-bar">
-        <div class="author-box">
-            <div class="author-avatar">D</div>
-            <div class="author-details">
-                <strong class="author-name">Doces Contos</strong>
-                <span class="author-handle">@doces.contosbr</span>
+                    <div class="reading-metrics">
+                        <div class="metric-item">
+                            <strong id="word-count">0</strong>
+                            <span>PALAVRAS</span>
+                        </div>
+                        <div class="metric-item">
+                            <strong id="read-time">0</strong>
+                            <span>MINUTOS</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div id="chapter-text" class="text-body">
+                <p>Carregando história...</p>
             </div>
-        </div>
+        </article>
 
-        <div class="reading-metrics">
-            <div class="metric-item">
-                <strong id="word-count">0</strong>
-                <span>PALAVRAS</span>
-            </div>
-            <div class="metric-item">
-                <strong id="read-time">0</strong>
-                <span>MINUTOS</span>
-            </div>
-        </div>
-    </div>
-</header>
-
-<!-- Corpo do texto do capítulo -->
-<div id="chapter-text" class="text-body"></div>
-
-        <!-- Navegação numérica entre capítulos -->
         <nav class="editorial-nav-wrapper" aria-label="Navegação entre capítulos">
-        <!-- Link superior alinhado à direita -->
             <div class="editorial-nav-top">
                 <a id="link-todos-capitulos" href="sumario.html" class="editorial-all-link">
-                VER TODOS OS CAPÍTULOS &rarr;
+                    VER TODOS OS CAPÍTULOS &rarr;
                 </a>
             </div>
 
-        <!-- Grade dividida: Capítulo Anterior | Próximo Capítulo -->
-                <div class="editorial-nav-grid">
-        <!-- Lado Esquerdo: Anterior -->
-                <div id="nav-prev-slot" class="editorial-nav-col prev-col">
-        <!-- Preenchido via JavaScript -->
-                </div>
-
-        <!-- Lado Direito: Próximo -->
-                <div id="nav-next-slot" class="editorial-nav-col next-col">
-        <!-- Preenchido via JavaScript -->
-                </div>
+            <div class="editorial-nav-grid">
+                <div id="nav-prev-slot" class="editorial-nav-col prev-col"></div>
+                <div id="nav-next-slot" class="editorial-nav-col next-col"></div>
             </div>
         </nav>
+    </main>
 
-    <!-- Rodapé -->
+    <!-- COLE AQUI O <footer> DO SEU index.html -->
     <footer class="rodape" style="margin-top: 80px;">
         <p class="direitos">&copy; Doces Contos. Todos os direitos reservados.</p>
     </footer>
 
-    <!-- SDK do Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         const SUPABASE_URL = 'https://wlghtkzunixojfldupwk.supabase.co';
@@ -113,10 +152,8 @@
         const params = new URLSearchParams(window.location.search);
         const historiaSlug = params.get('historia');
         const capNumero = parseInt(params.get('cap')) || 1;
-        let capituloAtualId = null;
 
         document.addEventListener('DOMContentLoaded', () => {
-            // Tema escuro/claro
             const themeBtn = document.getElementById('theme-toggle');
             const storedTheme = localStorage.getItem('theme');
             if (storedTheme) {
@@ -134,15 +171,16 @@
             }
 
             if (historiaSlug) {
+                const headerSumario = document.getElementById('header-sumario-link');
+                if (headerSumario) headerSumario.href = `sumario.html?historia=${historiaSlug}`;
                 carregarCapitulo(historiaSlug, capNumero);
             } else {
-                document.getElementById('chapter-title').innerText = "História não selecionada";
-                document.getElementById('chapter-text').innerHTML = `<p>Volte ao <a href="index.html">catálogo inicial</a> para escolher um conto.</p>`;
+                document.getElementById('chapter-title').innerText = "História não informada";
+                document.getElementById('chapter-text').innerHTML = `<p>Acesse a <a href="index.html">página inicial</a> e selecione um conto para ler.</p>`;
             }
         });
 
         async function carregarCapitulo(slug, num) {
-            // Busca todos os capítulos da história ordenados para montar a navegação com miniaturas e tempos
             const { data: todosCapitulos, error } = await db
                 .from('capitulos')
                 .select('*')
@@ -150,6 +188,7 @@
                 .order('numero_capitulo', { ascending: true });
 
             if (error || !todosCapitulos || todosCapitulos.length === 0) {
+                console.error("Erro Supabase:", error);
                 document.getElementById('chapter-title').innerText = "Capítulo não encontrado";
                 document.getElementById('chapter-text').innerHTML = `<p>Não foi possível carregar este capítulo. <a href="sumario.html?historia=${slug}">Voltar ao sumário</a>.</p>`;
                 return;
@@ -160,20 +199,13 @@
             const capAnterior = indiceAtual > 0 ? todosCapitulos[indiceAtual - 1] : null;
             const capProximo = indiceAtual < todosCapitulos.length - 1 ? todosCapitulos[indiceAtual + 1] : null;
 
-            capituloAtualId = data.id;
-
-            // --- CABEÇALHO DO CONTO ---
             const nomeSerie = slug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-            const metaSerie = document.getElementById('meta-serie');
-            const metaCap = document.getElementById('meta-cap');
-            const metaData = document.getElementById('meta-data');
+            document.getElementById('meta-serie').innerText = nomeSerie;
+            document.getElementById('meta-cap').innerText = `Cap. ${data.numero_capitulo}`;
 
-            if (metaSerie) metaSerie.innerText = nomeSerie;
-            if (metaCap) metaCap.innerText = `Cap. ${data.numero_capitulo}`;
-
-            if (metaData && data.created_at) {
+            if (data.created_at) {
                 const dataObj = new Date(data.created_at);
-                metaData.innerText = dataObj.toLocaleDateString('pt-BR', {
+                document.getElementById('meta-data').innerText = dataObj.toLocaleDateString('pt-BR', {
                     day: 'numeric',
                     month: 'short',
                     year: 'numeric'
@@ -184,19 +216,16 @@
             document.getElementById('chapter-title').innerHTML = data.titulo_capitulo;
 
             const subtitleEl = document.getElementById('chapter-subtitle');
-            if (subtitleEl) {
-                if (data.descricao) {
-                    subtitleEl.innerText = data.descricao;
-                    subtitleEl.style.display = 'block';
-                } else {
-                    subtitleEl.style.display = 'none';
-                }
+            if (data.descricao) {
+                subtitleEl.innerText = data.descricao;
+                subtitleEl.style.display = 'block';
+            } else {
+                subtitleEl.style.display = 'none';
             }
 
             const chapterTextEl = document.getElementById('chapter-text');
             chapterTextEl.innerHTML = data.conteudo || '<p>Conteúdo em breve.</p>';
 
-            // Cálculo de palavras e tempo do capítulo atual
             const calcularMinutos = (htmlStr) => {
                 const divTemp = document.createElement('div');
                 divTemp.innerHTML = htmlStr || '';
@@ -206,72 +235,56 @@
             };
 
             const metricasAtuais = calcularMinutos(data.conteudo);
-            if (document.getElementById('word-count')) document.getElementById('word-count').innerText = metricasAtuais.palavras;
-            if (document.getElementById('read-time')) document.getElementById('read-time').innerText = metricasAtuais.minutos;
+            document.getElementById('word-count').innerText = metricasAtuais.palavras;
+            document.getElementById('read-time').innerText = metricasAtuais.minutos;
 
-            // --- NAVEGAÇÃO INFERIOR COM MINIATURAS ---
-            const linkTodos = document.getElementById('link-todos-capitulos');
-            if (linkTodos) linkTodos.href = `sumario.html?historia=${slug}`;
+            document.getElementById('link-todos-capitulos').href = `sumario.html?historia=${slug}`;
 
             const prevSlot = document.getElementById('nav-prev-slot');
-            if (prevSlot) {
-                if (capAnterior) {
-                    const minPrev = calcularMinutos(capAnterior.conteudo).minutos;
-                    const thumbPrev = capAnterior.imagem_capa
-                        ? `<img src="${capAnterior.imagem_capa}" alt="Capítulo ${capAnterior.numero_capitulo}" onerror="this.onerror=null; this.src='dist/logo.svg';" class="nav-thumb">`
-                        : '';
-                    prevSlot.innerHTML = `
-                        <span class="nav-direction-label">&larr; CAPÍTULO ANTERIOR</span>
-                        <a href="leitor.html?historia=${slug}&cap=${capAnterior.numero_capitulo}" class="nav-chapter-card">
-                            ${thumbPrev}
-                            <div class="nav-chapter-info">
-                                <h4 class="nav-chapter-title">${capAnterior.titulo_capitulo}</h4>
-                                <span class="nav-chapter-meta">cap. ${String(capAnterior.numero_capitulo).padStart(2, '0')} &bull; ${minPrev} min</span>
-                            </div>
-                        </a>
-                    `;
-                } else {
-                    prevSlot.innerHTML = `
-                        <span class="nav-direction-label">&larr; CAPÍTULO ANTERIOR</span>
-                        <span class="nav-empty-text">este é o primeiro capítulo</span>
-                    `;
-                }
+            if (capAnterior) {
+                const minPrev = calcularMinutos(capAnterior.conteudo).minutos;
+                const thumbPrev = capAnterior.imagem_capa
+                    ? `<img src="${capAnterior.imagem_capa}" alt="Capítulo ${capAnterior.numero_capitulo}" onerror="this.onerror=null; this.src='dist/logo.svg';" class="nav-thumb">`
+                    : '';
+                prevSlot.innerHTML = `
+                    <span class="nav-direction-label">&larr; CAPÍTULO ANTERIOR</span>
+                    <a href="leitor.html?historia=${slug}&cap=${capAnterior.numero_capitulo}" class="nav-chapter-card">
+                        ${thumbPrev}
+                        <div class="nav-chapter-info">
+                            <h4 class="nav-chapter-title">${capAnterior.titulo_capitulo}</h4>
+                            <span class="nav-chapter-meta">cap. ${String(capAnterior.numero_capitulo).padStart(2, '0')} &bull; ${minPrev} min</span>
+                        </div>
+                    </a>
+                `;
+            } else {
+                prevSlot.innerHTML = `
+                    <span class="nav-direction-label">&larr; CAPÍTULO ANTERIOR</span>
+                    <span class="nav-empty-text">este é o primeiro capítulo</span>
+                `;
             }
 
             const nextSlot = document.getElementById('nav-next-slot');
-            if (nextSlot) {
-                if (capProximo) {
-                    const minNext = calcularMinutos(capProximo.conteudo).minutos;
-                    const thumbNext = capProximo.imagem_capa
-                        ? `<img src="${capProximo.imagem_capa}" alt="Capítulo ${capProximo.numero_capitulo}" onerror="this.onerror=null; this.src='dist/logo.svg';" class="nav-thumb">`
-                        : '';
-                    nextSlot.innerHTML = `
-                        <span class="nav-direction-label">PRÓXIMO CAPÍTULO &rarr;</span>
-                        <a href="leitor.html?historia=${slug}&cap=${capProximo.numero_capitulo}" class="nav-chapter-card">
-                            ${thumbNext}
-                            <div class="nav-chapter-info">
-                                <h4 class="nav-chapter-title">${capProximo.titulo_capitulo}</h4>
-                                <span class="nav-chapter-meta">cap. ${String(capProximo.numero_capitulo).padStart(2, '0')} &bull; ${minNext} min</span>
-                            </div>
-                        </a>
-                    `;
-                } else {
-                    nextSlot.innerHTML = `
-                        <span class="nav-direction-label">PRÓXIMO CAPÍTULO &rarr;</span>
-                        <span class="nav-empty-text">você chegou ao último capítulo publicado</span>
-                    `;
-                }
+            if (capProximo) {
+                const minNext = calcularMinutos(capProximo.conteudo).minutos;
+                const thumbNext = capProximo.imagem_capa
+                    ? `<img src="${capProximo.imagem_capa}" alt="Capítulo ${capProximo.numero_capitulo}" onerror="this.onerror=null; this.src='dist/logo.svg';" class="nav-thumb">`
+                    : '';
+                nextSlot.innerHTML = `
+                    <span class="nav-direction-label">PRÓXIMO CAPÍTULO &rarr;</span>
+                    <a href="leitor.html?historia=${slug}&cap=${capProximo.numero_capitulo}" class="nav-chapter-card">
+                        ${thumbNext}
+                        <div class="nav-chapter-info">
+                            <h4 class="nav-chapter-title">${capProximo.titulo_capitulo}</h4>
+                            <span class="nav-chapter-meta">cap. ${String(capProximo.numero_capitulo).padStart(2, '0')} &bull; ${minNext} min</span>
+                        </div>
+                    </a>
+                `;
+            } else {
+                nextSlot.innerHTML = `
+                    <span class="nav-direction-label">PRÓXIMO CAPÍTULO &rarr;</span>
+                    <span class="nav-empty-text">você chegou ao último capítulo publicado</span>
+                `;
             }
-
-            // Atualiza contadores de likes/deslikes se existirem na página
-            const likesEl = document.getElementById('likes-count');
-            const deslikesEl = document.getElementById('deslikes-count');
-            if (likesEl) likesEl.innerText = data.likes || 0;
-            if (deslikesEl) deslikesEl.innerText = data.deslikes || 0;
-        }
-            // 6. Configura link de voltar ao sumário
-            const btnSumario = document.getElementById('btn-sumario');
-            if (btnSumario) btnSumario.href = `sumario.html?historia=${slug}`;
         }
     </script>
 </body>
