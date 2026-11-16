@@ -194,10 +194,10 @@
                 return;
             }
 
-            const indiceAtual = todosCapitulos.findIndex(c => c.numero_capitulo === num);
+            const indiceAtual = todosCapitulos.findIndex(c => Number(c.numero_capitulo) === Number(num));
             const data = indiceAtual !== -1 ? todosCapitulos[indiceAtual] : todosCapitulos[0];
             const capAnterior = indiceAtual > 0 ? todosCapitulos[indiceAtual - 1] : null;
-            const capProximo = indiceAtual < todosCapitulos.length - 1 ? todosCapitulos[indiceAtual + 1] : null;
+            const capProximo = (indiceAtual !== -1 && indiceAtual < todosCapitulos.length - 1) ? todosCapitulos[indiceAtual + 1] : null;
 
             const nomeSerie = slug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
             document.getElementById('meta-serie').innerText = nomeSerie;
