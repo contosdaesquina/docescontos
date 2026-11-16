@@ -89,217 +89,115 @@
 
     <!-- SDK do Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
     <script>
-    // Configuração unificada do Supabase
-    const SUPABASE_URL = 'https://wlghtkzunixojfldupwk.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndsZ2h0a3p1bml4b2pmbGR1cHdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxNzkzMTAsImV4cCI6MjEwMDc1NTMxMH0.BSIvzjfeLfgvSQs2-v4cBxIYsuD45QjJnJXGn1aPAp8';
-    
-    const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        const SUPABASE_URL = 'https://wlghtkzunixojfldupwk.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndsZ2h0a3p1bml4b2pmbGR1cHdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxNzkzMTAsImV4cCI6MjEwMDc1NTMxMH0.BSIvzjfeLfgvSQs2-v4cBxIYsuD45QjJnJXGn1aPAp8';
+        const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // VARIÁVEis GLOBAIS (para ficarem acessíveis a qualquer função)
-    const params = new URLSearchParams(window.location.search);
-    const historiaSlug = params.get('historia');
-    let capAtual = parseInt(params.get('cap')) || 1;
+        const params = new URLSearchParams(window.location.search);
+        const historiaSlug = params.get('historia');
+        const capNumero = parseInt(params.get('cap')) || 1;
+        let capituloAtualId = null;
 
-    document.addEventListener('DOMContentLoaded', () => {
-        // ==========================================
-        // 1. ALTERNÂNCIA DE TEMA (LIGHT / DARK)
-        // ==========================================
-        const themeBtn = document.getElementById('theme-toggle');
-        const storedTheme = localStorage.getItem('theme');
-        
-        if (storedTheme) {
-            document.documentElement.setAttribute('data-theme', storedTheme);
-            atualizarIconeTema(storedTheme);
-        }
-
-        if (themeBtn) {
-            themeBtn.addEventListener('click', () => {
-                const currentTheme = document.documentElement.getAttribute('data-theme');
-                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-                
-                document.documentElement.setAttribute('data-theme', newTheme);
-                localStorage.setItem('theme', newTheme);
-                atualizarIconeTema(newTheme);
-            });
-        }
-
-        function atualizarIconeTema(theme) {
-            if (!themeBtn) return;
-            const icon = themeBtn.querySelector('i');
-            if (icon) {
-                icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+        document.addEventListener('DOMContentLoaded', () => {
+            // Tema escuro/claro
+            const themeBtn = document.getElementById('theme-toggle');
+            const storedTheme = localStorage.getItem('theme');
+            if (storedTheme) {
+                document.documentElement.setAttribute('data-theme', storedTheme);
+                if (themeBtn) themeBtn.querySelector('i').className = storedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
             }
-        }
+            if (themeBtn) {
+                themeBtn.addEventListener('click', () => {
+                    const currentTheme = document.documentElement.getAttribute('data-theme');
+                    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                    document.documentElement.setAttribute('data-theme', newTheme);
+                    localStorage.setItem('theme', newTheme);
+                    themeBtn.querySelector('i').className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+                });
+            }
 
-        // ==========================================
-        // 2. CARREGAMENTO DO CAPÍTULO DO SUPABASE
-        // ==========================================
-        if (historiaSlug) {
-            carregarCapitulo(historiaSlug, capAtual);
-        } else {
-            document.getElementById('chapter-title').innerText = "Nenhuma história selecionada";
-            document.getElementById('chapter-text').innerHTML = "<p>Por favor, retorne à página inicial e escolha uma história.</p>";
-        }
-    });
+            if (historiaSlug) {
+                carregarCapitulo(historiaSlug, capNumero);
+            } else {
+                document.getElementById('chapter-title').innerText = "História não selecionada";
+                document.getElementById('chapter-text').innerHTML = `<p>Volte ao <a href="index.html">catálogo inicial</a> para escolher um conto.</p>`;
+            }
+        });
 
-    async function carregarCapitulo(slug, numero) {
-        try {
+        async function carregarCapitulo(slug, num) {
             const { data, error } = await db
                 .from('capitulos')
                 .select('*')
                 .eq('slug_historia', slug)
-                .eq('numero_capitulo', numero)
-                .maybeSingle();
+                .eq('numero_capitulo', num)
+                .single();
 
             if (error || !data) {
-                document.getElementById('story-category').innerText = "Aviso";
+                console.error("Erro ao carregar capítulo:", error);
                 document.getElementById('chapter-title').innerText = "Capítulo não encontrado";
-                document.getElementById('chapter-text').innerHTML = "<p>Ops! Este capítulo ainda não foi publicado ou o link está incorreto.</p>";
+                document.getElementById('chapter-text').innerHTML = `<p>Não foi possível carregar este capítulo. <a href="sumario.html?historia=${slug}">Voltar ao sumário</a>.</p>`;
                 return;
             }
 
-            document.getElementById('page-title').innerText = `${data.titulo_capitulo} | Doces Contos`;
-            document.getElementById('story-category').innerText = slug.replace(/-/g, ' ');
-            document.getElementById('chapter-title').innerText = `Capítulo ${data.numero_capitulo}: ${data.titulo_capitulo}`;
-            document.getElementById('chapter-text').innerHTML = data.conteudo;
+            capituloAtualId = data.id;
 
-            // Puxa os votos atuais do Supabase
-            carregarVotos(slug, numero);
-            verificarNavegacao(slug, numero);
+            // 1. Preenche o kicker superior
+            const nomeSerie = slug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+            const metaSerie = document.getElementById('meta-serie');
+            const metaCap = document.getElementById('meta-cap');
+            const metaData = document.getElementById('meta-data');
 
-        } catch (err) {
-            console.error("Erro ao carregar o capítulo:", err);
+            if (metaSerie) metaSerie.innerText = nomeSerie;
+            if (metaCap) metaCap.innerText = `Cap. ${data.numero_capitulo}`;
+
+            if (metaData && data.created_at) {
+                const dataObj = new Date(data.created_at);
+                metaData.innerText = dataObj.toLocaleDateString('pt-BR', {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric'
+                }).toUpperCase();
+            }
+
+            // 2. Título e Subtítulo
+            document.title = `${data.titulo_capitulo.replace(/<[^>]*>/g, '')} | Doces Contos`;
+            document.getElementById('chapter-title').innerHTML = data.titulo_capitulo;
+
+            const subtitleEl = document.getElementById('chapter-subtitle');
+            if (subtitleEl) {
+                if (data.descricao) {
+                    subtitleEl.innerText = data.descricao;
+                    subtitleEl.style.display = 'block';
+                } else {
+                    subtitleEl.style.display = 'none';
+                }
+            }
+
+            // 3. Conteúdo do conto
+            const chapterTextEl = document.getElementById('chapter-text');
+            chapterTextEl.innerHTML = data.conteudo || '<p>Conteúdo em breve.</p>';
+
+            // 4. Contagem de palavras e minutos
+            const textoPuro = chapterTextEl.innerText || chapterTextEl.textContent || '';
+            const totalPalavras = textoPuro.trim().split(/\s+/).filter(Boolean).length;
+            const minutosLeitura = Math.max(1, Math.ceil(totalPalavras / 200));
+
+            const wordCountEl = document.getElementById('word-count');
+            const readTimeEl = document.getElementById('read-time');
+            if (wordCountEl) wordCountEl.innerText = totalPalavras;
+            if (readTimeEl) readTimeEl.innerText = minutosLeitura;
+
+            // 5. Atualiza contadores de likes/deslikes se existirem na página
+            const likesEl = document.getElementById('likes-count');
+            const deslikesEl = document.getElementById('deslikes-count');
+            if (likesEl) likesEl.innerText = data.likes || 0;
+            if (deslikesEl) deslikesEl.innerText = data.deslikes || 0;
+
+            // 6. Configura link de voltar ao sumário
+            const btnSumario = document.getElementById('btn-sumario');
+            if (btnSumario) btnSumario.href = `sumario.html?historia=${slug}`;
         }
-    }
-
-    async function carregarVotos(slug, numero) {
-        const { data, error } = await db
-            .from('capitulos')
-            .select('likes, deslikes')
-            .eq('slug_historia', slug)
-            .eq('numero_capitulo', numero)
-            .maybeSingle();
-
-        if (!error && data) {
-            document.getElementById('like-count').innerText = data.likes || 0;
-            document.getElementById('dislike-count').innerText = data.deslikes || 0;
-        }
-    }
-
-    async function verificarNavegacao(slug, numero) {
-        const prevBtn = document.getElementById('prev-btn');
-        const nextBtn = document.getElementById('next-btn');
-
-        if (numero > 1) {
-            prevBtn.style.display = 'inline-block';
-        } else {
-            prevBtn.style.display = 'none';
-        }
-
-        const { data } = await db
-            .from('capitulos')
-            .select('numero_capitulo')
-            .eq('slug_historia', slug)
-            .eq('numero_capitulo', numero + 1)
-            .maybeSingle();
-
-        if (data) {
-            nextBtn.style.display = 'inline-block';
-        } else {
-            nextBtn.style.display = 'none';
-        }
-    }
-
-    function mudarCapitulo(direcao) {
-        capAtual += direcao;
-        window.location.href = `leitor.html?historia=${historiaSlug}&cap=${capAtual}`;
-    }
-
-    // ==========================================
-    // 3. FUNÇÃO DE VOTAÇÃO (CURTIR / DESLIKE)
-    // ==========================================
-    async function votarCapitulo(tipo) {
-        const sessaoKey = `voto_${historiaSlug}_${capAtual}`;
-        if (localStorage.getItem(sessaoKey)) {
-            alert('Você já votou neste capítulo nesta sessão!');
-            return;
-        }
-
-        const likeCountElem = document.getElementById('like-count');
-        const dislikeCountElem = document.getElementById('dislike-count');
-        const likeIcon = document.getElementById('like-icon');
-        const dislikeIcon = document.getElementById('dislike-icon');
-
-        let novoLikes = parseInt(likeCountElem.innerText) || 0;
-        let novosDislikes = parseInt(dislikeCountElem.innerText) || 0;
-
-        if (tipo === 'like') {
-            novoLikes++;
-            likeCountElem.innerText = novoLikes;
-            likeIcon.className = "fas fa-heart";
-            likeIcon.style.color = "var(--primary-color)";
-        } else {
-            novosDislikes++;
-            dislikeCountElem.innerText = novosDislikes;
-            dislikeIcon.className = "fas fa-thumbs-down";
-            dislikeIcon.style.color = "var(--accent-red, #ef4444)";
-        }
-
-        // Salva no localStorage para impedir voto duplicado
-        localStorage.setItem(sessaoKey, tipo);
-
-        // Atualiza no banco de dados do Supabase
-        const { error } = await db
-            .from('capitulos')
-            .update({ likes: novoLikes, deslikes: novosDislikes })
-            .eq('slug_historia', historiaSlug)
-            .eq('numero_capitulo', capAtual);
-
-        if (error) {
-            console.error("Erro ao registrar voto no Supabase:", error);
-            alert("Erro ao salvar o voto. Verifique se a política de UPDATE foi criada no Supabase.");
-        }
-        // Formata o nome da série (ex: "primeiro-namorado" -> "Primeiro Namorado")
-const nomeSerie = slug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-document.getElementById('meta-serie').innerText = nomeSerie;
-document.getElementById('meta-cap').innerText = `Cap. ${data.numero_capitulo}`;
-
-// Formata a data de criação do registro no Supabase (ex: "16 DE NOV. DE 2026")
-if (data.created_at) {
-    const dataObj = new Date(data.created_at);
-    const dataFormatada = dataObj.toLocaleDateString('pt-BR', {
-        day: 'numeric',
-        month: 'short',
-        year: 'numeric'
-    }).toUpperCase();
-    document.getElementById('meta-data').innerText = dataFormatada;
-}
-
-// Preenche título (usando innerHTML para permitir <em>palavra</em> em itálico) e subtítulo
-document.getElementById('chapter-title').innerHTML = data.titulo_capitulo;
-
-const subtitleEl = document.getElementById('chapter-subtitle');
-if (data.descricao) {
-    subtitleEl.innerText = data.descricao;
-    subtitleEl.style.display = 'block';
-} else {
-    subtitleEl.style.display = 'none';
-}
-
-// Insere o conteúdo do conto
-const chapterTextEl = document.getElementById('chapter-text');
-chapterTextEl.innerHTML = data.conteudo;
-
-// Calcula palavras (removendo tags HTML) e minutos de leitura (média de 200 palavras/min)
-const textoPuro = chapterTextEl.innerText || chapterTextEl.textContent || '';
-const totalPalavras = textoPuro.trim().split(/\s+/).filter(Boolean).length;
-const minutosLeitura = Math.max(1, Math.ceil(totalPalavras / 200));
-
-document.getElementById('word-count').innerText = totalPalavras;
-document.getElementById('read-time').innerText = minutosLeitura;
-    }
-</script>
+    </script>
 </body>
 </html>
