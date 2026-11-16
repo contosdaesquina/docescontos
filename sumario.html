@@ -112,7 +112,7 @@
 
                 // Se o capítulo tiver imagem cadastrada, exibe a miniatura; caso contrário, mostra o número formatado (02, 03...)
                 const miniaturaHtml = cap.imagem_capa 
-                    ? `<img src="${cap.imagem_capa}" alt="Capítulo ${cap.numero_capitulo}" onerror="this.onerror=null; this.src='dist/logo.svg';" style="width: 55px; height: 55px; min-width: 55px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border-color);">`
+                    ? `<img src="${cap.imagem_capa}" alt="Capítulo ${cap.numero_capitulo}" onerror="this.onerror=null; this.src='dist/logo.svg';" style="width: 90px; height: 90px; min-width: 90px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border-color);">`
                     : `<div style="width: 55px; height: 55px; min-width: 55px; display: flex; align-items: center; justify-content: center; background: var(--bg-primary); border-radius: 8px; border: 1px solid var(--border-color); color: var(--primary-color); font-family: var(--font-heading); font-weight: 600; font-size: 1.1rem;">${String(cap.numero_capitulo).padStart(2, '0')}</div>`;
 
                 html += `
