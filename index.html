@@ -399,7 +399,7 @@
                 atualizarPersonagens();
                 window.setInterval(atualizarPersonagens, 4000);
             }
-// ==========================================
+            // ==========================================
             // 3. DESTAQUES: 3 ÚLTIMOS CAPÍTULOS POSTADOS
             // ==========================================
             async function carregarUltimosCapitulos() {
@@ -407,7 +407,6 @@
                 if (!grid) return;
 
                 try {
-                    // 1. Busca os 3 últimos capítulos postados
                     const { data: capitulos, error: capError } = await db
                         .from('capitulos')
                         .select('*')
@@ -425,25 +424,31 @@
                         return;
                     }
 
-                    // 2. Busca todos os contos para cruzar título, slug e capa de reserva
                     const { data: contos } = await db
                         .from('contos')
                         .select('*');
 
+                    // Mapeamento de slug caso a coluna slug não exista na tabela contos
+                    const titulosPorSlug = {
+                        'primeiro-namorado': 'Meu primeiro namorado e meus desejos',
+                        'encontro-casual': 'Encontro casual e diversão',
+                        'insaciavel-kelly': 'A insaciável Kelly',
+                        'sussurros-proibidos': 'Sussurros proibidos de desejo e traição'
+                    };
+
                     grid.innerHTML = capitulos.map((cap) => {
-                        // Tenta relacionar o capítulo ao conto por ID ou slug
-                        const conto = (contos || []).find(c =>
-                            (cap.conto_id !== undefined && c.id === cap.conto_id) ||
-                            (cap.historia !== undefined && c.slug === cap.historia) ||
-                            (cap.slug_conto !== undefined && c.slug === cap.slug_conto)
+                        const slug = cap.slug_historia || 'primeiro-namorado';
+                        const contoRelacionado = (contos || []).find((c) =>
+                            c.slug === slug ||
+                            (c.link && c.link.includes(slug))
                         );
 
-                        const capa = cap.capa_url || cap.capa || cap.imagem || conto?.capa_url || conto?.capa || 'dist/image.png';
-                        const tituloConto = conto?.titulo || cap.historia || 'Doces Contos';
-                        const slugConto = conto?.slug || cap.historia || cap.slug_conto || 'primeiro-namorado';
-                        const numeroCap = cap.numero ?? cap.capitulo ?? '';
-                        const tituloCap = cap.titulo || `Capítulo ${numeroCap}`;
-                        const urlLeitura = `leitor.html?historia=${encodeURIComponent(slugConto)}&cap=${encodeURIComponent(numeroCap || cap.id)}`;
+                        const capa = cap.imagem_capa || 'dist/image.png';
+                        const numeroCap = cap.numero_capitulo || '';
+                        const tituloCap = cap.titulo_capitulo || `Capítulo ${numeroCap || cap.id}`;
+                        const tituloConto = contoRelacionado?.titulo || titulosPorSlug[slug] || 'Doces Contos';
+                        const descricao = cap.descricao || contoRelacionado?.descricao || '';
+                        const urlLeitura = `leitor.html?historia=${encodeURIComponent(slug)}&cap=${encodeURIComponent(numeroCap || cap.id)}`;
 
                         return `
                             <a href="${urlLeitura}" class="highlight-card">
@@ -453,6 +458,7 @@
                                 <div class="highlight-body">
                                     <span class="highlight-story">${tituloConto}</span>
                                     <h3 class="highlight-title">${numeroCap ? `Cap. ${numeroCap} · ` : ''}${tituloCap}</h3>
+                                    ${descricao ? `<p class="highlight-desc">${descricao}</p>` : ''}
                                     <span class="highlight-cta">Ler capítulo <span aria-hidden="true">&rarr;</span></span>
                                 </div>
                             </a>
