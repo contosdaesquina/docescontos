@@ -1,8 +1,8 @@
 /* ==========================================================================
-   1. RESET E VARIÁVEIS DE TEMA
+1. RESET E VARIÁVEIS DE TEMA
    Esta parte limpa os estilos padrão e define as cores e fontes do site.
    ========================================================================== */
-* {
+- {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -43,7 +43,7 @@
 }
 
 /* ==========================================================================
-   2. ESTILOS GERAIS
+2. ESTILOS GERAIS
    ========================================================================== */
 html {
     scroll-behavior: smooth;
@@ -134,7 +134,7 @@ article p:first-child::first-letter {
 }
 
 /* ==========================================================================
-   3. CABEÇALHO
+3. CABEÇALHO
    ========================================================================== */
 .cabecalho {
     position: sticky;
@@ -236,7 +236,7 @@ article p:first-child::first-letter {
 }
 
 /* ==========================================================================
-   4. HERO
+4. HERO
    ========================================================================== */
 .hero {
     display: flex;
@@ -318,7 +318,7 @@ article p:first-child::first-letter {
 }
 
 /* ==========================================================================
-   5. SOBRE E ESTATÍSTICAS
+5. SOBRE E ESTATÍSTICAS
    ========================================================================== */
 .about-section, .categories-section {
     padding: 4rem 5%;
@@ -391,7 +391,7 @@ article p:first-child::first-letter {
 }
 
 /* ==========================================================================
-   6. DESTAQUES, PERSONAGENS E GRADE DE CARDS (CATÁLOGO)
+6. DESTAQUES, PERSONAGENS E GRADE DE CARDS (CATÁLOGO)
    ========================================================================== */
 .featured-story {
     display: grid;
@@ -483,6 +483,95 @@ article p:first-child::first-letter {
 
 .featured-profile strong {
     color: var(--text-primary);
+}
+
+/* DESTAQUES: 3 ÚLTIMOS CAPÍTULOS POSTADOS */
+.highlights-section {
+    max-width: 1000px;
+    margin: 2rem auto 3.5rem;
+    padding: 0 5%;
+}
+
+.highlights-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+    margin-top: 1.5rem;
+}
+
+.highlight-card {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.highlight-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--card-shadow);
+    border-color: var(--primary-color);
+}
+
+.highlight-cover {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: 6px;
+    background-color: var(--bg-card);
+    margin-bottom: 12px;
+}
+
+.highlight-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.highlight-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    text-align: left;
+}
+
+.highlight-story {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--primary-color);
+}
+
+.highlight-title {
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    line-height: 1.3;
+    margin: 0;
+    color: var(--text-primary);
+}
+
+.highlight-cta {
+    margin-top: 0.35rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.highlight-card:hover .highlight-cta {
+    color: var(--primary-color);
+}
+
+.highlights-loading,
+.highlights-empty {
+    grid-column: 1 / -1;
+    color: var(--text-muted);
+    font-size: 0.9rem;
 }
 
 .section-heading-row {
@@ -734,7 +823,7 @@ article p:first-child::first-letter {
 }
 
 /* ==========================================================================
-   7. NEWSLETTER
+7. NEWSLETTER
    ========================================================================== */
 .newsletter-section {
     padding: 2rem 5%;
@@ -803,7 +892,7 @@ article p:first-child::first-letter {
 }
 
 /* ==========================================================================
-   8. RODAPÉ
+8. RODAPÉ
    ========================================================================== */
 .rodape {
     text-align: center;
@@ -856,7 +945,7 @@ article p:first-child::first-letter {
 }
 
 /* ==========================================================================
-   9. LEITOR DE CAPÍTULOS E TIPOGRAFIA EDITORIAL
+9. LEITOR DE CAPÍTULOS E TIPOGRAFIA EDITORIAL
    ========================================================================== */
 .reader-container {
     max-width: 720px;
@@ -1153,9 +1242,10 @@ article p:first-child::first-letter {
 }
 
 /* ==========================================================================
-   10. RESPONSIVIDADE E DARK MODE PARA ILUSTRAÇÕES
+10. RESPONSIVIDADE E DARK MODE PARA ILUSTRAÇÕES
    ========================================================================== */
 @media (max-width: 900px) {
+    .highlights-grid,
     .categories-grid {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -1227,6 +1317,7 @@ article p:first-child::first-letter {
 }
 
 @media (max-width: 640px) {
+    .highlights-grid,
     .categories-grid {
         grid-template-columns: 1fr;
     }
