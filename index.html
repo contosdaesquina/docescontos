@@ -66,8 +66,23 @@
                 sobre momentos inesquecíveis que se tornam histórias memoráveis.</p>
         </div>
     </section>
+    
+    <!-- Destaques: 3 últimos capítulos postados com foto de capa -->
+    <section id="destaques" class="highlights-section" aria-labelledby="highlights-title">
+        <div class="section-heading-row">
+            <div>
+                <p class="section-kicker">Novidades</p>
+                <h2 id="highlights-title" class="section-title">Últimos capítulos postados</h2>
+            </div>
+            <p class="section-heading-note">Acompanhe o que acabou de chegar por aqui.</p>
+        </div>
 
-    <!-- História em destaque -->
+        <div id="highlights-grid" class="highlights-grid">
+            <p class="highlights-loading">Carregando últimos capítulos...</p>
+        </div>
+    </section>
+
+    <!-- História em destaque (descrição dos personagens preservada) -->
     <section class="featured-story" aria-labelledby="featured-title">
         <div class="featured-story-copy">
             <p class="section-kicker">Em destaque</p>
@@ -198,7 +213,7 @@
         </div>
     </section>
 
-  <!-- Resumo das histórias que já estão publicadas -->
+    <!-- Resumo das histórias que já estão publicadas -->
     <section class="published-section" aria-labelledby="published-title">
         <div class="section-heading-row">
             <div>
@@ -345,7 +360,6 @@
             // ==========================================
             // 2. EXIBIÇÃO DE IMAGENS DE PERSONAGENS
             // ==========================================
-
             const personagens = [
                 { nome: 'Aline', imagem: 'dist/aline.png', iniciais: 'Al' },
                 { nome: 'Ronaldo', imagem: 'dist/ronaldo.png', iniciais: 'Ro' },
@@ -387,7 +401,72 @@
             }
 
             // ==========================================
-            // 3. CONTAGEM DE CONTOS PUBLICADOS
+            // 3. DESTAQUES: 3 ÚLTIMOS CAPÍTULOS POSTADOS
+            // ==========================================
+            async function carregarUltimosCapitulos() {
+                const grid = document.getElementById('highlights-grid');
+                if (!grid) return;
+
+                try {
+                    const { data: capitulos, error } = await db
+                        .from('capitulos')
+                        .select(`
+                            id,
+                            numero,
+                            titulo,
+                            capa_url,
+                            created_at,
+                            contos (
+                                titulo,
+                                slug,
+                                capa_url
+                            )
+                        `)
+                        .order('created_at', { ascending: false })
+                        .limit(3);
+
+                    if (error) {
+                        console.error('Erro ao buscar últimos capítulos:', error);
+                        grid.innerHTML = '<p class="highlights-empty">Não foi possível carregar os capítulos no momento.</p>';
+                        return;
+                    }
+
+                    if (!capitulos || capitulos.length === 0) {
+                        grid.innerHTML = '<p class="highlights-empty">Nenhum capítulo publicado ainda.</p>';
+                        return;
+                    }
+
+                    grid.innerHTML = capitulos.map((cap) => {
+                        const conto = Array.isArray(cap.contos) ? cap.contos[0] : cap.contos;
+                        const capa = cap.capa_url || conto?.capa_url || 'dist/image.png';
+                        const tituloConto = conto?.titulo || 'Doces Contos';
+                        const slugConto = conto?.slug || 'primeiro-namorado';
+                        const numeroCap = cap.numero ?? '';
+                        const tituloCap = cap.titulo || `Capítulo ${numeroCap}`;
+                        const urlLeitura = `leitor.html?historia=${encodeURIComponent(slugConto)}&cap=${encodeURIComponent(numeroCap || cap.id)}`;
+
+                        return `
+                            <a href="${urlLeitura}" class="highlight-card">
+                                <div class="highlight-cover">
+                                    <img src="${capa}" alt="Capa do capítulo ${tituloCap}" loading="lazy">
+                                </div>
+                                <div class="highlight-body">
+                                    <span class="highlight-story">${tituloConto}</span>
+                                    <h3 class="highlight-title">${numeroCap ? `Cap. ${numeroCap} · ` : ''}${tituloCap}</h3>
+                                    <span class="highlight-cta">Ler capítulo <span aria-hidden="true">&rarr;</span></span>
+                                </div>
+                            </a>
+                        `;
+                    }).join('');
+                } catch (err) {
+                    console.error('Erro inesperado ao carregar capítulos:', err);
+                    grid.innerHTML = '<p class="highlights-empty">Não foi possível carregar os capítulos no momento.</p>';
+                }
+            }
+            carregarUltimosCapitulos();
+
+            // ==========================================
+            // 4. CONTAGEM DE CONTOS PUBLICADOS
             // ==========================================
             async function contarContosPublicados() {
                 try {
@@ -407,54 +486,50 @@
             contarContosPublicados();
 
             // ==========================================
-            // 4. REGISTRAR E ATUALIZAR ACESSOS NA TABELA "acessos"
+            // 5. REGISTRAR E ATUALIZAR ACESSOS NA TABELA "acessos"
             // ==========================================
             async function registrarEAtualizarAcesso() {
-    try {
-        const jaContouNessaSessao = sessionStorage.getItem('acesso_registrado');
-        let totalAcessos = 0;
+                try {
+                    const jaContouNessaSessao = sessionStorage.getItem('acesso_registrado');
+                    let totalAcessos = 0;
 
-        if (!jaContouNessaSessao) {
-            // Chama a função atômica no Supabase que soma +1 com segurança
-            const { data, error } = await db.rpc('incrementar_acessos');
+                    if (!jaContouNessaSessao) {
+                        const { data, error } = await db.rpc('incrementar_acessos');
 
-            if (error) {
-                console.error('Erro ao incrementar acessos:', error);
-                return;
+                        if (error) {
+                            console.error('Erro ao incrementar acessos:', error);
+                            return;
+                        }
+
+                        sessionStorage.setItem('acesso_registrado', 'true');
+                        totalAcessos = data;
+                    } else {
+                        const { data, error } = await db
+                            .from('acessos')
+                            .select('acessos')
+                            .eq('id', 1)
+                            .maybeSingle();
+
+                        if (error) {
+                            console.error('Erro ao consultar acessos:', error);
+                            return;
+                        }
+
+                        totalAcessos = data?.acessos ?? 0;
+                    }
+
+                    const statElement = document.getElementById('stat-acessos');
+                    if (statElement) {
+                        statElement.innerText = Number(totalAcessos).toLocaleString('pt-BR');
+                    }
+                } catch (err) {
+                    console.error('Erro ao registrar acesso:', err);
+                }
             }
-
-            sessionStorage.setItem('acesso_registrado', 'true');
-            totalAcessos = data;
-        } else {
-            // Se o usuário apenas deu F5, apenas busca o valor sem incrementar de novo
-            const { data, error } = await db
-                .from('acessos')
-                .select('acessos')
-                .eq('id', 1)
-                .maybeSingle();
-
-            if (error) {
-                console.error('Erro ao consultar acessos:', error);
-                return;
-            }
-
-            totalAcessos = data?.acessos ?? 0;
-        }
-
-        // Exibe o número atualizado na tela
-        const statElement = document.getElementById('stat-acessos');
-        if (statElement) {
-            statElement.innerText = Number(totalAcessos).toLocaleString('pt-BR');
-        }
-    } catch (err) {
-        console.error('Erro ao registrar acesso:', err);
-    }
-}
-
-registrarEAtualizarAcesso();
+            registrarEAtualizarAcesso();
 
             // ==========================================
-            // 5. FORMULÁRIO DE NEWSLETTER
+            // 6. FORMULÁRIO DE NEWSLETTER
             // ==========================================
             const newsletterForm = document.querySelector('.newsletter-form');
             if (newsletterForm) {
